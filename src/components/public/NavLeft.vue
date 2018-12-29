@@ -1,0 +1,82 @@
+<template>
+    <div>
+       
+
+
+<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+  <el-submenu index="1">
+    <template slot="title">
+      <p style="color:#ffffff">数据管理</p>
+      <span slot="title">导航一</span>
+    </template>
+    <el-menu-item-group>
+     
+      <el-menu-item index="1-1">审核管理</el-menu-item>
+      <el-menu-item index="1-2">选项2</el-menu-item>
+    </el-menu-item-group>
+    <el-menu-item-group title="分组2">
+      <el-menu-item index="1-3">选项3</el-menu-item>
+    </el-menu-item-group>
+   
+  </el-submenu>
+  
+</el-menu>
+<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+  <el-submenu index="1">
+    <template slot="title">
+      <p style="color:#ffffff">审核管理</p>
+      <span slot="title">导航一</span>
+    </template>
+    <el-menu-item-group>
+     
+      <el-menu-item index="1-1">审核管理</el-menu-item>
+      <el-menu-item index="1-2">选项2</el-menu-item>
+    </el-menu-item-group>
+    <el-menu-item-group title="分组2">
+      <el-menu-item index="1-3">选项3</el-menu-item>
+    </el-menu-item-group>
+    
+  </el-submenu>
+  
+</el-menu>
+
+    </div>
+</template>
+<style scoped>
+ .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
+  /* .el-submenu__title{
+    width: 220px;
+  }
+  .el-menu-item {
+    width: 220px;
+  } */
+  .el-submenu{
+     width: 220px;
+     background: #2a334b;
+     color: #ffffff;
+  }
+  .el-submenu__title:hover{
+    background: #000016!important;
+  }
+</style>
+<script>
+export default {
+    name:'NavLeft',
+      data() {
+      return {
+        isCollapse: true
+      };
+    },
+    methods: {
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
+}
+</script>

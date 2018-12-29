@@ -21,8 +21,8 @@
         :clickEffect="true"
         clickMode="push"
       ></vue-particles>
-      <div class="con"  key="14">
-        <clogin></clogin>
+      <div class="con" key="13">
+        <cforgetpassword></cforgetpassword>
         
       </div>
     </div>
@@ -40,28 +40,23 @@
   position: relative;
 }
 .con{
-      width:560px;
-      height: 480px;
+      width:560px;      
       background-color:rgba(255,255,255, 0.9) ;
-      position: absolute;
-      
-      /* top: 29%;
-    
-      right: 200px; */
-      
+      position: absolute;      
+      /* top: 29%;    
+      right: 200px; */      
       box-shadow: 0px 0px 16px rgba(31,84,167,0.1);
       border: 2px solid #ecf0f5;
       border-radius: 10px;
 
-       position: absolute;
-           
-            top:50%;
-            left:72%;
-            margin-left:-280px;
-            margin-top:-240px;
-            text-align: center;
-
-
+      position: absolute;           
+      top:50%;
+      left:72%;
+      margin-left:-280px;
+      margin-top:-310px;
+      text-align: center;
+      padding-bottom:70px;
+      box-sizing: border-box;
 }
 
 
@@ -71,13 +66,13 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
-import clogin from "@/components/clogin.vue";
+import cforgetpassword from "@/components/cForgetPassword.vue";
 export default {
-  name: "login",
+  name: "forgetpassword",
   
   components: {
     HelloWorld,
-    clogin,
+    cforgetpassword,
   },
   mounted() {
 

@@ -21,8 +21,8 @@
         :clickEffect="true"
         clickMode="push"
       ></vue-particles>
-      <div class="con"  key="14">
-        <clogin></clogin>
+      <div class="con"  key="15">
+        <cregister></cregister>
         
       </div>
     </div>
@@ -41,10 +41,10 @@
 }
 .con{
       width:560px;
-      height: 480px;
+      padding-bottom:70px;
       background-color:rgba(255,255,255, 0.9) ;
       position: absolute;
-      
+      box-sizing: border-box;
       /* top: 29%;
     
       right: 200px; */
@@ -58,10 +58,8 @@
             top:50%;
             left:72%;
             margin-left:-280px;
-            margin-top:-240px;
+            margin-top:-310px;
             text-align: center;
-
-
 }
 
 
@@ -70,14 +68,14 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-import clogin from "@/components/clogin.vue";
+
+import cregister from "@/components/cRegister.vue";
 export default {
-  name: "login",
+  name: "register",
   
   components: {
-    HelloWorld,
-    clogin,
+   cregister
+    
   },
   mounted() {
 
