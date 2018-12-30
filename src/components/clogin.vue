@@ -83,14 +83,32 @@ export default {
     catchdata(){
       // console.log(this.form.phone)
       //  console.log(this.form.word)
-      // var params = new URLSearchParams()
-      // params.append('mobile', this.form.phone)
-      // params.append('password', this.form.word)
+      var params = new URLSearchParams()
+      params.append('mobile', this.form.phone)
+      params.append('password', this.form.word)
 
  
-      this.dataApi.ajax('post','/user/login',{mobile:this.form.phone,password:this.form.word}, res => {    
-                        console.log(res)
-                 });
+      this.dataApi.ajax('post','/user/login',params, res => {    
+                        if(res.code==0){
+                            
+                        function setCookie(name, value, day) {
+                                var oDate = new Date();
+                                oDate.setDate(oDate.getDate() + day);
+                                document.cookie = name + '=' + value + ';expires=' + oDate;
+                                }
+                                setCookie('token',res.data.token)
+                                setCookie('user',JSON.stringify(res.data.user))
+                                this.$router.push('audit')
+                                this.$message({
+                                        message: '恭喜你,登陆成功',
+                                        type: 'success'
+                                      });
+                           
+                        }else{
+                           this.$message.error( res.msg);
+                           
+                        }
+                  });     
     },
     log(){
        this.catchdata()

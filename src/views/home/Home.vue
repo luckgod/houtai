@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-header >
+    <el-header height='70'>
       <navtop></navtop>
     </el-header>
 
@@ -63,12 +63,16 @@ position: absolute;
    
  }
  .el-header{
-    height:90px;
+    
     background:#2a334b;
     color: #ffffff;
-    line-height: 60px;
-   
+    line-height: 70px;
+    height: 70px;
 }
+   .el-submenu:hover{
+    background: #000016;
+  }
+  
 </style>
 <script>
 export default {

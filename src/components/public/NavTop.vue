@@ -26,33 +26,7 @@
   </div>
 </template>
 <style scoped>
-/* .bg{
-  height: 90px;
-}
-.logo{
-    width: 35px;
-    height: 35px;
-    display: inline;
-    vertical-align: middle;
-}
-.tit{
-    line-height: 90px;
-    height: 90px;
-}
 
-.logoa{
-    border-radius: 50%;
-}
-.el-header{
-    height:90px;
-    background:#2a334b;
-    color: #ffffff;
-   
-}
-.grid-content .bg-purple{
-   float: left;
-  
-} */
 .logo{
     width: 35px;
     height: 35px;

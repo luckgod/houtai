@@ -3,38 +3,39 @@
        
 
 
-<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" active-text-color="#409EFF">
   <el-submenu index="1">
-    <template slot="title">
-      <p style="color:#ffffff">数据管理</p>
+    <template slot="title" class="shenhe">
+      <p style="color:#ffffff" >数据管理</p>
       <span slot="title">导航一</span>
     </template>
     <el-menu-item-group>
      
-      <el-menu-item index="1-1">审核管理</el-menu-item>
-      <el-menu-item index="1-2">选项2</el-menu-item>
+      <el-menu-item index="1-1" >所有收益数据一览</el-menu-item>
+      <el-menu-item index="1-2" @click="jump12">经销商店铺填写</el-menu-item>
+      <el-menu-item index="1-3">所有店铺和店铺商品一览</el-menu-item>
     </el-menu-item-group>
-    <el-menu-item-group title="分组2">
+    <!-- <el-menu-item-group title="分组2">
       <el-menu-item index="1-3">选项3</el-menu-item>
-    </el-menu-item-group>
+    </el-menu-item-group> -->
    
   </el-submenu>
   
 </el-menu>
 <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
   <el-submenu index="1">
-    <template slot="title">
-      <p style="color:#ffffff">审核管理</p>
+    <template slot="title" class="shenhe">
+      <p style="color:#ffffff" >审核管理</p>
       <span slot="title">导航一</span>
     </template>
     <el-menu-item-group>
      
-      <el-menu-item index="1-1">审核管理</el-menu-item>
-      <el-menu-item index="1-2">选项2</el-menu-item>
+      <el-menu-item index="1-1" @click="jump11">经销商/店铺审核</el-menu-item>
+      <el-menu-item index="1-2">评测留言管理</el-menu-item>
     </el-menu-item-group>
-    <el-menu-item-group title="分组2">
+    <!-- <el-menu-item-group title="分组2">
       <el-menu-item index="1-3">选项3</el-menu-item>
-    </el-menu-item-group>
+    </el-menu-item-group> -->
     
   </el-submenu>
   
@@ -47,21 +48,26 @@
     width: 200px;
     min-height: 400px;
   }
-  /* .el-submenu__title{
-    width: 220px;
-  }
-  .el-menu-item {
-    width: 220px;
-  } */
+
   .el-submenu{
-     width: 220px;
+     width: 200px;
      background: #2a334b;
      color: #ffffff;
   }
+  .el-submenu:hover{
+   
+  }
+  .shenhe:hover{
+ background: #000016!important;
+  }
+
+</style>
+<style>
   .el-submenu__title:hover{
     background: #000016!important;
   }
 </style>
+
 <script>
 export default {
     name:'NavLeft',
@@ -76,6 +82,12 @@ export default {
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      jump12(){
+        this.$router.push('companydata')
+      },
+      jump11(){
+         this.$router.push('audit')
       }
     }
 }

@@ -85,71 +85,71 @@ import md5 from 'js-md5'
 //     return decrypted;
 // }
 
-// function cryptData(data,act) {
-//     data = data || {};
-//     let timestamp = +new Date();
-//     let headSerialNo = generateOrderNum();
-//     let headChannel = 1;
-//     let headAuthToken = generateMixed(32);
-//     // if (sessionStorage.getItem('permission')) {
-//     //     data.headUserId = JSON.parse(sessionStorage.getItem('permission')).adminCode;
-//     //     data.headAuthToken = JSON.parse(sessionStorage.getItem('permission')).authToken;
-//     //     data.clientId = JSON.parse(sessionStorage.getItem('permission')).adminCode;
+function cryptData(data,act) {
+    data = data || {};
+    let timestamp = +new Date();
+    let headSerialNo = generateOrderNum();
+    let headChannel = 1;
+    let headAuthToken = generateMixed(32);
+    // if (sessionStorage.getItem('permission')) {
+    //     data.headUserId = JSON.parse(sessionStorage.getItem('permission')).adminCode;
+    //     data.headAuthToken = JSON.parse(sessionStorage.getItem('permission')).authToken;
+    //     data.clientId = JSON.parse(sessionStorage.getItem('permission')).adminCode;
 
-//     // }else{
-//     //      data.headUserId = 1;
-//     //       data.headAuthToken=headAuthToken
-//     //       location.hash = '/login';
-//     //       data.clientId='BT00000000BT'
-//     // }
+    // }else{
+    //      data.headUserId = 1;
+    //       data.headAuthToken=headAuthToken
+    //       location.hash = '/login';
+    //       data.clientId='BT00000000BT'
+    // }
     
-//     let AesKey = generateMixed(16);
-//     data.headTrTime= new Date().getTime();
-//     data.timestamp = timestamp;
-//     data.headSerialNo = headSerialNo;
-//     data.headChannel = headChannel;
-//     data.body='';  
-//     data.headAccu='0';
-//     data.headDime='0';
-//     data.headArea='0';
-//     data.headTrCode='0';
+    let AesKey = generateMixed(16);
+    data.headTrTime= new Date().getTime();
+    data.timestamp = timestamp;
+    data.headSerialNo = headSerialNo;
+    data.headChannel = headChannel;
+    data.body='';  
+    data.headAccu='0';
+    data.headDime='0';
+    data.headArea='0';
+    data.headTrCode='0';
 
-//     //data=removeProperty(data);
+    //data=removeProperty(data);
 
-//     data.key=getHeadKey(AesKey);  
-//     data.body=getJsonData(data,data.key,AesKey);
-//     var key=md5(data.key).toUpperCase()
-//     var body=md5(data.body).toUpperCase()
-//     var arr=[key,body,TOKEN]
-//     data.sign=sha1(arr);
+    data.key=getHeadKey(AesKey);  
+    data.body=getJsonData(data,data.key,AesKey);
+    var key=md5(data.key).toUpperCase()
+    var body=md5(data.body).toUpperCase()
+    var arr=[key,body,TOKEN]
+    data.sign=sha1(arr);
     
-//     var aesData={
-//        key:data.key,
-//        body: data.body,
-//        sign:data.sign,
-//        msgType:'ASK',
-//        clientType:'web',
-//        trCode:act,
-//        clientId:data.clientId
-//     }
-//     //return data;
+    var aesData={
+       key:data.key,
+       body: data.body,
+       sign:data.sign,
+       msgType:'ASK',
+       clientType:'web',
+       trCode:act,
+       clientId:data.clientId
+    }
+    //return data;
    
-//     return aesData;
-// }
+    return aesData;
+}
 
-// function cryptFormData(file) {
-//     let data = new FormData();
-//     let timestamp = +new Date();
-//     let headSerialNo = generateOrderNum();
-//     let headChannel = 1;
-//     let headAuthToken = generateMixed(40);
-//     data.append('image', file);
-//     data.append('headTrTime', timestamp);
-//     data.append('headSerialNo', headSerialNo);
-//     data.append('headChannel', headChannel);
-//     data.append('headAuthToken', headAuthToken);
-//     return data;
-// }
+function cryptFormData(file) {
+    let data = new FormData();
+    let timestamp = +new Date();
+    let headSerialNo = generateOrderNum();
+    let headChannel = 1;
+    let headAuthToken = generateMixed(40);
+    data.append('image', file);
+    data.append('headTrTime', timestamp);
+    data.append('headSerialNo', headSerialNo);
+    data.append('headChannel', headChannel);
+    data.append('headAuthToken', headAuthToken);
+    return data;
+}
 
 
 // let showMessage = function (res) {
@@ -241,18 +241,52 @@ import md5 from 'js-md5'
    
 // };
 let ajax = function (posttype, url, params, cb) {
-	var method_type = posttype.toLowerCase();
-			
+    var method_type = posttype.toLowerCase();
+       function getCookie(name) {
+         var arr = document.cookie.split('; ');
+            for(var i = 0; i < arr.length; i++) {
+            var arrName = arr[i].split('=');
+            if(arrName[0] == name) {
+            return arrName[1];
+             }
+             }
+             return '';
+             }
+	axios.interceptors.request.use(
+        config => {
+          // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
+        
+       
+             if(getCookie('token')){
+                config.headers = {
+                    'Content-Type':'application/x-www-form-urlencoded',
+                    'token':getCookie('token')
+                  }
+              }
+          
+        //   console.log(config)
+          return config;
+        },
+        error => {
+          return Promise.reject(err);
+        }
+      );		
 	if(method_type == "get") {					
 	        //get和post传参不同，get最前变需要增加"params:"而post不需要
-	        if(!params.params){
-		         params={params:params}
-	        }						
-	        return axios.get(HOST+url, params).then(function(res) {
-               
+	        // if(!params.params){
+		    //      params={params:params}
+	        // }						
+	        // return axios.get(HOST+url, params).then(function(res) {
+            return axios({
+                method: 'get',
+                url: HOST+url,
+                data:{'params':params},
+                headers: {'token': getCookie('token')}},
+            ).then(function(res) {
+            //    console.log(res)
 		        if(res.data.code == 0) {
 		                //正确返回时的处理
-			        cb(res.data.data);
+			        cb(res.data);
 		        } else if(res.data.code == -1) {
 			        //登录获取的sessionkey失效等逻辑的处理
 		        } else {
@@ -264,12 +298,18 @@ let ajax = function (posttype, url, params, cb) {
                             console.log(error)
                          })   
 	} else if(method_type == "post") {					
-		//get和post传参不同，get最前变需要增加"params:"而post不需要
-		return axios.post(HOST+url, params).then(function(res) {
-            						
+        //get和post传参不同，get最前变需要增加"params:"而post不需要
+        
+		// return axios.post(HOST+url,params).then(function(res) {
+            return axios({
+                method: 'post',
+                url: HOST+url,
+                data:params,
+                headers: {'token': getCookie('token')},
+            }).then(function(res) { 						
 			if(res.data.code == 0) {
 				//正确返回时的处理
-				cb(res.data.data);
+				cb(res.data);
 			} else if(res.data.code == -1) {
 				//登录获取的sessionkey失效等逻辑的处理
 			} else {

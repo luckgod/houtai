@@ -65,16 +65,8 @@
     <el-card class="box-card cardtwo">
          <div class="tit">店铺信息</div>
           <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
-            <el-form-item label="名称">
-            <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
+            <el-form-item label="名称" >
+           <uploads></uploads>
           </el-form-item>
            <el-form-item label="店铺名称">
             <el-input v-model="formLabelAlign.dname"></el-input>
@@ -106,16 +98,23 @@
            
         </el-form>
         <div class="btn">
-           <el-button type="success">提交申请</el-button>
+           <el-button type="success" @click="subd">提交申请</el-button>
         </div>
     </el-card>
   </div>
 </template>
 
 <script>
+
 import axios from 'axios'
+import uploads from "../../components/public/uploader";
+
 export default {
   name: "companydata",
+   components: {
+   
+   uploads,
+  },
   data() {
     return {
        formLabelAlign: {
@@ -132,9 +131,11 @@ export default {
           dregion:'',
           dizhi:'',
           dtime:'',
+          detail:'',
           roleId:'A',
           
         },
+        data:{noticeImage:[]},
           value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
           value5: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
           imageUrl: '',
@@ -177,33 +178,19 @@ export default {
           }]
         }],
         defaultProps: {
-          children: 'children',
-          label: 'label'
-        },
+              children: 'children',
+              label: 'label'
+                  },
      
     };
      
   },
   methods: {
-       handleAvatarSuccess(res, file) {
-        // this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
+      
       //获取店铺 分类  /shop/shopCategoryList
       catchdata(){
        
-         this.dataApi.ajax('get','/shop/shopCategoryList',{}, cb => {    
+         this.dataApi.ajax('get','/admin/verify/category', cb => {    
                         console.log(cb)
                         this.cayegotyIdlist=cb
                  });
@@ -213,36 +200,76 @@ export default {
           },
     //获取地址 分类  /admin/verify/getLocation
       catchdatd(){
-       
-         
-          this.dataApi.ajax('get','/admin/verify/getLocation',{},cb => {    
+   this.dataApi.ajax('get','/admin/verify/getLocation',{},cb => {    
                         console.log(cb)
-                 });
-          
-                
-                      
+                 });             
         },
-      
+      //经销商选择上传
         subj(){
       
-      var params = new URLSearchParams()
-      params.append('name', this.formLabelAlign.name)
-      params.append('idCard', this.formLabelAlign.idcard)
-      params.append('mobile', this.formLabelAlign.mobile)
-      params.append('sex', this.formLabelAlign.sex)
-       params.append('locid', this.formLabelAlign.locid)
-      params.append('cayegotyId', this.formLabelAlign.cayegotyId)
-      params.append('roleId', this.formLabelAlign.roleId)
+     
       
       var data={
           name: this.formLabelAlign.name,
           idCard: this.formLabelAlign.idcard,
           mobile: this.formLabelAlign.mobile,
           sex: this.formLabelAlign.sex,
-          locid: this.formLabelAlign.locid,
+          locid:'110101',
           cayegotyId: this.formLabelAlign.cayegotyId,
           roleId: this.formLabelAlign.roleId,
 
+      }
+ 
+      this.dataApi.ajax('post','/admin/verify/applyForAagent',data, res => {    
+                        console.log(res)
+                 });
+        },
+         //店铺选择上传
+           subd(){  
+          
+            console.log(this.value4[0].getHours(),this.value4[0].getMinutes())  
+           if(this.value4[0].getHours()<10){
+            var  sa='0'+this.value4[0].getHours()
+           
+           }else{
+             var  sa=this.value4[0].getHours()
+           
+           }
+           if(this.value4[0].getMinutes()<10){
+                var st='0'+this.value4[0].getMinutes()
+           }else{
+                var st=+this.value4[0].getMinutes()
+           }
+
+           if(this.value4[1].getHours()<10){
+            var  sc='0'+this.value4[1].getHours()
+           
+           }else{
+             var  sc=this.value4[1].getHours()
+           
+           }
+           if(this.value4[1].getMinutes()<10){
+                var sg='0'+this.value4[1].getMinutes()
+           }else{
+                var sg=+this.value4[1].getMinutes()
+           }
+           console.log(sc+":"+sg)
+      var data={
+          name: this.formLabelAlign.name,
+          idCard: this.formLabelAlign.idcard,
+          mobile: this.formLabelAlign.mobile,
+          sex: this.formLabelAlign.sex,
+          locid: '110101',
+          cayegotyId: this.formLabelAlign.cayegotyId,
+          roleId: this.formLabelAlign.roleId,
+          shopName:this.formLabelAlign.dname,
+          shopLogo:'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2147322031,325904174&fm=27&gp=0.jpg',
+          phone:this.formLabelAlign.dtime,
+          category:this.formLabelAlign.categoryName,         
+          detail:'好好',
+          addr:this.formLabelAlign.dizhi,
+          opentime:sa+':'+st,
+          closetime:sc+":"+sg,
       }
  
       this.dataApi.ajax('post','/admin/verify/applyForAagent',data, res => {    
@@ -270,8 +297,22 @@ export default {
       },
       resetChecked() {
         this.$refs.tree.setCheckedKeys([]);
-      }
-     
+      },
+      //图片上传
+      uploading(f) {
+        console.log(f.file.name)
+              //  this.dataApi.upload('upload', f.file, res => {
+              //       if (res.respState == 'S') {
+              //           f.images.splice(f.index,1,res.localPath)
+              //       }
+              //   });
+              this.uploadF.uploadFile(f.file.name,function(res){
+                console.log('res')
+              },function(res){
+                console.log('res')
+              }
+              )
+        },
   },
   mounted(){
     this.catchdata()
