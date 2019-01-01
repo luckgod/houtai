@@ -18,42 +18,43 @@
             <el-option label="男" value="1"></el-option>
             <el-option label="女" value="2"></el-option>
             </el-select>
-        </el-form-item>
-       
+        </el-form-item>       
          <el-form-item label="代理级别">
             <el-select v-model="formLabelAlign.jbc" placeholder="请选择你的代理级别">
-            <el-option label="A" value="A"></el-option>
+            <el-option label="A" value="A"></el-option>           
+            </el-select>
+        </el-form-item>
+            <el-form-item label="所属行业">
+                <el-select v-model="formLabelAlign.cayegotyId" placeholder="请选择你当前行业的类型">
+                  <div v-for="(item,index) in cayegotyIdlist" :key="index">
+                      <el-option :label="item.categoryName" :value="item.id+1"></el-option>
+                  </div>                       
+                </el-select>
+            </el-form-item>        
+            <el-form-item label="代理区域市" >
+            <el-select v-model="formLabelAlign.locid" placeholder="请选择代理的市" >                       
+            </el-select>
            
-            </el-select>
-        </el-form-item>
-         <el-form-item label="所属行业">
-            <el-select v-model="formLabelAlign.cayegotyId" placeholder="请选择你当前行业的类型">
-              <div v-for="(item,index) in cayegotyIdlist" :key="index">
-                   <el-option :label="item.categoryName" :value="item.id+1"></el-option>
-              </div>
            
-            
-            </el-select>
-        </el-form-item>
-        
-         <el-form-item label="代理区域">
-            <el-select v-model="formLabelAlign.locid" placeholder="请选择您想要代理的地方">
-            <el-option style="overflow:hidden;"> 
-                  <el-tree
-                    :data="data2"
-                    show-checkbox
-                    default-expand-all
-                    node-key="id"
-                    ref="tree"
-                    highlight-current
-                    :props="defaultProps">
-                  </el-tree>
-            </el-option>
-          
-            </el-select>
-        </el-form-item>
-          <el-form-item >
             </el-form-item>
+              <el-form-item label="代理区域县">
+                <el-select v-model="formLabelAlign.locidb" placeholder="请选择代理的县"  >                       
+                </el-select>
+               </el-form-item>
+              <el-form-item label="代理区域区">
+              <el-select v-model="formLabelAlign.locida" placeholder="请选择代理的区"  >                       
+              </el-select>
+              
+            </el-form-item>
+            <el-form-item >
+                
+               </el-form-item>
+               <el-form-item >
+                
+               </el-form-item>
+               <el-form-item >
+                
+               </el-form-item>
         </el-form>
         <div class="btn">
            <el-button type="success" @click="subj">提交申请</el-button>
@@ -66,7 +67,16 @@
          <div class="tit">店铺信息</div>
           <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
             <el-form-item label="名称" >
-           <uploads></uploads>
+           <!-- <uploads></uploads> -->
+           <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
           </el-form-item>
            <el-form-item label="店铺名称">
             <el-input v-model="formLabelAlign.dname"></el-input>
@@ -113,7 +123,7 @@ export default {
   name: "companydata",
    components: {
    
-   uploads,
+        uploads,
   },
   data() {
     return {
@@ -133,6 +143,7 @@ export default {
           dtime:'',
           detail:'',
           roleId:'A',
+          categoryName:'',
           
         },
         data:{noticeImage:[]},
@@ -142,45 +153,7 @@ export default {
          
        cayegotyIdlist:[],
        //节点数据
-            data2: [{
-          id: 1,
-          label: '一级 1',
-          children: [{
-            id: 4,
-            label: '二级 1-1',
-            children: [{
-              id: 9,
-              label: '三级 1-1-1'
-            }, {
-              id: 10,
-              label: '三级 1-1-2'
-            }]
-          }]
-        }, {
-          id: 2,
-          label: '一级 2',
-          children: [{
-            id: 5,
-            label: '二级 2-1'
-          }, {
-            id: 6,
-            label: '二级 2-2'
-          }]
-        }, {
-          id: 3,
-          label: '一级 3',
-          children: [{
-            id: 7,
-            label: '二级 3-1'
-          }, {
-            id: 8,
-            label: '二级 3-2'
-          }]
-        }],
-        defaultProps: {
-              children: 'children',
-              label: 'label'
-                  },
+
      
     };
      
@@ -190,10 +163,11 @@ export default {
       //获取店铺 分类  /shop/shopCategoryList
       catchdata(){
        
-         this.dataApi.ajax('get','/admin/verify/category', cb => {    
-                        console.log(cb)
-                        this.cayegotyIdlist=cb
-                 });
+        //  this.dataApi.ajax('get','/admin/verify/category', cb => {    
+        //                 console.log(cb)
+        //                 console.log('获取店铺分类')
+        //                 this.cayegotyIdlist=cb
+        //          });
           
            
                       
@@ -201,7 +175,7 @@ export default {
     //获取地址 分类  /admin/verify/getLocation
       catchdatd(){
    this.dataApi.ajax('get','/admin/verify/getLocation',{},cb => {    
-                        console.log(cb)
+                       console.log(cb)
                  });             
         },
       //经销商选择上传
@@ -227,7 +201,7 @@ export default {
          //店铺选择上传
            subd(){  
           
-            console.log(this.value4[0].getHours(),this.value4[0].getMinutes())  
+            // console.log(this.value4[0].getHours(),this.value4[0].getMinutes())  
            if(this.value4[0].getHours()<10){
             var  sa='0'+this.value4[0].getHours()
            
@@ -253,26 +227,27 @@ export default {
            }else{
                 var sg=+this.value4[1].getMinutes()
            }
-           console.log(sc+":"+sg)
-      var data={
-          name: this.formLabelAlign.name,
-          idCard: this.formLabelAlign.idcard,
-          mobile: this.formLabelAlign.mobile,
-          sex: this.formLabelAlign.sex,
-          locid: '110101',
-          cayegotyId: this.formLabelAlign.cayegotyId,
-          roleId: this.formLabelAlign.roleId,
-          shopName:this.formLabelAlign.dname,
-          shopLogo:'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2147322031,325904174&fm=27&gp=0.jpg',
-          phone:this.formLabelAlign.dtime,
-          category:this.formLabelAlign.categoryName,         
-          detail:'好好',
-          addr:this.formLabelAlign.dizhi,
-          opentime:sa+':'+st,
-          closetime:sc+":"+sg,
-      }
- 
-      this.dataApi.ajax('post','/admin/verify/applyForAagent',data, res => {    
+          //  console.log(sc+":"+sg)
+    
+      var params = new URLSearchParams()
+      params.append('name',this.formLabelAlign.name)
+     
+      params.append('idCard', this.formLabelAlign.idcard)
+      params.append('mobile', this.formLabelAlign.mobile)
+      params.append('sex', this.formLabelAlign.sex)
+       params.append('locid', '110101')
+       params.append('cayegotyId', this.formLabelAlign.cayegotyId)
+      params.append('roleId', this.formLabelAlign.roleId)
+      params.append('shopName', this.formLabelAlign.dname)
+      params.append('shopLogo', 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2147322031,325904174&fm=27&gp=0.jpg')
+      params.append('phone', this.formLabelAlign.dtime)
+      params.append('category', this.formLabelAlign.dregion)
+      params.append('detail', '测试数据')
+      params.append('addr', this.formLabelAlign.dizhi)
+      params.append('opentime', sa+':'+st)
+      params.append('closetime', sc+":"+sg)
+      this.dataApi.ajax('post','/admin/verify/applyForAagent',params, res => {    
+                        console.log('提交执行')
                         console.log(res)
                  });
         },
@@ -313,6 +288,25 @@ export default {
               }
               )
         },
+         handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+        console.log(res)
+        console.log(file.name)
+      },
+      beforeAvatarUpload(file) {
+        // const isJPG = file.type === 'image/jpeg';
+        // const isLt2M = file.size / 1024 / 1024 < 2;
+         const isJPG =true;
+        const isLt2M = true;
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!');
+        // }
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过 2MB!');
+        // }
+        return isJPG && isLt2M;
+      },
+        
   },
   mounted(){
     this.catchdata()
@@ -335,7 +329,7 @@ export default {
 .titcon {
  
 }
-.avatar-uploader .el-upload {
+ .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;

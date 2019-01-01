@@ -55,9 +55,9 @@
         default () {
           return {
             key: 'LTAIaR0ueCJadtLy',
-            region: 'https://kd-sdk.oss-cn-hangzhou.aliyuncs.com',
+            region: 'hangzhou',
             secret: '80S2QLW8SUREsewA6UxYsVYHRs3CiU',
-            bucket: '/kd-sdk'  
+            bucket: 'qrCode/'  
           }
         }
       }
@@ -116,8 +116,8 @@
           endpoint: 'https://oss-cn-' + this.localKeySet.region + '.aliyuncs.com',
           accessKeyId: this.localKeySet.key,
           accessKeySecret: this.localKeySet.secret,
-          // https时需要设置为true
-          // secure: true,
+          //https时需要设置为true
+          secure: true,
           bucket: this.localKeySet.bucket
         })
       },

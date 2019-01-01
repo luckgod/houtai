@@ -12,7 +12,12 @@
         </el-form-item>
       </el-form>
       <el-form class="demo-ruleForm" ref="form" :rules="rules" :model="form">
-        <el-form-item class="aa">
+        <el-form-item class="aa" prop="mima"
+        :rules="[
+      { required: true, message: '密码不能为空'},
+     
+        ]"
+        >
           <el-input class="digweic" placeholder="请输入8位数密码" v-model="form.word"></el-input>
           <!-- <i class="digweib el-icon-more"></i> -->
         </el-form-item>
@@ -56,10 +61,11 @@ export default {
         if (!phoneReg.test(value)) {
           callback(new Error("格式有误"));
         } else {
-          callback();
+          callback()
         }
       }, 1000);
     };
+    
     return {
       form: {
         phone: "",
@@ -68,7 +74,8 @@ export default {
       // 校验规则
       rules: {
         // 校验手机号码，主要通过validator来指定验证器名称
-        phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
+        phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
+       
       }
     };
   },
@@ -142,9 +149,6 @@ export default {
   position: relative;
   
 }
-.digweic{
-margin-bottom: 20px;
-}
 .digweib {
   display: inline-block;
   width: 60px;
@@ -194,8 +198,8 @@ margin-bottom: 20px;
   border:1px solid #c1c1c1;
   
 }
-.el-form-item{
+/* .el-form-item{
 margin-bottom: 10px;
-}
+} */
 </style>
 
