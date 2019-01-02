@@ -32,7 +32,13 @@
                 </el-select>
             </el-form-item>        
             <el-form-item label="代理区域市" >
-            <el-select v-model="formLabelAlign.locid" placeholder="请选择代理的市" >                       
+            <el-select v-model="formLabelAlign.locid" placeholder="请选择代理的市" >  
+             <el-cascader
+                  size="large"
+                  :options="options"
+                  v-model="selectedOptions"
+                  @change="handleChange">
+                </el-cascader>                 
             </el-select>
            
            
@@ -67,7 +73,7 @@
          <div class="tit">店铺信息</div>
           <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
             <el-form-item label="名称" >
-           <!-- <uploads></uploads> -->
+          
            <el-upload
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -117,21 +123,23 @@
 <script>
 
 import axios from 'axios'
-import uploads from "../../components/public/uploader";
+import aliUpload from "../../components/public/uploader";
+import { provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data'
 
 export default {
   name: "companydata",
-   components: {
-   
-        uploads,
-  },
+   components:{
+            aliUpload
+        },
   data() {
     return {
        formLabelAlign: {
           name: '',
           region: '',
           mobile: '',
-          locid: '',         
+          locid: '',
+          locida:'',
+          locidb:'',         
           dregion:'',
           sex:'',
           jbc:'',
@@ -150,24 +158,45 @@ export default {
           value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
           value5: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
           imageUrl: '',
-         
+          options: regionDataPlus,
+        selectedOptions: [],
        cayegotyIdlist:[],
        //节点数据
+      shenglist:[],
+      shilist:[],
+      qulist:[],
+      optionsMessage:[],
+      options:[],
 
-     
+     uploadUrl:[],
+    uploadId:'file',
+    uploadCode:0
     };
      
   },
+   watch:{
+            uploadCode(val){
+                console.info(val)
+            }
+        },
+  // computed: {
+  //   shia: function () {
+  //       console.log(this.locid)
+  //   }
+  // },
   methods: {
-      
+       handleChange (value) {
+        console.log(value)
+      },
       //获取店铺 分类  /shop/shopCategoryList
       catchdata(){
        
-        //  this.dataApi.ajax('get','/admin/verify/category', cb => {    
-        //                 console.log(cb)
-        //                 console.log('获取店铺分类')
-        //                 this.cayegotyIdlist=cb
-        //          });
+         this.dataApi.ajax('get','/admin/verify/category', {},cb => {    
+                        // console.log(cb.data)
+                        // console.log('获取店铺分类')
+                        
+                        this.cayegotyIdlist=cb.data
+                 });
           
            
                       
@@ -175,7 +204,9 @@ export default {
     //获取地址 分类  /admin/verify/getLocation
       catchdatd(){
    this.dataApi.ajax('get','/admin/verify/getLocation',{},cb => {    
-                       console.log(cb)
+                        console.log(Object.entries(cb.data))
+                         this.shenglist=Object.entries(cb.data)
+                           
                  });             
         },
       //经销商选择上传
@@ -194,9 +225,9 @@ export default {
 
       }
  
-      this.dataApi.ajax('post','/admin/verify/applyForAagent',data, res => {    
-                        console.log(res)
-                 });
+      // this.dataApi.ajax('post','/admin/verify/applyForAagent',data, res => {    
+      //                   console.log(res)
+      //            });
         },
          //店铺选择上传
            subd(){  
@@ -230,13 +261,12 @@ export default {
           //  console.log(sc+":"+sg)
     
       var params = new URLSearchParams()
-      params.append('name',this.formLabelAlign.name)
-     
+      params.append('name',this.formLabelAlign.name)     
       params.append('idCard', this.formLabelAlign.idcard)
       params.append('mobile', this.formLabelAlign.mobile)
       params.append('sex', this.formLabelAlign.sex)
-       params.append('locid', '110101')
-       params.append('cayegotyId', this.formLabelAlign.cayegotyId)
+      params.append('locid', '110101')
+      params.append('cayegotyId', this.formLabelAlign.cayegotyId)
       params.append('roleId', this.formLabelAlign.roleId)
       params.append('shopName', this.formLabelAlign.dname)
       params.append('shopLogo', 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2147322031,325904174&fm=27&gp=0.jpg')
@@ -246,7 +276,9 @@ export default {
       params.append('addr', this.formLabelAlign.dizhi)
       params.append('opentime', sa+':'+st)
       params.append('closetime', sc+":"+sg)
-      this.dataApi.ajax('post','/admin/verify/applyForAagent',params, res => {    
+
+     console.log(this.formLabelAlign.sex,this.formLabelAlign.cayegotyId)
+      this.dataApi.ajax('post','/admin/verify/applyForAagent',params,res => {    
                         console.log('提交执行')
                         console.log(res)
                  });
@@ -281,17 +313,18 @@ export default {
               //           f.images.splice(f.index,1,res.localPath)
               //       }
               //   });
-              this.uploadF.uploadFile(f.file.name,function(res){
-                console.log('res')
-              },function(res){
-                console.log('res')
-              }
-              )
+              // this.dataApi.upload(f.file.name,function(res){
+              //   console.log('res')
+              // },function(res){
+              //   console.log('res')
+              // }
+              // )
         },
          handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
         console.log(res)
         console.log(file.name)
+        this.dataApi.upload(file)
       },
       beforeAvatarUpload(file) {
         // const isJPG = file.type === 'image/jpeg';

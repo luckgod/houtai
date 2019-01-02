@@ -11,8 +11,8 @@
           <!-- <i class="digweib el-icon-mobile-phone"></i> -->
         </el-form-item>
       </el-form>
-      <el-form class="demo-ruleForm" ref="form" :rules="rules" :model="form">
-        <el-form-item class="aa" prop="mima"
+      <el-form class="demo-ruleForm" ref="form" :model="form">
+        <el-form-item class="aa" 
         :rules="[
       { required: true, message: '密码不能为空'},
      

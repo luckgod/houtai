@@ -252,25 +252,26 @@ let ajax = function (posttype, url, params, cb) {
              }
              return '';
              }
-	axios.interceptors.request.use(
-        config => {
-          // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
+	// axios.interceptors.request.use(
+    //     config => {
+    //       // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
         
        
-             if(getCookie('token')){
-                config.headers = {
-                    'Content-Type':'application/x-www-form-urlencoded',
-                    'token':getCookie('token')
-                  }
-              }
+    //          if(getCookie('token')){
+    //             config.headers = {
+    //                 // 'Content-Type':'application/json;charset=UTF-8',
+    //                 'token':getCookie('token'),
+                    
+    //               }
+    //           }
           
-        //   console.log(config)
-          return config;
-        },
-        error => {
-          return Promise.reject(err);
-        }
-      );		
+    //     //   console.log(config)
+    //       return config;
+    //     },
+    //     error => {
+    //       return Promise.reject(err);
+    //     }
+    //   );		
 	if(method_type == "get") {					
 	        //get和post传参不同，get最前变需要增加"params:"而post不需要
 	        // if(!params.params){
@@ -301,12 +302,11 @@ let ajax = function (posttype, url, params, cb) {
         //get和post传参不同，get最前变需要增加"params:"而post不需要
         
 		// return axios.post(HOST+url,params).then(function(res) {
-            return axios({
-                method: 'post',
-                url: HOST+url,
-                data:params,
+            return axios.post(HOST+url,params,{
+                
                 headers: {'token': getCookie('token')},
-            }).then(function(res) { 						
+            }
+            ).then(function(res) { 						
 			if(res.data.code == 0) {
 				//正确返回时的处理
 				cb(res.data);
@@ -433,45 +433,45 @@ let socket =function (act,data,callback){
     }
    
 }
-let upload = function (act, data, callback, progressFunc) {
+// let upload = function (act, data, callback, progressFunc) {
 
-    return axios({
-        method: 'post',
-        url: 'enve/' + act,
-        baseURL: URL,
-        headers: {},
-        withCredentials: true,
-        timeout: 30000,
-        data: cryptFormData(data),
-        progress: function (progressEvent) {
-            // Do whatever you want with the native progress event
-            progressFunc(progressEvent)
-        }
-    }).then(response => {
-        let res = response.data;
-        //console.log(res)
-        callback(res)
-        showMessage(res)
-    }).catch(response => {
-        if (response instanceof Error) {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error: ', response.message);
-            vm.$message({
-                message: 'Error: ' + response.message,
-                type: 'error'
-            });
-        } else {
-            // The request was made, but the server responded with a status code
-            // that falls out of the range of 2xx
-            console.log(response);
-            vm.$message({
-                message: '服务器异常' + response.status + ':' + response.data,
-                type: 'error'
-            });
-        }
+//     return axios({
+//         method: 'post',
+//         url: 'enve/' + act,
+//         baseURL: URL,
+//         headers: {},
+//         withCredentials: true,
+//         timeout: 30000,
+//         data: cryptFormData(data),
+//         progress: function (progressEvent) {
+//             // Do whatever you want with the native progress event
+//             progressFunc(progressEvent)
+//         }
+//     }).then(response => {
+//         let res = response.data;
+//         //console.log(res)
+//         callback(res)
+//         showMessage(res)
+//     }).catch(response => {
+//         if (response instanceof Error) {
+//             // Something happened in setting up the request that triggered an Error
+//             console.log('Error: ', response.message);
+//             vm.$message({
+//                 message: 'Error: ' + response.message,
+//                 type: 'error'
+//             });
+//         } else {
+//             // The request was made, but the server responded with a status code
+//             // that falls out of the range of 2xx
+//             console.log(response);
+//             vm.$message({
+//                 message: '服务器异常' + response.status + ':' + response.data,
+//                 type: 'error'
+//             });
+//         }
 
-    });
-};
+//     });
+// };
 
 /**
 **删除对象空属性
@@ -485,6 +485,25 @@ function removeProperty(object){
         return object;
 }
 
+
+import { OSS } from '../src/up.js'
+  
+let upload= function on_click_upload_file(file){
+    var client = new OSS.Wrapper({
+    region : 'oss-cn-hangzhou',
+    accessKeyId : 'LTAIaR0ueCJadtLy',
+    accessKeySecret : '80S2QLW8SUREsewA6UxYsVYHRs3CiU',
+    bucket : 'kd-sdk'
+    });
+      var storeAs = 'upload-file'+"/";  //命名空间
+      console.log(' => ' + storeAs);
+      client.multipartUpload(storeAs, file).then(function (result) {
+           console.log(result); 
+           console.log(result.url);
+      }).catch(function (err) {
+           console.log(err);
+     });   
+   }
 export default {
     ajax: ajax,
     upload:upload,

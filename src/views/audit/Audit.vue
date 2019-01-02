@@ -92,7 +92,7 @@
         </div>
         <!-- A级经销商店铺资料 -->
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible" append-to-body  width='400px'>
-  <el-form :model="form">
+  <el-form >
     <el-form-item label="活动标志" :label-width="formLabelWidth">
        <div class="tupain">
      <img src="https://pic2.zhimg.com/80/v2-85ef8fc1319802865d36d40144a8e97c_xs.jpg" alt="头像">
@@ -121,7 +121,7 @@
 </el-dialog>
   <!-- 店铺商店铺资料 -->
  <el-dialog title="收货地址" :visible.sync="dialogFormVisiblea" append-to-body  width='400px'>
-  <el-form :model="form">
+  <el-form >
      <el-form-item label="姓名" :label-width="formLabelWidth">
       <div class="wenzi">赵无极</div>
     </el-form-item>
@@ -219,10 +219,8 @@ export default {
         console.log(`当前页: ${val}`);
       },
       catchdata(){
-        //   var params = new URLSearchParams()
-        // params.append('name', this.formInline.user)
-        // params.append('page', 1)
-        this.dataApi.ajax('get','/admin/verify/applyAgentList',{name:this.formInline.user,page:1}, res => {    
+        
+        this.dataApi.ajax('get','/admin/verify/applyAgentList',{}, res => {    
                         console.log(res.data)
                        console.log('111')
                  });
