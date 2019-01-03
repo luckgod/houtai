@@ -73,6 +73,14 @@ export default new Router({
                       // meta: { keepAlive: true },
               
               },
+              {
+                path: '/table',
+                      component: resolve => require(['./views/table/TableOne.vue'], resolve),
+                      name:'tableone',
+                      hidden: true,
+                      // meta: { keepAlive: true },
+              
+              },
             ]
     
     },
