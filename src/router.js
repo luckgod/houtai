@@ -8,11 +8,7 @@ Vue.component('navleft', NavLeft)
 Vue.component('navtop', NavTop)
 export default new Router({
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
+    
     {
       path: '/about',
       name: 'about',
@@ -22,7 +18,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/login',
+      path: '/',
       name: 'login',
       component: resolve => require(['./views/login/Login.vue'], resolve),
       hidden: true,
@@ -65,6 +61,14 @@ export default new Router({
                 path: '/companydata',
                       component: resolve => require(['./views/company/CompanyData.vue'], resolve),
                       name:'companydata',
+                      hidden: true,
+                      // meta: { keepAlive: true },
+              
+              },
+              {
+                path: '/releasemanagement',
+                      component: resolve => require(['./views/releasemanagement/ReleaseManagement.vue'], resolve),
+                      name:'ReleaseManagement',
                       hidden: true,
                       // meta: { keepAlive: true },
               

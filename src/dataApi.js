@@ -278,11 +278,10 @@ let ajax = function (posttype, url, params, cb) {
 		    //      params={params:params}
 	        // }						
 	        // return axios.get(HOST+url, params).then(function(res) {
-            return axios({
-                method: 'get',
-                url: HOST+url,
-                data:{'params':params},
-                headers: {'token': getCookie('token')}},
+            return axios.get(HOST+url,{
+                headers: {'token': getCookie('token')},
+                params:params,
+            },
             ).then(function(res) {
             //    console.log(res)
 		        if(res.data.code == 0) {
@@ -486,27 +485,27 @@ function removeProperty(object){
 }
 
 
-import { OSS } from '../src/up.js'
+// import { OSS } from '../src/up.js'
   
-let upload= function on_click_upload_file(file){
-    var client = new OSS.Wrapper({
-    region : 'oss-cn-hangzhou',
-    accessKeyId : 'LTAIaR0ueCJadtLy',
-    accessKeySecret : '80S2QLW8SUREsewA6UxYsVYHRs3CiU',
-    bucket : 'kd-sdk'
-    });
-      var storeAs = 'upload-file'+"/";  //命名空间
-      console.log(' => ' + storeAs);
-      client.multipartUpload(storeAs, file).then(function (result) {
-           console.log(result); 
-           console.log(result.url);
-      }).catch(function (err) {
-           console.log(err);
-     });   
-   }
+// let upload= function on_click_upload_file(file){
+//     var client = new OSS.Wrapper({
+//     region : 'oss-cn-hangzhou',
+//     accessKeyId : 'LTAIaR0ueCJadtLy',
+//     accessKeySecret : '80S2QLW8SUREsewA6UxYsVYHRs3CiU',
+//     bucket : 'kd-sdk'
+//     });
+//       var storeAs = 'upload-file'+"/";  //命名空间
+//       console.log(' => ' + storeAs);
+//       client.multipartUpload(storeAs, file).then(function (result) {
+//            console.log(result); 
+//            console.log(result.url);
+//       }).catch(function (err) {
+//            console.log(err);
+//      });   
+//    }
 export default {
     ajax: ajax,
-    upload:upload,
+    
     socket:socket,
     emit:emit
 }

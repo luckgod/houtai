@@ -44,32 +44,33 @@
          <el-table-column
         prop="name"
         label="用户名"
-        width="180">
+        >
         </el-table-column>
         <el-table-column
-        prop="phone"
+        prop="mobile"
         label="手机号"
-        width="180">
+       >
         </el-table-column>
         <el-table-column
-        prop="unm"
+        prop="unioid"
         label="科蚪号"
-        width="180">
+       >
         </el-table-column>
         <el-table-column
-        prop="date"
+        prop="applyTime"
         label="注册时间"
-        width="180">
+       >
     </el-table-column>
-        <el-table-column label="审核经销商状态" width="180">
-          <template slot-scope="scope">
-          
-            <div @click="dialogFormVisible = true">
+        <el-table-column label="审核经销商状态">
+          <template slot-scope="scope"  prop="id">
+          <el-button type="text"  @click="jshenhe(scope.row)">待审核</el-button>
+            <!-- <div @click="jshenhe(scope.row)">
+            
               待审核
-            </div>
+            </div> -->
           </template>
         </el-table-column>
-       <el-table-column label="审核店铺状态" width="180">
+       <el-table-column label="审核店铺状态">
           <template slot-scope="scope">
             <div @click="dialogFormVisiblea = true">
               待审核
@@ -99,7 +100,7 @@
      </div>
     </el-form-item>
     <el-form-item label="店铺名称" :label-width="formLabelWidth">
-      <div class="wenzi">超级便利</div>
+      <div class="wenzi"></div>
     </el-form-item>
      <el-form-item label="所属品类" :label-width="formLabelWidth">
       <div class="wenzi">美食</div>
@@ -123,7 +124,7 @@
  <el-dialog title="收货地址" :visible.sync="dialogFormVisiblea" append-to-body  width='400px'>
   <el-form >
      <el-form-item label="姓名" :label-width="formLabelWidth">
-      <div class="wenzi">赵无极</div>
+      <div class="wenzi">{{data.name}}</div>
     </el-form-item>
     <el-form-item label="身份证号" :label-width="formLabelWidth">
       <div class="wenzi">410721199511011018</div>
@@ -169,42 +170,26 @@ export default {
         user:'',
         region: ""
       },
-      tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          phone:'123123',
-          unm:'456456',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-           phone:'123123',
-           unm:'456456',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-           phone:'123123',
-           unm:'456456',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-           phone:'123123',
-           unm:'456456',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
+      tableData: [],
         
         formLabelWidth: '80px',
         dialogFormVisible: false,
         dialogFormVisiblea:false,
-
+    data:{
+          name:'',
+          }
     };
+   
      
   },
   methods: {
     onSubmit() {
       console.log("submit!");
+    },
+    jshenhe(ta){
+      console.log(ta)
+        this.data.name=ta.
+        this.dialogFormVisiblea = true
     },
     handleEdit(index, row) {
         console.log(index, row);
@@ -219,10 +204,13 @@ export default {
         console.log(`当前页: ${val}`);
       },
       catchdata(){
-        
-        this.dataApi.ajax('get','/admin/verify/applyAgentList',{}, res => {    
-                        console.log(res.data)
-                       console.log('111')
+         var params = new URLSearchParams()
+      
+      params.append('page', 1)
+        this.dataApi.ajax('get','/admin/verify/applyAgentList',params, res => {   
+           console.log('111') 
+                        console.log(res.data.records)
+                this.tableData=res.data.records  
                  });
       },
 
@@ -271,6 +259,7 @@ export default {
   .tupain img{
     float: right;
     border-radius: 50%; 
-  } 
+  }
+   
 </style>
 

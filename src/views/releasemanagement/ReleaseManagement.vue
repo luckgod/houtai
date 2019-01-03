@@ -33,12 +33,12 @@
             </el-form-item>        
             <el-form-item label="代理区域市" >
             <el-select v-model="formLabelAlign.locid" placeholder="请选择代理的市" >  
-             <el-cascader
+             <!-- <el-cascader
                   size="large"
                   :options="options"
                   v-model="selectedOptions"
                   @change="handleChange">
-                </el-cascader>                 
+                </el-cascader>                  -->
             </el-select>
            
            
@@ -62,133 +62,38 @@
                 
                </el-form-item>
         </el-form>
-        <div class="btn">
-           <el-button type="success" @click="subj">提交申请</el-button>
+       <div class="btn">
+           <el-button type="success" @click="subd">正式发布</el-button>
         </div>
       </div>
     </el-card>
     
     <!-- ==============================================2==================================================================================================================2 -->
-    <el-card class="box-card cardtwo">
-         <div class="tit">店铺信息</div>
-          <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
-            <el-form-item label="名称" >
-          
-           <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-          </el-form-item>
-           <el-form-item label="店铺名称">
-            <el-input v-model="formLabelAlign.dname"></el-input>
-        </el-form-item>
-        <el-form-item label="所属品类">
-            <el-select v-model="formLabelAlign.dregion" placeholder="活动区域">
-            <div v-for="(item,index) in cayegotyIdlist" :key="index">
-                   <el-option :label="item.categoryName" :value="item.id+1"></el-option>
-              </div>
-            </el-select>
-        </el-form-item>
-          <el-form-item label="店家电话">
-            <el-input v-model="formLabelAlign.dtime"></el-input>
-        </el-form-item>
-        
-           <el-form-item label="店铺地址">
-            <el-input v-model="formLabelAlign.dizhi"></el-input>
-        </el-form-item>
-         <el-form-item label="营业时间">
-            <el-time-picker
-              is-range
-              v-model="value4"
-              range-separator="至"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              placeholder="选择时间范围">
-            </el-time-picker>
-           </el-form-item>
-           
-        </el-form>
-        <div class="btn">
-           <el-button type="success" @click="subd">提交申请</el-button>
-        </div>
-    </el-card>
+ 
   </div>
 </template>
 
 <script>
 
-// import axios from 'axios'
-// import aliUpload from "../../components/public/uploader";
-import { client } from '../../alioss.js'
-import { provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode } from 'element-china-area-data'
 
 export default {
-  name: "companydata",
+  name: "ReleaseManagement",
   //  components:{
   //           aliUpload
   //       },
   data() {
     return {
        formLabelAlign: {
-          name: '',
-          region: '',
-          mobile: '',
-          locid: '',
-          locida:'',
-          locidb:'',         
-          dregion:'',
-          sex:'',
-          jbc:'',
-          idcard:'',
-          cayegotyId:'',
-          dname:'',
-          dregion:'',
-          dizhi:'',
-          dtime:'',
-          detail:'',
-          roleId:'A',
-          categoryName:'',
+         
           
         },
-        data:{noticeImage:[]},
-          value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
-          value5: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
-          imageUrl: '',
-          options: regionDataPlus,
-        selectedOptions: [],
-       cayegotyIdlist:[],
-       //节点数据
-      shenglist:[],
-      shilist:[],
-      qulist:[],
-      optionsMessage:[],
-      options:[],
-
-     uploadUrl:[],
-    uploadId:'file',
-    uploadCode:0
+        cayegotyIdlist:'',
+       
     };
      
   },
-   watch:{
-            uploadCode(val){
-                console.info(val)
-            }
-        },
-  // computed: {
-  //   shia: function () {
-  //       console.log(this.locid)
-  //   }
-  // },
-  methods: {
-       handleChange (value) {
-        console.log(value)
-      },
+ 
+  methods: {      
       //获取店铺 分类  /shop/shopCategoryList
       catchdata(){
        
@@ -203,33 +108,8 @@ export default {
                       
           },
     //获取地址 分类  /admin/verify/getLocation
-      catchdatd(){
-   this.dataApi.ajax('get','/admin/verify/getLocation',{},cb => {    
-                        console.log(Object.entries(cb.data))
-                         this.shenglist=Object.entries(cb.data)
-                           
-                 });             
-        },
-      //经销商选择上传
-        subj(){
-      
-     
-      
-      var data={
-          name: this.formLabelAlign.name,
-          idCard: this.formLabelAlign.idcard,
-          mobile: this.formLabelAlign.mobile,
-          sex: this.formLabelAlign.sex,
-          locid:'110101',
-          cayegotyId: this.formLabelAlign.cayegotyId,
-          roleId: this.formLabelAlign.roleId,
-
-      }
- 
-      // this.dataApi.ajax('post','/admin/verify/applyForAagent',data, res => {    
-      //                   console.log(res)
-      //            });
-        },
+    
+    
          //店铺选择上传
            subd(){  
           
@@ -284,78 +164,14 @@ export default {
                         console.log(res)
                  });
         },
-        //节点选择
-        getCheckedNodes() {
-        console.log(this.$refs.tree.getCheckedNodes());
-      },
-      getCheckedKeys() {
-        console.log(this.$refs.tree.getCheckedKeys());
-      },
-      setCheckedNodes() {
-        this.$refs.tree.setCheckedNodes([{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 9,
-          label: '三级 1-1-1'
-        }]);
-      },
-      setCheckedKeys() {
-        this.$refs.tree.setCheckedKeys([3]);
-      },
-      resetChecked() {
-        this.$refs.tree.setCheckedKeys([]);
-      },
-      //图片上传
-    
-         handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-        console.log(file)
-        this.Upload(file)
-        // console.log(file.name)
-        // this.dataApi.upload(file)
-      },
-      beforeAvatarUpload(file) {
-        // const isJPG = file.type === 'image/jpeg';
-        // const isLt2M = file.size / 1024 / 1024 < 2;
-         const isJPG =true;
-        const isLt2M = true;
-        // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!');
-        // }
-        // if (!isLt2M) {
-        //   this.$message.error('上传头像图片大小不能超过 2MB!');
-        // }
-        return isJPG && isLt2M;
-      },
-      Upload(file) {
-        console.log(file)
-            var fileName = 'banner' + file.raw.uid 
-      //定义唯一的文件名，打印出来的uid其实就是时间戳
-      var storeAs = 'upload-file'+"/";
-            client().put(storeAs+fileName, file.raw).then(
-      result => {
-        // 大功搞成  
-          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-          console.log(result.url)
-           this.imageUrl= result.url
-      })
-      //  var storeAs = 'upload-file'+"/";  //命名空间
-      //   console.log(' => ' + storeAs);
-      //   client.multipartUpload(storeAs, file).then(function (result) {
-      //        console.log(result); 
-      //        console.log(result.url);
-      //   }).catch(function (err) {
-      //        console.log(err);
-      //  });   
-},
+        
 
 
         
   },
   mounted(){
     this.catchdata()
-    this.catchdatd()
+  
   }
 };
 </script>
