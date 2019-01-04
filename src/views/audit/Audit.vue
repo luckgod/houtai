@@ -9,151 +9,134 @@
           </el-form-item>
           <el-form-item label="审核经销商状态">
             <el-select v-model="formInline.region" placeholder="请在下拉列表中选则">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+              <el-option label="未审核" value="0"></el-option>
+              <el-option label="已通过审核" value="1"></el-option>
+              <el-option label="已拒绝审核" value="2"></el-option>
             </el-select>
           </el-form-item>
-          
 
           <el-form-item label="注册时间">
             <el-date-picker v-model="value1" type="date" placeholder="请在日历中选择"></el-date-picker>
           </el-form-item>
-          <el-form-item >
+          <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
           </el-form-item>
-           <el-form-item >
-          
-          </el-form-item>
-           <el-form-item >
-            
-          </el-form-item>
+          <el-form-item></el-form-item>
+          <el-form-item></el-form-item>
         </el-form>
       </div>
     </el-card>
     <!-- ==============================================2==================================================================================================================2 -->
     <el-card class="box-card cardtwo">
-         <div class="tit">用户列表</div>
+      <div class="tit">用户列表</div>
       <el-table :data="tableData" style="width: 100%">
         <!-- <el-table-column label="日期" width="180">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             <span style="margin-left: 10px">{{ scope.row.date }}</span>
           </template>
-        </el-table-column> -->
-
-         <el-table-column
-        prop="name"
-        label="用户名"
-        >
-        </el-table-column>
-        <el-table-column
-        prop="mobile"
-        label="手机号"
-       >
-        </el-table-column>
-        <el-table-column
-        prop="unioid"
-        label="科蚪号"
-       >
-        </el-table-column>
-        <el-table-column
-        prop="applyTime"
-        label="注册时间"
-       >
-    </el-table-column>
+        </el-table-column>-->
+        <el-table-column prop="name" label="用户名"></el-table-column>
+        <el-table-column prop="mobile" label="手机号"></el-table-column>
+        <el-table-column prop="unioid" label="科蚪号"></el-table-column>
+        <el-table-column prop="applyTime" label="注册时间"></el-table-column>
         <el-table-column label="审核经销商状态">
-          <template slot-scope="scope"  prop="id">
-          <el-button type="text"  @click="jshenhe(scope.row)">待审核</el-button>
+          <template slot-scope="scope" prop="id">
+            <el-button
+              type="text"
+              @click="jshenhe(scope.row)"
+            >{{scope.row.isHandleAgent|capitalize}}</el-button>
             <!-- <div @click="jshenhe(scope.row)">
             
               待审核
-            </div> -->
+            </div>-->
           </template>
         </el-table-column>
-       <el-table-column label="审核店铺状态">
+        <el-table-column label="审核店铺状态">
           <template slot-scope="scope">
-            <div @click="dialogFormVisiblea = true">
-              待审核
-            </div>
-           
+            <el-button
+              type="text"
+              @click="jshenhea(scope.row)"
+            >{{scope.row.isHandleShop|capitalizea}}</el-button>
           </template>
         </el-table-column>
       </el-table>
-     
-         <div class="block">
+
+      <div class="block">
         <!-- <span class="demonstration">直接前往</span> -->
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page.sync="currentPage3"
-                :page-size="100"
-                layout="prev, pager, next, jumper"
-                :total="1000">
-        </el-pagination>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="datc.pages"
+          :page-size="datc.size"
+          layout="prev, pager, next, jumper"
+          :total="datc.total"
+        ></el-pagination>
+      </div>
+     
+      <!-- 店铺商店铺资料 -->
+      <el-dialog title="收货地址" :visible.sync="dialogFormVisible" append-to-body width="400px">
+        <el-form>
+          <el-form-item label="活动标志" :label-width="formLabelWidth">
+            <div class="tupain">
+              <img :src="date.shopLogo" alt="头像">
+            </div>
+          </el-form-item>
+          <el-form-item label="店铺名称" :label-width="formLabelWidth">
+            <div class="wenzi">{{date.shopName}}</div>
+          </el-form-item>
+          <el-form-item label="所属品类" :label-width="formLabelWidth">
+            <div class="wenzi">{{date.category}}</div>
+          </el-form-item>
+          <el-form-item label="店铺地址" :label-width="formLabelWidth">
+            <div class="wenzi">{{date.addr}}</div>
+          </el-form-item>
+          <el-form-item label="店家电话" :label-width="formLabelWidth">
+            <div class="wenzi">{{date.shopPhone}}</div>
+          </el-form-item>
+          <el-form-item label="营业时间" :label-width="formLabelWidth">
+            <div class="wenzi">{{date.opentime+'-'+date.closetime}}</div>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="jshenheta(date.id)">通过申请</el-button>
+          <el-button type="primary" @click="jshenhetb(date.id)">拒绝申请</el-button>
+          <!-- dialogFormVisible = false -->
         </div>
-        <!-- A级经销商店铺资料 -->
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible" append-to-body  width='400px'>
-  <el-form >
-    <el-form-item label="活动标志" :label-width="formLabelWidth">
-       <div class="tupain">
-     <img src="https://pic2.zhimg.com/80/v2-85ef8fc1319802865d36d40144a8e97c_xs.jpg" alt="头像">
-     </div>
-    </el-form-item>
-    <el-form-item label="店铺名称" :label-width="formLabelWidth">
-      <div class="wenzi"></div>
-    </el-form-item>
-     <el-form-item label="所属品类" :label-width="formLabelWidth">
-      <div class="wenzi">美食</div>
-    </el-form-item>
-     <el-form-item label="店铺地址" :label-width="formLabelWidth">
-      <div class="wenzi">杭州市下沙区长安街3366号</div>
-    </el-form-item>
-     <el-form-item label="店家电话" :label-width="formLabelWidth">
-      <div class="wenzi">1762147477</div>
-    </el-form-item>
-     <el-form-item label="营业时间" :label-width="formLabelWidth">
-      <div class="wenzi">06:00-23:00</div>
-    </el-form-item>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">通过申请</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">拒绝申请</el-button>
-  </div>
-</el-dialog>
-  <!-- 店铺商店铺资料 -->
- <el-dialog title="收货地址" :visible.sync="dialogFormVisiblea" append-to-body  width='400px'>
-  <el-form >
-     <el-form-item label="姓名" :label-width="formLabelWidth">
-      <div class="wenzi">{{data.name}}</div>
-    </el-form-item>
-    <el-form-item label="身份证号" :label-width="formLabelWidth">
-      <div class="wenzi">410721199511011018</div>
-    </el-form-item>
-     <el-form-item label="手机号" :label-width="formLabelWidth">
-      <div class="wenzi">17621474767</div>
-    </el-form-item>
-     <el-form-item label="性别" :label-width="formLabelWidth">
-      <div class="wenzi">男</div>
-    </el-form-item>
-     <el-form-item label="所属行业" :label-width="formLabelWidth">
-      <div class="wenzi">美食</div>
-    </el-form-item>
-     <el-form-item label="代理区域" :label-width="formLabelWidth">
-      <div class="wenzi">杭州西湖区</div>
-    </el-form-item>
-    <el-form-item label="代理级别" :label-width="formLabelWidth">
-      <div class="wenzi">A级</div>
-    </el-form-item>
-  </el-form>
-  <div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisiblea = false">通过申请</el-button>
-    <el-button type="primary" @click="dialogFormVisiblea = false">拒绝申请</el-button>
-  </div>
-</el-dialog>
+      </el-dialog>
+       <!-- A级经销商资料 -->
+      <el-dialog title="收货地址" :visible.sync="dialogFormVisiblea" append-to-body width="400px">
+        <el-form>
+          <el-form-item label="姓名" :label-width="formLabelWidth">
+            <div class="wenzi">{{data.name}}</div>
+          </el-form-item>
+          <el-form-item label="身份证号" :label-width="formLabelWidth">
+            <div class="wenzi">{{data.idCard}}</div>
+          </el-form-item>
+          <el-form-item label="手机号" :label-width="formLabelWidth">
+            <div class="wenzi">{{data.mobile}}</div>
+          </el-form-item>
+          <el-form-item label="性别" :label-width="formLabelWidth">
+            <div class="wenzi">{{data.sex}}</div>
+          </el-form-item>
+          <el-form-item label="所属行业" :label-width="formLabelWidth">
+            <div class="wenzi">{{data.shopCategoryName}}</div>
+          </el-form-item>
+          <el-form-item label="代理区域" :label-width="formLabelWidth">
+            <div class="wenzi">{{data.locidNames}}</div>
+          </el-form-item>
+          <el-form-item label="代理级别" :label-width="formLabelWidth">
+            <div class="wenzi">A级</div>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dpushenhea(data.id)">通过申请</el-button>
+          <el-button type="primary" @click="dpushenheb(data.id)">拒绝申请</el-button>
+          <!-- dialogFormVisiblea = false -->
+        </div>
+      </el-dialog>
     </el-card>
-    
   </div>
-  
 </template>
 
 <script>
@@ -161,63 +144,229 @@ export default {
   name: "audit",
   data() {
     return {
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4,
-        value1:'',
+      value1: "",
       formInline: {
-        user:'',
+        user: "",
         region: ""
       },
       tableData: [],
-        
-        formLabelWidth: '80px',
-        dialogFormVisible: false,
-        dialogFormVisiblea:false,
-    data:{
-          name:'',
-          }
+
+      formLabelWidth: "80px",
+      dialogFormVisible: false,
+      dialogFormVisiblea: false,
+      data: {
+        name: "",
+        idCard: "",
+        mobile: "",
+        sex: "",
+        shopCategoryName: "",
+        locidNames: "",
+         id:'',
+      },
+      date: {
+        shopLogo: "",
+        shopName: "",
+        category: "",
+        addr: "",
+        opentime: "",
+        closetime: "",
+        shopPhone: "",
+        id:'',
+      },
+      //分页
+      datc: {
+        current: 0,
+        pages: 1,
+        size: 0,
+        total: 0
+      }
     };
-   
-     
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      if (this.value1) {
+        var d = new Date(this.value1);
+        var sa = d.getMonth() + 1;
+        var sb = d.getDate();
+        if (sa < 10) {
+          sa = "0" + sa;
+        }
+        if (d.getDate() < 10) {
+          sb = "0" + sb;
+        }
+        var youWant = d.getFullYear() + "-" + sa + "-" + sb;
+      } else {
+        var youWant = "";
+      }
+
+      var params = new URLSearchParams();
+      params.append("page", this.datc.current);
+      params.append("nameOrMobile", this.formInline.user);
+      params.append("date", youWant);
+      params.append("status", this.formInline.region);
+      this.dataApi.ajax("get", "/admin/verify/applyAgentList", params, res => {
+        this.datc.current = res.data.current;
+
+        this.datc.size = res.data.size;
+        this.datc.total = res.data.total;
+
+        this.tableData = res.data.records;
+      });
     },
-    jshenhe(ta){
-      console.log(ta)
-        this.data.name=ta.
-        this.dialogFormVisiblea = true
+    //经销商详细信息
+    jshenhe(ta) {
+      console.log(ta);
+      this.data.name = ta.name;
+      this.data.idCard = ta.idCard;
+      this.data.mobile = ta.mobile;
+      this.data.sex = ta.sex;
+      this.data.shopCategoryName = ta.shopCategoryName;
+      this.data.locidNames = ta.locidNames;
+       this.data.id = ta.id;
+      this.dialogFormVisiblea = true;
+    },
+    //店铺详细信息
+    jshenhea(ta) {
+      console.log(ta);
+      this.date.shopLogo = ta.shopLogo;
+      this.date.shopName = ta.shopName;
+      this.date.category = ta.category;
+      this.date.addr = ta.addr;
+      this.date.opentime = ta.opentime;
+      this.date.closetime = ta.closetime;
+      this.date.shopPhone = ta.shopPhone;
+      this.date.id=ta.id
+      this.dialogFormVisible = true;
     },
     handleEdit(index, row) {
-        console.log(index, row);
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
-      },
-      catchdata(){
-         var params = new URLSearchParams()
-      
-      params.append('page', 1)
-        this.dataApi.ajax('get','/admin/verify/applyAgentList',params, res => {   
-           console.log('111') 
-                        console.log(res.data.records)
-                this.tableData=res.data.records  
-                 });
-      },
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.datc.current = val;
+      this.onSubmit();
+    },
 
+    catchdata() {
+      var params = new URLSearchParams();
+
+      params.append("page", this.datc.current);
+      this.dataApi.ajax("get", "/admin/verify/applyAgentList", params, res => {
+        console.log(res.data.records);
+        this.datc.current = res.data.current;
+
+        this.datc.size = res.data.size;
+        this.datc.total = res.data.total;
+        this.tableData = res.data.records;
+      });
+    },
+    //  <!-- 店铺商店铺资料 -->
+    jshenheta(a){
+         var params = new URLSearchParams();
+
+         params.append("id",parseInt(a));
+         params.append("ishandAgent",false);
+         params.append("isAgree",true);
+         
+        this.dataApi.ajax("post", "/admin/verify/handleApply", params, res => {
+       
+        if(res.code==0){
+          this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+        this.dialogFormVisible = false
+        this.onSubmit();
+        }else{
+          this.$message.error(res.msg);
+        }
+      });
+    },
+    jshenhetb(a){
+         var params = new URLSearchParams();
+
+         params.append("id",parseInt(a));
+         params.append("ishandAgent",false);
+         params.append("isAgree",false);
+        this.dataApi.ajax("post", "/admin/verify/handleApply", params, res => {
+        
+        if(res.code==0){
+          this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+        this.dialogFormVisible = false
+        this.onSubmit();
+        }else{
+          this.$message.error(res.msg);
+        }
+      });
+    },
+     //  <!-- 经销商店铺资料 -->
+     dpushenhea(b){
+        var params = new URLSearchParams();
+
+         params.append("id",parseInt(b));
+         params.append("ishandAgent",true);
+         params.append("isAgree",true);
+        this.dataApi.ajax("post", "/admin/verify/handleApply", params, res => {
+        
+        
+        if(res.code==0){
+          this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+         this.dialogFormVisiblea = false
+        this.onSubmit();
+        }else{
+          this.$message.error(res.msg);
+        }
+
+      });
+     },
+     dpushenheb(b){
+         var params = new URLSearchParams();
+
+         params.append("id",parseInt(b));
+         params.append("ishandAgent",true);
+         params.append("isAgree",false);
+        this.dataApi.ajax("post", "/admin/verify/handleApply", params, res => {
+            if(res.code==0){
+          this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+         this.dialogFormVisiblea = false
+        this.onSubmit();
+       
+        }else{
+          this.$message.error(res.msg);
+        }
+          
+      });
+     }
   },
-  mounted(){
-    this.catchdata()
-    
+  mounted() {
+    this.catchdata();
+  },
+  filters: {
+    capitalize: function(value) {
+      if (value == 0) return "未审核";
+      if (value == 1) return "已通过审核";
+      if (value == 2) return "已拒绝审核";
+    },
+    capitalizea: function(value) {
+      if (value == null) return "未开通";
+      if (value == 0) return "未审核";
+      if (value == 1) return "已通过审核";
+      if (value == 2) return "已拒绝审核";
+    }
   }
 };
 </script>
@@ -235,31 +384,27 @@ export default {
 .titcon {
   height: 160px;
 }
-.el-form-item{
-   width: 30%;
-    text-align: left;
-  }
-  .el-input__inner {
-   width: 30%;
-    text-align: left;
-  }
-   .cardtwo{
-    margin-top: 22px;
-  }
-  .wenzi{
-    width: 280px;
-    text-align: right;
-  }
-  .tupain{
-   
-    width: 280px;
-   
-    
-  }
-  .tupain img{
-    float: right;
-    border-radius: 50%; 
-  }
-   
+.el-form-item {
+  width: 30%;
+  text-align: left;
+}
+.el-input__inner {
+  width: 30%;
+  text-align: left;
+}
+.cardtwo {
+  margin-top: 22px;
+}
+.wenzi {
+  width: 280px;
+  text-align: right;
+}
+.tupain {
+  width: 280px;
+}
+.tupain img {
+  float: right;
+  border-radius: 50%;
+}
 </style>
 

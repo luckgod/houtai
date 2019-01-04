@@ -285,8 +285,10 @@ let ajax = function (posttype, url, params, cb) {
             ).then(function(res) {
             //    console.log(res)
 		        if(res.data.code == 0) {
-		                //正确返回时的处理
-			        cb(res.data);
+                        //正确返回时的处理
+                        
+                    cb(res.data);
+                    
 		        } else if(res.data.code == -1) {
 			        //登录获取的sessionkey失效等逻辑的处理
 		        } else {

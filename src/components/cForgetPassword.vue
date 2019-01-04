@@ -14,7 +14,8 @@
         </el-form-item>
          <el-form-item   class="bb">
             <el-input  placeholder="验证码" v-model="cod"></el-input>
-             <el-button type="primary" class="weizhi" @click="reg" >验证码{{timey}}S</el-button>
+            <el-button type="primary" class="weizhi"  @click="reg" v-show="sendAuthCode" >发送</el-button>
+             <el-button type="primary" class="weizhi" style="background:#ccc" v-show="!sendAuthCode" >{{auth_time}}S</el-button>
         </el-form-item>
         <el-form-item   class="aa">
             <el-input  placeholder="你的密码"  v-model="worda"></el-input>
@@ -48,7 +49,8 @@ import axios from 'axios'
             worda:'',
             cod:'',
             word:'',
-            timey:30,
+            sendAuthCode:true,
+            auth_time:80,
         }
     },
     methods: {
@@ -80,17 +82,26 @@ import axios from 'axios'
       var params = new URLSearchParams()
       params.append('mobile',this.phone)
  
-    axios.get('http://192.168.100.120:8082/user/sms', {
-    params: {
-      mobile:this.phone
-    }
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+     this.dataApi.ajax('get','/user/sms',params, res => {    
+                       
+                       if(res.code==0){
+                         this.$message({
+                                        message: '短信发送成功',
+                                        type: 'success'
+                                      });
+                        this.sendAuthCode = false;
+                        this.auth_time = 80;
+                        var auth_timetimer =  setInterval(()=>{
+                            this.auth_time--;
+                            if(this.auth_time<=0){
+                                this.sendAuthCode = true;
+                                clearInterval(auth_timetimer);
+                            }
+                            }, 1000);
+
+                       }
+                       
+                 });
     },
     reg(){
        this.catcode()

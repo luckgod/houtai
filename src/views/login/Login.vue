@@ -32,7 +32,7 @@
 .bg{
   width: 100vw;
   height: 100vh;
-  background-color: #409EFF;
+  background-color: rgb(42, 51, 75);
   background-image: url('http://img1.178.com/lol/201711/305858071819/305858390881.jpg');
   background-size: cover;
   background-position: 50% 50%;

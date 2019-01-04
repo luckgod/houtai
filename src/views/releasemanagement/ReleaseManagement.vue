@@ -3,183 +3,348 @@
     <el-card class="box-card">
       <div class="tit">经销商信息</div>
       <div class="titcon">
-    <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
-        <el-form-item label="姓名">
-            <el-input v-model="formLabelAlign.name" placeholder="请输入真实姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="身份证号">
-            <el-input v-model="formLabelAlign.idcard" placeholder="请输入真实身份证号"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号">
-            <el-input v-model="formLabelAlign.mobile" placeholder="请输入您的手机号"></el-input>
-        </el-form-item>
-         <el-form-item label="性别">
-            <el-select v-model="formLabelAlign.sex" placeholder="活动区域">
-            <el-option label="男" value="1"></el-option>
-            <el-option label="女" value="2"></el-option>
+        <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
+          <!-- 图片上传 ============================================================================================================-->
+          <el-form-item label="封面图片" style="margin:0;">
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
+            >
+              <img
+                v-if="imageUrla"
+                :src="imageUrl"
+                class="avatar"
+                style="width:38px;height:38px;border:1px solid #dcdfe6;border-radius: 25%"
+              >
+              <i
+                v-else
+                class="el-icon-plus avatar-uploader-icon"
+                style="width:38px;height:38px;position:absolute;top:-69px;"
+              ></i>
+            </el-upload>
+            <div class="tipwenzi">点击右侧上传图片</div>
+          </el-form-item>
+          <!-- 图片上传结束。。。。。 ========================================================================================================-->
+          <el-form-item label="主标题">
+            <el-input v-model="formLabelAlign.title" placeholder="请输入主标题"></el-input>
+          </el-form-item>
+          <el-form-item label="副标题">
+            <el-input v-model="formLabelAlign.subTitle" placeholder="请输入副标题"></el-input>
+          </el-form-item>
+          <el-form-item label="类目选择">
+            <el-select v-model="formLabelAlign.agentGrades" placeholder="选择类目">
+              <el-option label="男" value="1"></el-option>
+              <el-option label="女" value="2"></el-option>
             </el-select>
-        </el-form-item>       
-         <el-form-item label="代理级别">
-            <el-select v-model="formLabelAlign.jbc" placeholder="请选择你的代理级别">
-            <el-option label="A" value="A"></el-option>           
-            </el-select>
-        </el-form-item>
-            <el-form-item label="所属行业">
-                <el-select v-model="formLabelAlign.cayegotyId" placeholder="请选择你当前行业的类型">
-                  <div v-for="(item,index) in cayegotyIdlist" :key="index">
-                      <el-option :label="item.categoryName" :value="item.id+1"></el-option>
-                  </div>                       
-                </el-select>
-            </el-form-item>        
-            <el-form-item label="代理区域市" >
-            <el-select v-model="formLabelAlign.locid" placeholder="请选择代理的市" >  
-             <!-- <el-cascader
-                  size="large"
-                  :options="options"
-                  v-model="selectedOptions"
-                  @change="handleChange">
-                </el-cascader>                  -->
-            </el-select>
-           
-           
-            </el-form-item>
-              <el-form-item label="代理区域县">
-                <el-select v-model="formLabelAlign.locidb" placeholder="请选择代理的县"  >                       
-                </el-select>
-               </el-form-item>
-              <el-form-item label="代理区域区">
-              <el-select v-model="formLabelAlign.locida" placeholder="请选择代理的区"  >                       
-              </el-select>
-              
-            </el-form-item>
-            <el-form-item >
-                
-               </el-form-item>
-               <el-form-item >
-                
-               </el-form-item>
-               <el-form-item >
-                
-               </el-form-item>
+          </el-form-item>
+          <!-- 图片上传 ============================================================================================================-->
+          <el-form-item label="正文主图" style="margin:0;">
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccessb"
+              :before-upload="beforeAvatarUploadb"
+              style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
+            >
+              <img
+                v-if="imageUrlb"
+                :src="imageUrlb"
+                class="avatar"
+                style="width:38px;height:38px;border:1px solid #dcdfe6;border-radius: 25%"
+              >
+              <i
+                v-else
+                class="el-icon-plus avatar-uploader-icon"
+                style="width:38px;height:38px;position:absolute;top:-69px;"
+              ></i>
+            </el-upload>
+            <div class="tipwenzi">点击右侧上传图片</div>
+          </el-form-item>
+          <!-- 图片上传结束。。。。。 ========================================================================================================-->
+          <!-- 图片上传 ============================================================================================================-->
+          <el-form-item label="正文插图" style="margin:0;">
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccessc"
+              :before-upload="beforeAvatarUploadc"
+              :multiple='true'
+              style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
+            >
+              <img
+                v-if="imageUrlc"
+                :src="imageUrlc"
+                class="avatar"
+                style="width:38px;height:38px;border:1px solid #dcdfe6;border-radius: 25%"
+              >
+              <i
+                v-else
+                class="el-icon-plus avatar-uploader-icon"
+                style="width:38px;height:38px;position:absolute;top:-69px;"
+              ></i>
+            </el-upload>
+            <div class="tipwenzi">点击右侧上传图片</div>
+          </el-form-item>
+          <!-- 图片上传结束。。。。。 ========================================================================================================-->
+           <el-form-item label="" >
+           </el-form-item> <el-form-item label="" >
+           </el-form-item>
+           <div style="display:block">
+          
+          
+          <el-form-item label="正文内容" >
+           <el-input type="textarea" v-model="formLabelAlign.content" style="width:800px;min-height:100px"></el-input>
+          </el-form-item>
+           <el-form-item label="" >
+           </el-form-item>
+            <el-form-item label="" >
+           </el-form-item>
+            <el-form-item label="" >
+           </el-form-item>
+            </div>
+         
+       
+
+        
+             <el-form-item label="物料图片" style=" width:700px;padding-right:524px;">
+            <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove"
+                :on-success="shanwoliat"
+                style="width:548px;height:48px;border:1px solid #dcdfe6"
+                >
+                <i class="el-icon-plus " style="width:48px;height:48px;"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible" style="width:48px;height:48px;">
+                <img width="100%" :src="dialogImageUrl" alt="" style="width:48px;height:48px;" >
+              </el-dialog>
+          </el-form-item>        
         </el-form>
-       <div class="btn">
-           <el-button type="success" @click="subd">正式发布</el-button>
+        <div class="btn">
+          <el-button type="success" @click="subd">正式发布</el-button>
         </div>
       </div>
     </el-card>
-    
+
     <!-- ==============================================2==================================================================================================================2 -->
- 
   </div>
 </template>
 
 <script>
 
+import { client } from "../../alioss.js";
 
 export default {
   name: "ReleaseManagement",
-  //  components:{
-  //           aliUpload
-  //       },
+   
   data() {
     return {
-       formLabelAlign: {
-         
-          
-        },
-        cayegotyIdlist:'',
+      formLabelAlign: {
+        title:'',
+        subTitle:'',
+        content:'',
+        agentGrades:'',
        
-    };
+    },
      
+      cayegotyIdlist: "",
+      imageUrla: "",
+      imageUrlb: "",
+      imageUrlc: "",
+      dialogImageUrl: '',
+      dialogVisible: false,
+      imglist:[],
+    };
   },
- 
-  methods: {      
-      //获取店铺 分类  /shop/shopCategoryList
-      catchdata(){
+
+  methods: {
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePictureCardPreview(file) {
        
-         this.dataApi.ajax('get','/admin/verify/category', {},cb => {    
-                        // console.log(cb.data)
-                        // console.log('获取店铺分类')
-                        
-                        this.cayegotyIdlist=cb.data
-                 });
-          
-           
-                      
-          },
+        console.log(this.dialogImageUrl)
+        this.dialogImageUrl = file.url;
+        this.dialogVisible = true;
+      },
+      shanwoliat(esponse, file, fileList){
+        
+        
+       this.Uploadf(file);
+      },
+      Uploadf(file) {
+      console.log(file, 2222);
+      var fileName = "banner" + file.raw.uid;
+      //定义唯一的文件名，打印出来的uid其实就是时间戳
+      var storeAs = "upload-file" + "/";
+      client()
+        .put(storeAs + fileName, file.raw)
+        .then(result => {
+          // 大功搞成
+          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+          console.log(result.url);
+          this.imglist.push(result.url)
+          console.log(this.imglist)
+          // this.imageUrlc = result.url;
+        });
+    },
+    //获取店铺 分类  /shop/shopCategoryList
+    catchdata() {
+      this.dataApi.ajax("get", "/admin/verify/category", {}, cb => {
+        // console.log(cb.data)
+        // console.log('获取店铺分类')
+
+        this.cayegotyIdlist = cb.data;
+      });
+    },
     //获取地址 分类  /admin/verify/getLocation
-    
-    
-         //店铺选择上传
-           subd(){  
-          
-            // console.log(this.value4[0].getHours(),this.value4[0].getMinutes())  
-           if(this.value4[0].getHours()<10){
-            var  sa='0'+this.value4[0].getHours()
-           
-           }else{
-             var  sa=this.value4[0].getHours()
-           
-           }
-           if(this.value4[0].getMinutes()<10){
-                var st='0'+this.value4[0].getMinutes()
-           }else{
-                var st=+this.value4[0].getMinutes()
-           }
 
-           if(this.value4[1].getHours()<10){
-            var  sc='0'+this.value4[1].getHours()
-           
-           }else{
-             var  sc=this.value4[1].getHours()
-           
-           }
-           if(this.value4[1].getMinutes()<10){
-                var sg='0'+this.value4[1].getMinutes()
-           }else{
-                var sg=+this.value4[1].getMinutes()
-           }
-          //  console.log(sc+":"+sg)
-    
-      var params = new URLSearchParams()
-      params.append('name',this.formLabelAlign.name)     
-      params.append('idCard', this.formLabelAlign.idcard)
-      params.append('mobile', this.formLabelAlign.mobile)
-      params.append('sex', this.formLabelAlign.sex)
-      params.append('locid', '110101')
-      params.append('cayegotyId', this.formLabelAlign.cayegotyId)
-      params.append('roleId', this.formLabelAlign.roleId)
-      params.append('shopName', this.formLabelAlign.dname)
-      params.append('shopLogo', 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2147322031,325904174&fm=27&gp=0.jpg')
-      params.append('phone', this.formLabelAlign.dtime)
-      params.append('category', this.formLabelAlign.dregion)
-      params.append('detail', '测试数据')
-      params.append('addr', this.formLabelAlign.dizhi)
-      params.append('opentime', sa+':'+st)
-      params.append('closetime', sc+":"+sg)
-
-     console.log(this.formLabelAlign.sex,this.formLabelAlign.cayegotyId)
-      this.dataApi.ajax('post','/admin/verify/applyForAagent',params,res => {    
-                        console.log('提交执行')
-                        console.log(res)
-                 });
-        },
+    //店铺选择上传
+    subd() {
+        console.log()
         
-
-
         
+       
+      var params = new URLSearchParams();
+      params.append("title", this.formLabelAlign.title);
+      params.append("subTitle", this.formLabelAlign.subTitle);
+      params.append("content", this.formLabelAlign.content);
+      params.append("mainpic", this.imageUrlb);
+      params.append("subPics", this.imageUrlc);
+      params.append("category", this.imageUrla);
+      params.append("categoryId", this.formLabelAlign.categoryId);
+      params.append("agentGrades", this.formLabelAlign.agentGrades);
+    
+      params.append("downloadPics",this.imglist.toString());
+     
+
+    
+      this.dataApi.ajax("post", "/admin/verify/uploadMateriel", params, res => {
+        console.log("提交执行");
+        console.log(res);
+      });
+    },
+
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(file);
+      this.Upload(file);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = true;
+      const isLt2M = true;
+
+      return isJPG && isLt2M;
+    },
+    Upload(file) {
+      console.log(file, 2222);
+      var fileName = "banner" + file.raw.uid;
+      //定义唯一的文件名，打印出来的uid其实就是时间戳
+      var storeAs = "upload-file" + "/";
+      client()
+        .put(storeAs + fileName, file.raw)
+        .then(result => {
+          // 大功搞成
+          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+          console.log(result.url);
+          this.imageUrla = result.url;
+        });
+    },
+    handleAvatarSuccessb(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(file);
+      this.Uploadb(file);
+    },
+    beforeAvatarUploadb(file) {
+      const isJPG = true;
+      const isLt2M = true;
+
+      return isJPG && isLt2M;
+    },
+    Uploadb(file) {
+      console.log(file, 2222);
+      var fileName = "banner" + file.raw.uid;
+      //定义唯一的文件名，打印出来的uid其实就是时间戳
+      var storeAs = "upload-file" + "/";
+      client()
+        .put(storeAs + fileName, file.raw)
+        .then(result => {
+          // 大功搞成
+          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+          console.log(result.url);
+          this.imageUrlb = result.url;
+        });
+    },
+    handleAvatarSuccessc(res, file) {
+      this.imageUrlc = URL.createObjectURL(file.raw);
+      console.log(file);
+      this.Uploadc(file);
+    },
+    beforeAvatarUploadc(file) {
+      const isJPG = true;
+      const isLt2M = true;
+
+      return isJPG && isLt2M;
+    },
+    Uploadc(file) {
+      console.log(file, 2222);
+      var fileName = "banner" + file.raw.uid;
+      //定义唯一的文件名，打印出来的uid其实就是时间戳
+      var storeAs = "upload-file" + "/";
+      client()
+        .put(storeAs + fileName, file.raw)
+        .then(result => {
+          // 大功搞成
+          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+          console.log(result.url);
+          this.imageUrlc = result.url;
+        });
+    }
   },
-  mounted(){
-    this.catchdata()
-  
+  mounted() {
+    this.catchdata();
   }
 };
 </script>
+<style>
+.el-upload--picture-card {
+  width: 48px;
+  height: 48px;
+  line-height:48px;
+}
+
+.el-upload-list__item-thumbnail{
+  width: 48px;
+  height: 48px;
+  line-height:48px;
+}
+
+.el-upload-list__item-actions{
+   width: 48px!important;
+  height: 48px!important;
+}
+.el-upload-list__item-thumbnail{
+   width: 48px!important;
+  height: 48px!important;
+}
+.is-success{
+   width: 48px!important;
+  height: 48px!important;
+}
+</style>
 
 <style scoped>
 .box-card {
   width: 91%;
-  margin: 0 ;
+  margin: 0;
 }
 .tit {
   text-align: left;
@@ -188,43 +353,59 @@ export default {
   border-bottom: 1px solid #cccccc;
 }
 .titcon {
- 
 }
- .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
- .el-form-item{
-   width: 20%;
-    text-align: left;
-  }
-  .btn{
-    overflow: hidden;
-    float: left;
-    padding-left: 8%;
-    padding-top:2%; 
-     padding-bottom:2%;
-  }
-  .cardtwo{
-    margin-top: 22px;
-  }
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.el-form-item {
+  width: 20%;
+  text-align: left;
+}
+.btn {
+  overflow: hidden;
+  float: left;
+  padding-left: 8%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+.cardtwo {
+  margin-top: 22px;
+}
+.tipwenzi {
+  position: absolute;
+  top: 0;
+  line-height: 42px;
+
+  left: 48px;
+}
+.el-upload--picture-card{
+  width: 48px;
+  height: 48px;
+  line-height:48px;
+}
+.el-icon-plus{
+  
+}
+
 </style>
+

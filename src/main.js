@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 if(!window.Promise){
   window.Promise = Promise;
 }
-axios.defaults.baseURL = 'https://weapp.kedou.kedunwl.com/'
+// axios.defaults.baseURL = 'https://weapp.kedou.kedunwl.com/'
 new Vue({
   router,
   store,

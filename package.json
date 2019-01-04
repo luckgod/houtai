@@ -9,6 +9,7 @@
   "dependencies": {
     "@antv/g2": "^3.4.8",
     "ali-oss": "^6.0.2",
+    "ant-design-vue": "^1.2.4",
     "axios": "^0.18.0",
     "blueimp-md5": "^2.10.0",
     "co": "^4.6.0",

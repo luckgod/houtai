@@ -40,7 +40,24 @@
   </el-submenu>
   
 </el-menu>
-
+<el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+  <el-submenu index="1">
+    <template slot="title" class="shenhe">
+      <p style="color:#ffffff" >发布管理</p>
+      <span slot="title">导航一</span>
+    </template>
+    <el-menu-item-group>
+     
+      <el-menu-item index="1-1" @click="jump13">商学院文章和物料发布</el-menu-item>
+     
+    </el-menu-item-group>
+    <!-- <el-menu-item-group title="分组2">
+      <el-menu-item index="1-3">选项3</el-menu-item>
+    </el-menu-item-group> -->
+    
+  </el-submenu>
+  
+</el-menu>
     </div>
 </template>
 <style scoped>
@@ -88,6 +105,9 @@ export default {
       },
       jump11(){
          this.$router.push('audit')
+      },
+      jump13(){
+        this.$router.push('releasemanagement')
       }
     }
 }

@@ -7,22 +7,19 @@
     <div class="seone" key="1">
       <el-form class="demo-ruleForm" ref="form" :rules="rules" :model="form">
         <el-form-item class="aa" prop="phone">
-          <el-input class="digweia" placeholder="请输入手机号" v-model="form.phone" auto-complete="true"></el-input>
-          <!-- <i class="digweib el-icon-mobile-phone"></i> -->
+
+          <el-input class="digweia" placeholder="请输入手机号" v-model="form.phone" auto-complete="true" maxlength="11" min='11'></el-input>
+        
         </el-form-item>
       </el-form>
-      <el-form class="demo-ruleForm" ref="form" :model="form">
-        <el-form-item class="aa" 
-        :rules="[
-      { required: true, message: '密码不能为空'},
-     
-        ]"
-        >
-          <el-input class="digweic" placeholder="请输入8位数密码" v-model="form.word"></el-input>
-          <!-- <i class="digweib el-icon-more"></i> -->
+      <el-form class="demo-ruleForm" ref="form" :model="form" :rules="rules"  >
+        <el-form-item class="aa" prop="word">
+
+          <el-input class="digweic" placeholder="请输入8位数密码" v-model="form.word"  maxlength="8" min='11' type="password"></el-input>
+       
         </el-form-item>
       </el-form>
-      <el-form class="demo-ruleForm" ref="form" :rules="rules" :model="form">
+      <el-form class="demo-ruleForm"  :model="form">
         <el-form-item class="fg">
           <el-button
             type="primary"
@@ -65,7 +62,19 @@ export default {
         }
       }, 1000);
     };
-    
+    var mimareg = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}$/;
+    var mimaregPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("号码不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!mimareg.test(value)) {
+          callback(new Error("格式有误"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    };
     return {
       form: {
         phone: "",
@@ -75,8 +84,10 @@ export default {
       rules: {
         // 校验手机号码，主要通过validator来指定验证器名称
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
+        word: [{ required: true, validator: mimaregPhone, trigger: "blur" }],
        
-      }
+      },
+       
     };
   },
 
@@ -112,7 +123,7 @@ export default {
                                       });
                            
                         }else{
-                           this.$message.error( res.msg);
+                           this.$message.error(res.msg);
                            
                         }
                   });     
