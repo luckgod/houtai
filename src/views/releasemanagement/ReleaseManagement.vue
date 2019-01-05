@@ -2,6 +2,7 @@
   <div>
     <el-card class="box-card">
       <div class="tit">经销商信息</div>
+        <dropdown :data="dataa" :cbChanged="changed"></dropdown>
       <div class="titcon">
         <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
           <!-- 图片上传 ============================================================================================================-->
@@ -36,9 +37,10 @@
             <el-input v-model="formLabelAlign.subTitle" placeholder="请输入副标题"></el-input>
           </el-form-item>
           <el-form-item label="类目选择">
-            <el-select v-model="formLabelAlign.agentGrades" placeholder="选择类目">
-              <el-option label="男" value="1"></el-option>
-              <el-option label="女" value="2"></el-option>
+            <el-select v-model="formLabelAlign.agentGrades" placeholder="选择类目" >
+              <div v-for="(item,index) in cayegotyIdlist" :key="index">
+              <el-option :label="item.categoryName" :value="item.id+1"></el-option>
+            </div>
             </el-select>
           </el-form-item>
           <!-- 图片上传 ============================================================================================================-->
@@ -162,10 +164,23 @@ export default {
       dialogImageUrl: '',
       dialogVisible: false,
       imglist:[],
+      dataa:[{
+  label: 'Volvo',
+  value: 1
+}, {
+  label: 'Saab',
+  value: 2
+}, {
+  label: 'Long long long long long long test',
+  value: 2
+}],
     };
   },
 
   methods: {
+    changed(selected) {
+      console.log(selected)
+    },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -220,7 +235,7 @@ export default {
       params.append("mainpic", this.imageUrlb);
       params.append("subPics", this.imageUrlc);
       params.append("category", this.imageUrla);
-      params.append("categoryId", this.formLabelAlign.categoryId);
+      params.append("categoryId", 1);
       params.append("agentGrades", this.formLabelAlign.agentGrades);
     
       params.append("downloadPics",this.imglist.toString());
@@ -307,10 +322,19 @@ export default {
           console.log(result.url);
           this.imageUrlc = result.url;
         });
-    }
+    },
+    catchdatf() {
+      this.dataApi.ajax("get", "/admin/verify/category", {}, cb => {
+        // console.log(cb.data)
+        // console.log('获取店铺分类')
+        this.cayegotyIdlist = cb.data;
+      });
+    },
+
   },
   mounted() {
     this.catchdata();
+    this.catchdatf();
   }
 };
 </script>

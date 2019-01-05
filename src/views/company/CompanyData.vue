@@ -33,7 +33,8 @@
           </el-form-item>
           <el-form-item label="代理区域市">
             <!-- <el-select v-model="formLabelAlign.locid" placeholder="请选择代理的市" >   -->
-            <el-cascader :options="options" change-on-select></el-cascader>
+            <!-- <el-cascader :options="options" change-on-select></el-cascader> -->
+            <multiCascader width="240px" height="220px" :options="options" @on-selected="getSelected" :inputValue="configTips"></multiCascader>
             <!-- </el-select> -->
           </el-form-item>
 
@@ -108,6 +109,8 @@
 // import axios from 'axios'
 // import aliUpload from "../../components/public/uploader";
 import { client } from "../../alioss.js";
+import multiCascader from "multi-cascader";
+
 import {
   provinceAndCityData,
   regionData,
@@ -118,9 +121,9 @@ import {
 } from "element-china-area-data";
 export default {
   name: "companydata",
-  //  components:{
-  //           aliUpload
-  //       },
+   components:{
+            multiCascader
+        },
   data() {
      // 此处自定义校验手机号码js逻辑
     var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -176,6 +179,7 @@ export default {
         roleId: "A",
         categoryName: ""
       },
+      configTips:'',
       data: { noticeImage: [] },
       value4: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
       value5: [new Date(2016, 9, 10, 8, 40), new Date(2016, 9, 10, 9, 40)],
@@ -201,53 +205,7 @@ export default {
          dname:[{ required: true, validator: nameregPhone, trigger: "blur" }],
          dtime:[{ required: true, validator: validatePhone, trigger: "blur" }],
       },
-      options: [
-        {
-          value: "zhinan",
-          label: "指南",
-          children: [
-            {
-              value: "shejiyuanze",
-              label: "设计原则",
-              children: [
-                {
-                  value: "yizhi",
-                  label: "一致"
-                },
-                {
-                  value: "fankui",
-                  label: "反馈"
-                },
-                {
-                  value: "xiaolv",
-                  label: "效率"
-                },
-                {
-                  value: "kekong",
-                  label: "可控"
-                }
-              ]
-            },
-            {
-              value: "daohang",
-              label: "导航",
-              children: [
-                {
-                  value: "cexiangdaohang",
-                  label: "侧向导航"
-                },
-                {
-                  value: "dingbudaohang",
-                  label: "顶部导航"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "zujian",
-          label: "组件",
-          children: [
+      options:  [
             {
               value: "basic",
               label: "Basic",
@@ -273,470 +231,8 @@ export default {
                   label: "Button 按钮"
                 }
               ]
-            },
-            {
-              value: "form",
-              label: "Form",
-              children: [
-                {
-                  value: "radio",
-                  label: "Radio 单选框"
-                },
-                {
-                  value: "checkbox",
-                  label: "Checkbox 多选框"
-                },
-                {
-                  value: "input",
-                  label: "Input 输入框"
-                },
-                {
-                  value: "input-number",
-                  label: "InputNumber 计数器"
-                },
-                {
-                  value: "select",
-                  label: "Select 选择器"
-                },
-                {
-                  value: "cascader",
-                  label: "Cascader 级联选择器"
-                },
-                {
-                  value: "switch",
-                  label: "Switch 开关"
-                },
-                {
-                  value: "slider",
-                  label: "Slider 滑块"
-                },
-                {
-                  value: "time-picker",
-                  label: "TimePicker 时间选择器"
-                },
-                {
-                  value: "date-picker",
-                  label: "DatePicker 日期选择器"
-                },
-                {
-                  value: "datetime-picker",
-                  label: "DateTimePicker 日期时间选择器"
-                },
-                {
-                  value: "upload",
-                  label: "Upload 上传"
-                },
-                {
-                  value: "rate",
-                  label: "Rate 评分"
-                },
-                {
-                  value: "form",
-                  label: "Form 表单"
-                }
-              ]
-            },
-            {
-              value: "data",
-              label: "Data",
-              children: [
-                {
-                  value: "table",
-                  label: "Table 表格"
-                },
-                {
-                  value: "tag",
-                  label: "Tag 标签"
-                },
-                {
-                  value: "progress",
-                  label: "Progress 进度条"
-                },
-                {
-                  value: "tree",
-                  label: "Tree 树形控件"
-                },
-                {
-                  value: "pagination",
-                  label: "Pagination 分页"
-                },
-                {
-                  value: "badge",
-                  label: "Badge 标记"
-                }
-              ]
-            },
-            {
-              value: "notice",
-              label: "Notice",
-              children: [
-                {
-                  value: "alert",
-                  label: "Alert 警告"
-                },
-                {
-                  value: "loading",
-                  label: "Loading 加载"
-                },
-                {
-                  value: "message",
-                  label: "Message 消息提示"
-                },
-                {
-                  value: "message-box",
-                  label: "MessageBox 弹框"
-                },
-                {
-                  value: "notification",
-                  label: "Notification 通知"
-                }
-              ]
-            },
-            {
-              value: "navigation",
-              label: "Navigation",
-              children: [
-                {
-                  value: "menu",
-                  label: "NavMenu 导航菜单"
-                },
-                {
-                  value: "tabs",
-                  label: "Tabs 标签页"
-                },
-                {
-                  value: "breadcrumb",
-                  label: "Breadcrumb 面包屑"
-                },
-                {
-                  value: "dropdown",
-                  label: "Dropdown 下拉菜单"
-                },
-                {
-                  value: "steps",
-                  label: "Steps 步骤条"
-                }
-              ]
-            },
-            {
-              value: "others",
-              label: "Others",
-              children: [
-                {
-                  value: "dialog",
-                  label: "Dialog 对话框"
-                },
-                {
-                  value: "tooltip",
-                  label: "Tooltip 文字提示"
-                },
-                {
-                  value: "popover",
-                  label: "Popover 弹出框"
-                },
-                {
-                  value: "card",
-                  label: "Card 卡片"
-                },
-                {
-                  value: "carousel",
-                  label: "Carousel 走马灯"
-                },
-                {
-                  value: "collapse",
-                  label: "Collapse 折叠面板"
-                }
-              ]
             }
-          ]
-        },
-        {
-          value: "ziyuan",
-          label: "资源",
-          children: [
-            {
-              value: "axure",
-              label: "Axure Components"
-            },
-            {
-              value: "sketch",
-              label: "Sketch Templates"
-            },
-            {
-              value: "jiaohu",
-              label: "组件交互文档"
-            }
-          ]
-        }
-      ],
-      optionsa:[
-        {
-          value: "zhinan",
-          label: "指南",
-          children: [
-            {
-              value: "shejiyuanze",
-              label: "设计原则",
-              children: [
-                {
-                  value: "yizhi",
-                  label: "一致"
-                },
-                {
-                  value: "fankui",
-                  label: "反馈"
-                },
-                {
-                  value: "xiaolv",
-                  label: "效率"
-                },
-                {
-                  value: "kekong",
-                  label: "可控"
-                }
-              ]
-            },
-            {
-              value: "daohang",
-              label: "导航",
-              children: [
-                {
-                  value: "cexiangdaohang",
-                  label: "侧向导航"
-                },
-                {
-                  value: "dingbudaohang",
-                  label: "顶部导航"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "zujian",
-          label: "组件",
-          children: [
-            {
-              value: "basic",
-              label: "Basic",
-              children: [
-                {
-                  value: "layout",
-                  label: "Layout 布局"
-                },
-                {
-                  value: "color",
-                  label: "Color 色彩"
-                },
-                {
-                  value: "typography",
-                  label: "Typography 字体"
-                },
-                {
-                  value: "icon",
-                  label: "Icon 图标"
-                },
-                {
-                  value: "button",
-                  label: "Button 按钮"
-                }
-              ]
-            },
-            {
-              value: "form",
-              label: "Form",
-              children: [
-                {
-                  value: "radio",
-                  label: "Radio 单选框"
-                },
-                {
-                  value: "checkbox",
-                  label: "Checkbox 多选框"
-                },
-                {
-                  value: "input",
-                  label: "Input 输入框"
-                },
-                {
-                  value: "input-number",
-                  label: "InputNumber 计数器"
-                },
-                {
-                  value: "select",
-                  label: "Select 选择器"
-                },
-                {
-                  value: "cascader",
-                  label: "Cascader 级联选择器"
-                },
-                {
-                  value: "switch",
-                  label: "Switch 开关"
-                },
-                {
-                  value: "slider",
-                  label: "Slider 滑块"
-                },
-                {
-                  value: "time-picker",
-                  label: "TimePicker 时间选择器"
-                },
-                {
-                  value: "date-picker",
-                  label: "DatePicker 日期选择器"
-                },
-                {
-                  value: "datetime-picker",
-                  label: "DateTimePicker 日期时间选择器"
-                },
-                {
-                  value: "upload",
-                  label: "Upload 上传"
-                },
-                {
-                  value: "rate",
-                  label: "Rate 评分"
-                },
-                {
-                  value: "form",
-                  label: "Form 表单"
-                }
-              ]
-            },
-            {
-              value: "data",
-              label: "Data",
-              children: [
-                {
-                  value: "table",
-                  label: "Table 表格"
-                },
-                {
-                  value: "tag",
-                  label: "Tag 标签"
-                },
-                {
-                  value: "progress",
-                  label: "Progress 进度条"
-                },
-                {
-                  value: "tree",
-                  label: "Tree 树形控件"
-                },
-                {
-                  value: "pagination",
-                  label: "Pagination 分页"
-                },
-                {
-                  value: "badge",
-                  label: "Badge 标记"
-                }
-              ]
-            },
-            {
-              value: "notice",
-              label: "Notice",
-              children: [
-                {
-                  value: "alert",
-                  label: "Alert 警告"
-                },
-                {
-                  value: "loading",
-                  label: "Loading 加载"
-                },
-                {
-                  value: "message",
-                  label: "Message 消息提示"
-                },
-                {
-                  value: "message-box",
-                  label: "MessageBox 弹框"
-                },
-                {
-                  value: "notification",
-                  label: "Notification 通知"
-                }
-              ]
-            },
-            {
-              value: "navigation",
-              label: "Navigation",
-              children: [
-                {
-                  value: "menu",
-                  label: "NavMenu 导航菜单"
-                },
-                {
-                  value: "tabs",
-                  label: "Tabs 标签页"
-                },
-                {
-                  value: "breadcrumb",
-                  label: "Breadcrumb 面包屑"
-                },
-                {
-                  value: "dropdown",
-                  label: "Dropdown 下拉菜单"
-                },
-                {
-                  value: "steps",
-                  label: "Steps 步骤条"
-                }
-              ]
-            },
-            {
-              value: "others",
-              label: "Others",
-              children: [
-                {
-                  value: "dialog",
-                  label: "Dialog 对话框"
-                },
-                {
-                  value: "tooltip",
-                  label: "Tooltip 文字提示"
-                },
-                {
-                  value: "popover",
-                  label: "Popover 弹出框"
-                },
-                {
-                  value: "card",
-                  label: "Card 卡片"
-                },
-                {
-                  value: "carousel",
-                  label: "Carousel 走马灯"
-                },
-                {
-                  value: "collapse",
-                  label: "Collapse 折叠面板"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "ziyuan",
-          label: "资源",
-          children: [
-            {
-              value: "axure",
-              label: "Axure Components"
-            },
-            {
-              value: "sketch",
-              label: "Sketch Templates"
-            },
-            {
-              value: "jiaohu",
-              label: "组件交互文档"
-            }
-          ]
-        }
-      ],
+          ],
     };
   },
   watch: {
@@ -755,6 +251,7 @@ export default {
     },
     //获取店铺 分类  /shop/shopCategoryList
     catchdata() {
+      
       this.dataApi.ajax("get", "/admin/verify/category", {}, cb => {
         // console.log(cb.data)
         // console.log('获取店铺分类')
@@ -764,7 +261,7 @@ export default {
     //获取地址 分类  /admin/verify/getLocation
     catchdatd() {
       this.dataApi.ajax("get", "/admin/verify/getLocation", {}, cb => {
-        // console.log(Object.entries(cb.data),'cb');  
+        // console.log(cb);  
         var arr = Object.entries(cb.data);
         var arr1 = [];
         var arr2 = [];
@@ -772,88 +269,38 @@ export default {
         
         var arr3 = [];
         var arr3_1 = []
-        var obj=  {
-          value: "zujian",
-          label: "组件",
-          children: [
-            {
-              value: "basic",
-              label: "Basic",
-              children: [
-                {
-                  value: "layout",
-                  label: "Layout 布局"
-                },
-                {
-                  value: "color",
-                  label: "Color 色彩"
-                },
-                {
-                  value: "typography",
-                  label: "Typography 字体"
-                },
-                {
-                  value: "icon",
-                  label: "Icon 图标"
-                },
-                {
-                  value: "button",
-                  label: "Button 按钮"
-                }
-              ]
-            }
-          ]
-        }
-        
-        arr.map((data,index)=>{
-            // console.log(data[0],'data');
-            
-            this.log = index;
-            // console.log(Object.entries(arr[index][1]).length,index);
-            arr2_1=[];
-            // console.log(arr[index][1])
-             Object.entries(arr[index][1]).map((data,index)=>{
-                //  console.log(JSON.parse(JSON.stringify(data[0])),this.log);
-                 var b = JSON.parse(JSON.stringify(data[0]));
-                 arr2_1.push({'label':b,'value':index});
-                 arr2[this.log] = arr2_1;   
-                //  console.log(arr2[this.log])
-                arr3_1=[]
-                this.loga=index
-                var s=arr1[index]
-                // console.log(JSON.parse(JSON.stringify(s)))
-                //  Object.entries(arr1[index][1]).map((data,index)=>{
-                //         var c = JSON.parse(JSON.stringify(data[0]));
-                //         arr3_1.push({'label':c,'value':index});
-                //         arr3[this.loga] = arr3_1; 
-                //       })
-            })
-            // console.log(arr2)
-            obj.label = data[0];
-            obj.value = index+'1';
-            // obj[index].children= arr2[index];
-         
-            arr1[index] =JSON.parse(JSON.stringify(obj));
-            // obj.children.label = Object.entries(data[1])[0][0];
-            // obj.children.value = index+'2';
-            //  arr2.push(Object.entries(data[1])[0][0]);
+        var lougeArr = new Array();
+        arr.map((data,index) => {
+
+          var child = {};
+          // console.log(index + '----' + data[1]);
+          child["value"] = data[0]; 
+          child["label"] = data[0];
+          child["children"] = new Array();
+          var data1 = data[1];
+          var subArr = child["children"];
+          Object.keys(data1).forEach((key) => {
+            var subChild = {};
+            subChild["value"] = key; 
+            subChild["label"] = key;
+            subChild["children"] = new Array();
+            var threeArr = subChild["children"];
+            Object.keys(data1[key]).forEach((subKey)=> {
+              var threeChild = {};
+
+              var location = data1[key][subKey]
+              threeChild["value"] = location.areaCode; 
+              threeChild["label"] = location.area;
+              threeArr.push(threeChild);
+            });
+            subArr.push(subChild);
+          })
+          lougeArr.push(child);
         })
-         arr1.map((data,index)=>{
-             arr1[index].children=arr2[index]
-         })
-        // console.log(arr3)
-        // console.log(arr1);
+
+        this.options = lougeArr;
+
         
-         this.options = arr1;
-         
-        // henglist = Object.entries(cb.data);
-        // var arr = {};
-        // var element = "";
-        // for (let index = 0; index < this.shenglist.length; index++) {
-        //   element = this.shenglist[0];
-        //   arr = { value: "1", label: "" };
-        // }
-        // console.log(element);
       });
     },
     //经销商选择上传
@@ -871,9 +318,15 @@ export default {
       //                   console.log(res)
       //            });
     },
+    getSelected(val) {
+    this.selectGroups = val;
+   
+    this.configTips = `已选择${val.length}个分组`;
+},
     //店铺选择上传
     subd() {
       // console.log(this.value4[0].getHours(),this.value4[0].getMinutes())
+      console.log(...this.selectGroups)
       if (this.value4[0].getHours() < 10) {
         var sa = "0" + this.value4[0].getHours();
       } else {
@@ -894,54 +347,55 @@ export default {
       } else {
         var sg = +this.value4[1].getMinutes();
       }
-        console.log(this.formLabelAlign.name)
-        console.log( this.formLabelAlign.idcard)
-        console.log(this.formLabelAlign.mobile)
-        console.log(this.formLabelAlign.sex)
-        console.log(this.formLabelAlign.cayegotyId)
-        console.log(this.formLabelAlign.roleId)
-        console.log(this.formLabelAlign.dname)
-        console.log(this.imageUrl)
-        console.log(this.formLabelAlign.dtime)
-        console.log(this.formLabelAlign.dregion)
-        console.log(this.formLabelAlign.dizhi)
-        console.log(sa + ":" + st)
-        console.log(sc + ":" + sg)
-        if(!this.formLabelAlign.name||!this.formLabelAlign.idcard||!this.formLabelAlign.mobile||!this.formLabelAlign.sex||!this.formLabelAlign.cayegotyId){
-             this.$message.error('经销商信息不完整');
-        }else{
-         console.log('提交')
+        // console.log(this.formLabelAlign.name)
+        // console.log( this.formLabelAlign.idcard)
+        // console.log(this.formLabelAlign.mobile)
+        // console.log(this.formLabelAlign.sex)
+        // console.log(this.formLabelAlign.cayegotyId)
+        // console.log(this.formLabelAlign.roleId)
+        // console.log(this.formLabelAlign.dname)
+        // console.log(this.imageUrl)
+        // console.log(this.formLabelAlign.dtime)
+        // console.log(this.formLabelAlign.dregion)
+        // console.log(this.formLabelAlign.dizhi)
+        // console.log(sa + ":" + st)
+        // console.log(sc + ":" + sg)
+      //   if(!this.formLabelAlign.name||!this.formLabelAlign.idcard||!this.formLabelAlign.mobile||!this.formLabelAlign.sex||!this.formLabelAlign.cayegotyId){
+      //        this.$message.error('经销商信息不完整');
+      //   }else{
+      //    console.log('提交')
           
-      var params = new URLSearchParams();
-      params.append("name", this.formLabelAlign.name);
-      params.append("idCard", this.formLabelAlign.idcard);
-      params.append("mobile", this.formLabelAlign.mobile);
-      params.append("sex", this.formLabelAlign.sex);
-      params.append("locid", "110101");
-      params.append("cayegotyId", this.formLabelAlign.cayegotyId);
-      params.append("roleId", this.formLabelAlign.roleId);
-      params.append("shopName", this.formLabelAlign.dname);
-      params.append("shopLogo",this.imageUrl);
-      params.append("phone", this.formLabelAlign.dtime);
-      params.append("category", this.formLabelAlign.dregion);
-      params.append("detail", "测试数据");
-      params.append("addr", this.formLabelAlign.dizhi);
-      params.append("opentime", sa + ":" + st);
-      params.append("closetime", sc + ":" + sg);
-      console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
-      this.dataApi.ajax("post", "/admin/verify/applyForAagent", params, res => {
+      // var params = new URLSearchParams();
+      // params.append("name", this.formLabelAlign.name);
+      // params.append("idCard", this.formLabelAlign.idcard);
+      // params.append("mobile", this.formLabelAlign.mobile);
+      // params.append("sex", this.formLabelAlign.sex);
+      // params.append("locid", "110101");
+      // params.append("cayegotyId", this.formLabelAlign.cayegotyId);
+      // params.append("roleId", this.formLabelAlign.roleId);
+      // params.append("shopName", this.formLabelAlign.dname);
+      // params.append("shopLogo",this.imageUrl);
+      // params.append("phone", this.formLabelAlign.dtime);
+      // params.append("category", this.formLabelAlign.dregion);
+      // params.append("detail", "测试数据");
+      // params.append("addr", this.formLabelAlign.dizhi);
+      // params.append("opentime", sa + ":" + st);
+      // params.append("closetime", sc + ":" + sg);
+      // console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
+      // this.dataApi.ajax("post", "/admin/verify/applyForAagent", params, res => {
         
         
-        if(res.code==0){
-            this.$message({
-                            message: '恭喜你,提交成功',
-                            type: 'success'
-                            });
-        }else{
-           this.$message.error(res.msg);
-        }
-      });
-        }
+      //   if(res.code==0){
+      //       this.$message({
+      //                       message: '恭喜你,提交成功',
+      //                       type: 'success'
+      //                       });
+      //   }else{
+      //      this.$message.error(res.msg);
+      //   }
+      // });
+      
+       // }
  
     },
     //节点选择

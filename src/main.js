@@ -6,6 +6,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
 import Promise from "promise-polyfill";
+import Dropdown from 'hsy-vue-dropdown'
+import multiCascader from "multi-cascader";
+Vue.use(multiCascader);
+Vue.use(Dropdown)
 Vue.use(ElementUI);
 import VueParticles from 'vue-particles'
 Vue.use(VueParticles)
