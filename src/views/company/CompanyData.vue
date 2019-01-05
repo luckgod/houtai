@@ -3,15 +3,15 @@
     <el-card class="box-card">
       <div class="tit">经销商信息</div>
       <div class="titcon">
-        <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
-          <el-form-item label="姓名">
+        <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true" :rules="rules">
+          <el-form-item label="姓名"  prop="name">
             <el-input v-model="formLabelAlign.name" placeholder="请输入真实姓名"></el-input>
           </el-form-item>
-          <el-form-item label="身份证号">
-            <el-input v-model="formLabelAlign.idcard" placeholder="请输入真实身份证号"></el-input>
+          <el-form-item label="身份证号" prop="idcard">
+            <el-input v-model="formLabelAlign.idcard" placeholder="请输入真实身份证号" maxlength="18" min='11'></el-input>
           </el-form-item>
-          <el-form-item label="手机号">
-            <el-input v-model="formLabelAlign.mobile" placeholder="请输入您的手机号"></el-input>
+          <el-form-item label="手机号" prop="mobile">
+            <el-input v-model="formLabelAlign.mobile" placeholder="请输入您的手机号"  maxlength="11" min='11'></el-input>
           </el-form-item>
           <el-form-item label="性别">
             <el-select v-model="formLabelAlign.sex" placeholder="活动区域">
@@ -41,16 +41,16 @@
           <el-form-item></el-form-item>
           <el-form-item></el-form-item>
         </el-form>
-        <div class="btn">
+        <!-- <div class="btn">
           <el-button type="success" @click="subj">提交申请</el-button>
-        </div>
+        </div> -->
       </div>
     </el-card>
 
     <!-- ==============================================2==================================================================================================================2 -->
     <el-card class="box-card cardtwo">
       <div class="tit">店铺信息</div>
-      <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
+      <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true" :rules="rules">
         <el-form-item label="名称" style="margin:0;">
           <el-upload
             class="avatar-uploader"
@@ -65,7 +65,7 @@
           </el-upload>
           <div class="tipwenzi">点击右侧上传图片</div>
         </el-form-item>
-        <el-form-item label="店铺名称">
+        <el-form-item label="店铺名称" prop="dname">
           <el-input v-model="formLabelAlign.dname"></el-input>
         </el-form-item>
         <el-form-item label="所属品类">
@@ -75,7 +75,7 @@
             </div>
           </el-select>
         </el-form-item>
-        <el-form-item label="店家电话">
+        <el-form-item label="店家电话" prop="dtime">
           <el-input v-model="formLabelAlign.dtime"></el-input>
         </el-form-item>
 
@@ -122,6 +122,39 @@ export default {
   //           aliUpload
   //       },
   data() {
+     // 此处自定义校验手机号码js逻辑
+    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    var validatePhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("号码不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!phoneReg.test(value)) {
+          callback(new Error("格式有误"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    };
+    var mimareg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+    var mimaregPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("号码不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!mimareg.test(value)) {
+          callback(new Error("格式有误"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    };
+    var nameregPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("号码不能为空!!"));
+      }
+     
+    };
     return {
       formLabelAlign: {
         name: "",
@@ -160,6 +193,14 @@ export default {
       uploadCode: 0,
       log:0,
       loga:0,
+       rules: {
+        // 校验手机号码，主要通过validator来指定验证器名称
+        mobile: [{ required: true, validator: validatePhone, trigger: "blur" }],
+        idcard: [{ required: true, validator: mimaregPhone, trigger: "blur" }],
+        name:[{ required: true, validator: nameregPhone, trigger: "blur" }],
+         dname:[{ required: true, validator: nameregPhone, trigger: "blur" }],
+         dtime:[{ required: true, validator: validatePhone, trigger: "blur" }],
+      },
       options: [
         {
           value: "zhinan",
@@ -853,7 +894,24 @@ export default {
       } else {
         var sg = +this.value4[1].getMinutes();
       }
-      //  console.log(sc+":"+sg)
+        console.log(this.formLabelAlign.name)
+        console.log( this.formLabelAlign.idcard)
+        console.log(this.formLabelAlign.mobile)
+        console.log(this.formLabelAlign.sex)
+        console.log(this.formLabelAlign.cayegotyId)
+        console.log(this.formLabelAlign.roleId)
+        console.log(this.formLabelAlign.dname)
+        console.log(this.imageUrl)
+        console.log(this.formLabelAlign.dtime)
+        console.log(this.formLabelAlign.dregion)
+        console.log(this.formLabelAlign.dizhi)
+        console.log(sa + ":" + st)
+        console.log(sc + ":" + sg)
+        if(!this.formLabelAlign.name||!this.formLabelAlign.idcard||!this.formLabelAlign.mobile||!this.formLabelAlign.sex||!this.formLabelAlign.cayegotyId){
+             this.$message.error('经销商信息不完整');
+        }else{
+         console.log('提交')
+          
       var params = new URLSearchParams();
       params.append("name", this.formLabelAlign.name);
       params.append("idCard", this.formLabelAlign.idcard);
@@ -863,10 +921,7 @@ export default {
       params.append("cayegotyId", this.formLabelAlign.cayegotyId);
       params.append("roleId", this.formLabelAlign.roleId);
       params.append("shopName", this.formLabelAlign.dname);
-      params.append(
-        "shopLogo",
-        "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2147322031,325904174&fm=27&gp=0.jpg"
-      );
+      params.append("shopLogo",this.imageUrl);
       params.append("phone", this.formLabelAlign.dtime);
       params.append("category", this.formLabelAlign.dregion);
       params.append("detail", "测试数据");
@@ -875,9 +930,19 @@ export default {
       params.append("closetime", sc + ":" + sg);
       console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
       this.dataApi.ajax("post", "/admin/verify/applyForAagent", params, res => {
-        console.log("提交执行");
-        console.log(res);
+        
+        
+        if(res.code==0){
+            this.$message({
+                            message: '恭喜你,提交成功',
+                            type: 'success'
+                            });
+        }else{
+           this.$message.error(res.msg);
+        }
       });
+        }
+ 
     },
     //节点选择
     getCheckedNodes() {
@@ -909,20 +974,12 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
       console.log(file);
       this.Upload(file);
-      // console.log(file.name)
-      // this.dataApi.upload(file)
     },
     beforeAvatarUpload(file) {
-      // const isJPG = file.type === 'image/jpeg';
-      // const isLt2M = file.size / 1024 / 1024 < 2;
+     
       const isJPG = true;
       const isLt2M = true;
-      // if (!isJPG) {
-      //   this.$message.error('上传头像图片只能是 JPG 格式!');
-      // }
-      // if (!isLt2M) {
-      //   this.$message.error('上传头像图片大小不能超过 2MB!');
-      // }
+     
       return isJPG && isLt2M;
     },
     Upload(file) {
