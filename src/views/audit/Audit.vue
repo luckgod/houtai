@@ -79,7 +79,7 @@
         <el-form>
           <el-form-item label="活动标志" :label-width="formLabelWidth">
             <div class="tupain">
-              <img :src="date.shopLogo" alt="头像">
+              <img :src="date.shopLogo" alt="头像" style="width:50px;height:50px;">
             </div>
           </el-form-item>
           <el-form-item label="店铺名称" :label-width="formLabelWidth">
@@ -227,13 +227,13 @@ export default {
     },
     //店铺详细信息
     jshenhea(ta) {
-      console.log(ta);
+      // console.log(ta);
       this.date.shopLogo = ta.shopLogo;
       this.date.shopName = ta.shopName;
       this.date.category = ta.category;
       this.date.addr = ta.addr;
-      this.date.opentime = ta.opentime;
-      this.date.closetime = ta.closetime;
+      this.date.opentime = ta.openTime;
+      this.date.closetime = ta.closeTime;
       this.date.shopPhone = ta.shopPhone;
       this.date.id=ta.id
       this.dialogFormVisible = true;

@@ -6,23 +6,23 @@
     </div>
       <div class="seone" key="2">
           
-    <el-form class="demo-ruleForm">
+    <el-form class="demo-ruleForm" :rules="rules" :model="form">
        
-          <el-form-item   class="aa">
-            <el-input  placeholder="你的手机号码" v-model="phone"></el-input>
-           <!-- <i  class="digweib el-icon-more" ></i> -->
+          <el-form-item   class="aa" prop="phone">
+            <el-input  placeholder="你的手机号码" v-model="form.phone" maxlength="11" min='11'></el-input>
+           
         </el-form-item>
-         <el-form-item   class="bb">
-            <el-input  placeholder="验证码" v-model="cod"></el-input>
+         <el-form-item   class="bb"  prop="cod">
+            <el-input  placeholder="验证码" v-model="form.cod" maxlength="6" min='6'></el-input>
             <el-button type="primary" class="weizhi"  @click="reg" v-show="sendAuthCode" >发送</el-button>
              <el-button type="primary" class="weizhi" style="background:#ccc" v-show="!sendAuthCode" >{{auth_time}}S</el-button>
         </el-form-item>
-        <el-form-item   class="aa">
-            <el-input  placeholder="你的密码"  v-model="worda"></el-input>
+        <el-form-item   class="aa" prop="worda">
+            <el-input  type='password' placeholder="你的密码"  v-model="form.worda" maxlength="8" min='8'></el-input>
          
         </el-form-item>
-        <el-form-item   class="aa">
-            <el-input  placeholder="确认你的密码"  v-model="word"></el-input>
+        <el-form-item   class="aa" prop="word">
+            <el-input  type='password' placeholder="确认你的密码"  v-model="form.word" maxlength="8" min='8'></el-input>
            <!-- <i  class="digweib el-icon-mobile-phone" ></i> -->
         </el-form-item>            
         <el-form-item>
@@ -44,43 +44,96 @@ import axios from 'axios'
   export default {
     name: 'cforgetpassword',
     data(){
+         // 此处自定义校验手机号码js逻辑
+    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    var validatePhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("号码不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!phoneReg.test(value)) {
+          callback(new Error("格式有误"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    };
+    var mimareg = /^[a-zA-Z0-9]{8,8}$/;
+    var mimaregPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("密码不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!mimareg.test(value)) {
+          callback(new Error("格式有误"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    };
+   var codreg=/^\d{6}$/;  
+    var codPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("验证码不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!codreg.test(value)) {
+          callback(new Error("格式有误"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    };
         return{
-            phone:'',
+          form:{
+             phone:'',
             worda:'',
             cod:'',
             word:'',
+          },
+           
             sendAuthCode:true,
             auth_time:80,
+              rules: {
+                // 校验手机号码，主要通过validator来指定验证器名称
+                phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
+                word: [{ required: true, validator: mimaregPhone, trigger: "blur" }],
+                 worda: [{ required: true, validator: mimaregPhone, trigger: "blur" }],
+                 cod: [{ required: true, validator:codPhone, trigger: "blur" }],
+              
+              },
         }
     },
     methods: {
       jumpr(){
          
-          this.$router.push('/login')
+          this.$router.push('/')
       },
     catchdata(){
        
-     console.log(this.word)
      
-    axios.get('http://192.168.100.120:8082/user/forgetPassword', {
-    params: {
-      mobile:this.phone,
-      code:this.cod,
-      password:this.word,
-    }
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });             
-                 
+     if(this.form.word==this.form.worda){
+        var params = new URLSearchParams()
+      params.append('mobile',this.form.phone)
+      params.append('code',this.form.cod)
+        params.append('password',this.form.word)
+      this.dataApi.ajax('get','/user/forgetPassword',params, res => {    
+                         if(res.code==0){
+                         this.$message({
+                                        message: '提交成功',
+                                        type: 'success'
+                                      });}
+                 });
+     }else{
+      this.$message('密码不一致');
+     }
+    
+           
     },
     catcode(){
       console.log(this.phone)
       var params = new URLSearchParams()
-      params.append('mobile',this.phone)
+      params.append('mobile',this.form.phone)
  
      this.dataApi.ajax('get','/user/sms',params, res => {    
                        
@@ -159,6 +212,7 @@ right: 35px;
 top: 0;
 font-weight: 100;
 }
+
 </style>
 <style>
 .aa .el-input__inner {
@@ -171,9 +225,7 @@ font-weight: 100;
   border:1px solid #c1c1c1;
   
 }
-.el-form-item{
-margin-bottom: 10px;
-}
+
 .el-form-item__content{
     line-height:0;
 }
@@ -187,5 +239,6 @@ float: left;
   font-weight:200;
   border:1px solid #c1c1c1;
 }
+
 </style>
 

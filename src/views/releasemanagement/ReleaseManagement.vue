@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div class="tit">经销商信息</div>
-        <dropdown :data="dataa" :cbChanged="changed"></dropdown>
+        <multiCascader width="240px" height="220px" :options="options" @on-selected="getSelected" :inputValue="configTips"></multiCascader>
       <div class="titcon">
         <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
           <!-- 图片上传 ============================================================================================================-->

@@ -15,13 +15,13 @@
             <el-input  placeholder="你的手机号码" v-model="form.phone" maxlength="11" min='11'></el-input>
            <!-- <i  class="digweib el-icon-more" ></i> -->
         </el-form-item>
-        <div style="line-height:0!important;">
-                 <el-form-item   class="bb" >
+        <!-- <div style="line-height:0!important;"> -->
+                 <el-form-item   class="bb"  prop="cod">
             <el-input  placeholder="验证码" v-model="form.cod" ></el-input>
              <el-button type="primary" class="weizhi"  @click="reg" v-show="sendAuthCode" >发送</el-button>
              <el-button type="primary" class="weizhi" style="background:#ccc" v-show="!sendAuthCode" >{{auth_time}}S</el-button>
         </el-form-item>
-        </div>
+        <!-- </div> -->
         <el-form class="demo-ruleForm" ref="form" :model="form" :rules="rules"  >
         <el-form-item   class="aa"  prop="word">
             <el-input type='password'  placeholder="你的密码" v-model='form.word' maxlength="8" min='8' ></el-input>
@@ -75,6 +75,25 @@ import axios from 'axios'
         }
       }, 1000);
     };
+    var nameregPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("号码不能为空!!"));
+      }
+     
+    };
+    var codreg=/^\d{6}$/;  
+    var codPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("验证码不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!codreg.test(value)) {
+          callback(new Error("格式有误"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    };
         return{
           form:{
               phone:'',
@@ -89,6 +108,9 @@ import axios from 'axios'
                 // 校验手机号码，主要通过validator来指定验证器名称
                 phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
                 word: [{ required: true, validator: mimaregPhone, trigger: "blur" }],
+                name: [{ required: true, validator: nameregPhone, trigger: "blur" }],
+                cod: [{ required: true, validator: codPhone, trigger: "blur" }],
+              
               
               },
 
@@ -97,7 +119,7 @@ import axios from 'axios'
   
     methods: {
       jumpr(){
-          this.$router.push('/login')
+          this.$router.push('/')
       },
       catchdata(){
        

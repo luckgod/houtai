@@ -326,7 +326,7 @@ export default {
     //店铺选择上传
     subd() {
       // console.log(this.value4[0].getHours(),this.value4[0].getMinutes())
-      console.log(...this.selectGroups)
+      console.log(this.selectGroups.join())
       if (this.value4[0].getHours() < 10) {
         var sa = "0" + this.value4[0].getHours();
       } else {
@@ -360,42 +360,42 @@ export default {
         // console.log(this.formLabelAlign.dizhi)
         // console.log(sa + ":" + st)
         // console.log(sc + ":" + sg)
-      //   if(!this.formLabelAlign.name||!this.formLabelAlign.idcard||!this.formLabelAlign.mobile||!this.formLabelAlign.sex||!this.formLabelAlign.cayegotyId){
-      //        this.$message.error('经销商信息不完整');
-      //   }else{
-      //    console.log('提交')
+        if(!this.formLabelAlign.name||!this.formLabelAlign.idcard||!this.formLabelAlign.mobile||!this.formLabelAlign.sex||!this.formLabelAlign.cayegotyId){
+             this.$message.error('经销商信息不完整');
+        }else{
+         console.log('提交')
           
-      // var params = new URLSearchParams();
-      // params.append("name", this.formLabelAlign.name);
-      // params.append("idCard", this.formLabelAlign.idcard);
-      // params.append("mobile", this.formLabelAlign.mobile);
-      // params.append("sex", this.formLabelAlign.sex);
-      // params.append("locid", "110101");
-      // params.append("cayegotyId", this.formLabelAlign.cayegotyId);
-      // params.append("roleId", this.formLabelAlign.roleId);
-      // params.append("shopName", this.formLabelAlign.dname);
-      // params.append("shopLogo",this.imageUrl);
-      // params.append("phone", this.formLabelAlign.dtime);
-      // params.append("category", this.formLabelAlign.dregion);
-      // params.append("detail", "测试数据");
-      // params.append("addr", this.formLabelAlign.dizhi);
-      // params.append("opentime", sa + ":" + st);
-      // params.append("closetime", sc + ":" + sg);
-      // console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
-      // this.dataApi.ajax("post", "/admin/verify/applyForAagent", params, res => {
+      var params = new URLSearchParams();
+      params.append("name", this.formLabelAlign.name);
+      params.append("idCard", this.formLabelAlign.idcard);
+      params.append("mobile", this.formLabelAlign.mobile);
+      params.append("sex", this.formLabelAlign.sex);  
+      params.append("locid", this.selectGroups.join());
+      params.append("cayegotyId", this.formLabelAlign.cayegotyId);
+      params.append("roleId", this.formLabelAlign.roleId);
+      params.append("shopName", this.formLabelAlign.dname);
+      params.append("shopLogo",this.imageUrl);
+      params.append("phone", this.formLabelAlign.dtime);
+      params.append("category", this.formLabelAlign.dregion);
+      params.append("detail", "测试数据");
+      params.append("addr", this.formLabelAlign.dizhi);
+      params.append("opentime", sa + ":" + st);
+      params.append("closetime", sc + ":" + sg);
+      console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
+      this.dataApi.ajax("post", "/admin/verify/applyForAagent", params, res => {
         
         
-      //   if(res.code==0){
-      //       this.$message({
-      //                       message: '恭喜你,提交成功',
-      //                       type: 'success'
-      //                       });
-      //   }else{
-      //      this.$message.error(res.msg);
-      //   }
-      // });
+        if(res.code==0){
+            this.$message({
+                            message: '恭喜你,提交成功',
+                            type: 'success'
+                            });
+        }else{
+           this.$message.error(res.msg);
+        }
+      });
       
-       // }
+       }
  
     },
     //节点选择

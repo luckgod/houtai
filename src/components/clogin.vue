@@ -62,7 +62,7 @@ export default {
         }
       }, 1000);
     };
-    var mimareg = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}$/;
+    var mimareg = /^[a-zA-Z0-9]{8,8}$/;
     var mimaregPhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("号码不能为空!!"));
