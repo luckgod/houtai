@@ -8,11 +8,11 @@
           
     <el-form class="demo-ruleForm" :rules="rules" :model="form">
         <el-form-item   class="aa" prop="name">
-            <el-input  placeholder="你的昵称" v-model="form.name"></el-input>
+            <el-input  placeholder="你的昵称" v-model="form.name" maxlength="20" min='1'></el-input>
            <!-- <i  class="digweib el-icon-mobile-phone" ></i> -->
         </el-form-item>
           <el-form-item   class="aa"  prop="phone">
-            <el-input  placeholder="你的手机号码" v-model="form.phone" maxlength="11" min='11'></el-input>
+            <el-input  placeholder="你的手机号码" v-model="form.phone" ></el-input>
            <!-- <i  class="digweib el-icon-more" ></i> -->
         </el-form-item>
         <!-- <div style="line-height:0!important;"> -->
@@ -62,7 +62,7 @@ import axios from 'axios'
         }
       }, 1000);
     };
-    var mimareg = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}$/;
+    var mimareg = /^[a-zA-Z0-9]{8,8}$/;
     var mimaregPhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("号码不能为空!!"));
@@ -81,7 +81,7 @@ import axios from 'axios'
       }
      
     };
-    var codreg=/^\d{6}$/;  
+    var codreg=/^\d{4}$/;  
     var codPhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("验证码不能为空!!"));
@@ -94,6 +94,7 @@ import axios from 'axios'
         }
       }, 1000);
     };
+   
         return{
           form:{
               phone:'',
@@ -122,21 +123,31 @@ import axios from 'axios'
           this.$router.push('/')
       },
       catchdata(){
-       
+       console.log( this.form.cod,this.form.phone,this.form.name,this.form.word)
       var params = new URLSearchParams()
       params.append('code', this.form.cod)
       params.append('mobile', this.form.phone)
       params.append('name', this.form.name)
-        params.append('password', this.form.word)
+      params.append('password', this.form.word)
  
       this.dataApi.ajax('post','/user/register',params, res => {    
-                        console.log(res)
+                        if(res.code==0){
+                             this.$message({
+                                        message:'注册成功',
+                                        type: 'success'
+                                      });
+                        }else{
+                           this.$message.error(res.msg);
+                        }
                  });
     },
     catcode(){
-      console.log(this.phone)
-     
-      var params = new URLSearchParams()
+      // console.log(this.phone)
+      var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+     if(!phoneReg.test(this.form.phone)){
+         this.$message.error('手机号格式永无');
+     }else{
+        var params = new URLSearchParams()
       params.append('mobile',this.form.phone)
      
       this.dataApi.ajax('get','/user/sms',params, res => {    
@@ -156,9 +167,14 @@ import axios from 'axios'
                             }
                             }, 1000);
 
+                       }else{
+                            console.log(res)
+                            this.$message.error(res.msg);
                        }
                        
                  });
+     }
+      
      
       
     

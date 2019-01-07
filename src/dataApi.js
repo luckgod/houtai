@@ -3,7 +3,8 @@ import CryptoJS from 'crypto-js'
 import queryString from 'querystring'
 import Vue from 'vue'
 import md5 from 'js-md5'
-
+import ElementUI from 'element-ui';
+Vue.use(ElementUI);
 // const PUBLIC_KEY =
 //     '-----BEGIN PUBLIC KEY-----\
 //     MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCA\
@@ -290,7 +291,8 @@ let ajax = function (posttype, url, params, cb) {
                     cb(res.data);
                     
 		        } else if(res.data.code == -1) {
-			        //登录获取的sessionkey失效等逻辑的处理
+                    //登录获取的sessionkey失效等逻辑的处理
+                    this.$message.error(res.data.msg);
 		        } else {
 			        //code=0的处理
 			         alert(res.data.msg);
@@ -307,16 +309,18 @@ let ajax = function (posttype, url, params, cb) {
                 
                 headers: {'token': getCookie('token')},
             }
-            ).then(function(res) { 						
-			if(res.data.code == 0) {
-				//正确返回时的处理
-				cb(res.data);
-			} else if(res.data.code == -1) {
-				//登录获取的sessionkey失效等逻辑的处理
-			} else {
-				//code=0的处理
-				alert(res.data.msg);
-			}
+            ).then(function(res) { 	
+                cb(res.data);					
+			// if(res.data.code == 0) {
+			// 	//正确返回时的处理
+			// 	cb(res.data);
+			// } else if(res.data.code == -1) {
+            //     //登录获取的sessionkey失效等逻辑的处理
+            //     this.$message.error(res.data.msg);
+			// } else {
+			// 	//code=0的处理
+			// 	alert(res.data.msg);
+			// }
 		}).catch(function(error) {
             console.log(error)
          }) 

@@ -8,7 +8,7 @@
       <el-form class="demo-ruleForm" ref="form" :rules="rules" :model="form">
         <el-form-item class="aa" prop="phone">
 
-          <el-input class="digweia" placeholder="请输入手机号" v-model="form.phone" auto-complete="true" maxlength="11" min='11'></el-input>
+          <el-input class="digweia" placeholder="请输入手机号" v-model="form.phone" auto-complete="true" ></el-input>
         
         </el-form-item>
       </el-form>
@@ -24,12 +24,12 @@
           <el-button
             type="primary"
            @click="jumpr"
-            style="width: 201px; height: 70px;font-size: 24px;background: #2a334b; font-weight: 100;"
+            style="width: 201px; height: 70px;font-size: 24px;background: #2a334b; font-weight: 400;"
           >注 册</el-button>
            <el-button
             type="primary"
              @click="log"
-            style="width: 201px; height: 70px;font-size: 24px;background:#088cee; font-weight: 100;"
+            style="width: 201px; height: 70px;font-size: 24px;background:#088cee; font-weight: 400;"
           >登 录</el-button>
         </el-form-item>
       </el-form>
@@ -106,7 +106,8 @@ export default {
       params.append('password', this.form.word)
 
  
-      this.dataApi.ajax('post','/user/login',params, res => {    
+      this.dataApi.ajax('post','/user/login',params, res => { 
+                      console.log(res)
                         if(res.code==0){
                             
                         function setCookie(name, value, day) {
@@ -123,6 +124,7 @@ export default {
                                       });
                            
                         }else{
+                            console.log(res)
                            this.$message.error(res.msg);
                            
                         }

@@ -227,11 +227,11 @@ export default {
     },
     //店铺详细信息
     jshenhea(ta) {
-      // console.log(ta);
+      console.log(ta);
       this.date.shopLogo = ta.shopLogo;
       this.date.shopName = ta.shopName;
       this.date.category = ta.category;
-      this.date.addr = ta.addr;
+      this.date.addr = ta.shopAddr;
       this.date.opentime = ta.openTime;
       this.date.closetime = ta.closeTime;
       this.date.shopPhone = ta.shopPhone;
@@ -257,7 +257,7 @@ export default {
 
       params.append("page", this.datc.current);
       this.dataApi.ajax("get", "/admin/verify/applyAgentList", params, res => {
-        console.log(res.data.records);
+        // console.log(res.data.records);
         this.datc.current = res.data.current;
 
         this.datc.size = res.data.size;

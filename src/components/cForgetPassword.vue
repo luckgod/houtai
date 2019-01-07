@@ -71,7 +71,7 @@ import axios from 'axios'
         }
       }, 1000);
     };
-   var codreg=/^\d{6}$/;  
+   var codreg=/^\d{4}$/;  
     var codPhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("验证码不能为空!!"));
@@ -122,7 +122,9 @@ import axios from 'axios'
                          this.$message({
                                         message: '提交成功',
                                         type: 'success'
-                                      });}
+                                      });}else{
+                                         this.$message.error(res.msg);
+                                      }
                  });
      }else{
       this.$message('密码不一致');
@@ -152,7 +154,10 @@ import axios from 'axios'
                             }
                             }, 1000);
 
+                       }else{
+                          this.$message.error(res.msg);
                        }
+
                        
                  });
     },

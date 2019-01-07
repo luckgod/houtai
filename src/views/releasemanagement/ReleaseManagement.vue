@@ -1,8 +1,13 @@
 <template>
   <div>
     <el-card class="box-card">
-      <div class="tit">经销商信息</div>
-        <multiCascader width="240px" height="220px" :options="options" @on-selected="getSelected" :inputValue="configTips"></multiCascader>
+      <div class="tit">经销商信息
+        <div class="chose">
+         <multiCascader  :options="options" @on-selected="getSelected" :inputValue="configTips"></multiCascader>
+      </div>
+      </div>
+      
+       
       <div class="titcon">
         <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
           <!-- 图片上传 ============================================================================================================-->
@@ -143,10 +148,12 @@
 <script>
 
 import { client } from "../../alioss.js";
-
+import multiCascader from "multi-cascader";
 export default {
   name: "ReleaseManagement",
-   
+   components:{
+            multiCascader
+        },
   data() {
     return {
       formLabelAlign: {
@@ -156,7 +163,31 @@ export default {
         agentGrades:'',
        
     },
+      options: [{
+          value: 'A级经销商',
+          label: 'A级经销商',         
+          },
+          {
+          value: 'B级经销商',
+          label: 'B级经销商',          
+          },
+           {
+          value: 'C级经销商',
+          label: 'C级经销商',          
+          },
+           {
+          value: 'D级经销商',
+          label: 'D级经销商',          
+          },
+           {
+          value: 'E级经销商',
+          label: 'E级经销商',          
+          },
+
+          ],
+        
      
+      configTips:'',
       cayegotyIdlist: "",
       imageUrla: "",
       imageUrlb: "",
@@ -176,8 +207,14 @@ export default {
 }],
     };
   },
-
+  
   methods: {
+    //权限选择
+     getSelected(val) {
+    this.selectGroups = val;
+   
+    this.configTips = `已选择${val.length}个分组`;
+      },
     changed(selected) {
       console.log(selected)
     },
@@ -369,6 +406,9 @@ export default {
 .box-card {
   width: 91%;
   margin: 0;
+}
+.chose{
+  float: right;
 }
 .tit {
   text-align: left;

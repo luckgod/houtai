@@ -1,13 +1,20 @@
 import Vue from 'vue'
+import App from './App.vue'
 import axios from 'axios'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import App from './App.vue'
+
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
 import Promise from "promise-polyfill";
 import Dropdown from 'hsy-vue-dropdown'
 import multiCascader from "multi-cascader";
+import cascaderMulti from "cascader-multi";
+
+Vue.use(iView);
+Vue.use(cascaderMulti);
 Vue.use(multiCascader);
 Vue.use(Dropdown)
 Vue.use(ElementUI);
