@@ -85,7 +85,7 @@
             },
             maxSize: {
                 type: Number,
-                default: 1024 * 1024 //单张图片大小限制默认:1024kb
+                default: 19024 * 19024 //单张图片大小限制默认:1024kb
             },
             allowTypes: {
                 default: "image/png,image/jpeg,image/jpg"

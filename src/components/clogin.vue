@@ -15,7 +15,7 @@
       <el-form class="demo-ruleForm" ref="form" :model="form" :rules="rules"  >
         <el-form-item class="aa" prop="word">
 
-          <el-input class="digweic" placeholder="请输入8位数密码" v-model="form.word"  maxlength="8" min='11' type="password"></el-input>
+          <el-input class="digweic" placeholder="请输入8位数密码" v-model="form.word"   type="password"></el-input>
        
         </el-form-item>
       </el-form>
@@ -101,7 +101,16 @@ export default {
     catchdata(){
       // console.log(this.form.phone)
       //  console.log(this.form.word)
-      var params = new URLSearchParams()
+        var mimareg = /^[a-zA-Z0-9]{8,8}$/;
+         var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+        if (!phoneReg.test(this.form.phone)) {
+          this.$message.error('手机号格式有误');
+        } 
+         if (!mimareg.test(this.form.word)) {
+           this.$message.error('密码格式有误');
+        } 
+      if(phoneReg.test(this.form.phone)&&mimareg.test(this.form.word)){
+          var params = new URLSearchParams()
       params.append('mobile', this.form.phone)
       params.append('password', this.form.word)
 
@@ -129,11 +138,27 @@ export default {
                            
                         }
                   });     
+      }  
+      
     },
     log(){
        this.catchdata()
-    }
-  }
+    },
+    keyDownLogin(e) {
+                if (!e) {
+                    e = window.event;
+                }
+                if ((e.keyCode || e.which) === 13) {
+                  this.log()
+                }
+            },
+  },
+   created() {
+            document.addEventListener('keydown', this.keyDownLogin)
+        },
+        destroyed() {
+            document.removeEventListener('keydown', this.keyDownLogin)
+        },
 };
 </script>
 

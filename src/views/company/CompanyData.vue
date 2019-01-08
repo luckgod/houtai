@@ -46,27 +46,16 @@
             </el-select>
           </el-form-item>
           <el-form-item label="代理区域市">
-            <!-- <el-select v-model="formLabelAlign.locid" placeholder="请选择代理的市" >   -->
-            <!-- <el-cascader :options="options" change-on-select></el-cascader> -->
-            <!-- <multiCascader
-              width="240px"
-              height="220px"
-              :options="options"
-              @on-selected="getSelected"
-              :inputValue="configTips"
-              :multiple="false"
-            ></multiCascader> -->
+          
              <cascaderMulti v-model="formLabelAlign.locid" :data="options" placeholder="状态码" style="z-index:100"></cascaderMulti>
-            <!-- </el-select> -->
+          
           </el-form-item>
 
           <el-form-item></el-form-item>
           <el-form-item></el-form-item>
           <el-form-item></el-form-item>
         </el-form>
-        <!-- <div class="btn">
-          <el-button type="success" @click="subj">提交申请</el-button>
-        </div>-->
+      
       </div>
     <!-- </el-card> -->
 
@@ -81,14 +70,15 @@
         :rules="rules"
       >
         <el-form-item label="名称" style="margin:0;">
-          <el-upload
+          <!-- <el-upload
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
-          >
+          > -->
+          <input type="file" >
             <img
               v-if="imageUrl"
               :src="imageUrl"
@@ -263,32 +253,6 @@ export default {
         dtime: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
       options: [
-        {
-          value: "basic",
-          label: "Basic",
-          children: [
-            {
-              value: "layout",
-              label: "Layout 布局"
-            },
-            {
-              value: "color",
-              label: "Color 色彩"
-            },
-            {
-              value: "typography",
-              label: "Typography 字体"
-            },
-            {
-              value: "icon",
-              label: "Icon 图标"
-            },
-            {
-              value: "button",
-              label: "Button 按钮"
-            }
-          ]
-        }
       ]
     };
   },
@@ -297,11 +261,7 @@ export default {
       console.info(val);
     }
   },
-  // computed: {
-  //   shia: function () {
-  //       console.log(this.locid)
-  //   }
-  // },
+
   methods: {
     handleChange(value) {
       console.log(value);
@@ -363,20 +323,7 @@ export default {
       });
     },
     //经销商选择上传
-    subj() {
-      var data = {
-        name: this.formLabelAlign.name,
-        idCard: this.formLabelAlign.idcard,
-        mobile: this.formLabelAlign.mobile,
-        sex: this.formLabelAlign.sex,
-        locid: "110101",
-        cayegotyId: this.formLabelAlign.cayegotyId,
-        roleId: this.formLabelAlign.roleId
-      };
-      // this.dataApi.ajax('post','/admin/verify/applyForAagent',data, res => {
-      //                   console.log(res)
-      //            });
-    },
+    
     getSelected(val) {
       this.selectGroups = val;
       this.configTips = `已选择${val.length}个分组`;
@@ -446,9 +393,7 @@ export default {
         this.$message.error("经销商信息不完整");
       }
      
-      this.formLabelAlign.name = this.formLabelAlign.name.replace(/\s*/g,"");
-     
-     
+      this.formLabelAlign.name = this.formLabelAlign.name.replace(/\s*/g,"");          
         var params = new URLSearchParams();
         params.append("name", this.formLabelAlign.name);
         params.append("idCard", this.formLabelAlign.idcard);

@@ -12,7 +12,7 @@ import Promise from "promise-polyfill";
 import Dropdown from 'hsy-vue-dropdown'
 import multiCascader from "multi-cascader";
 import cascaderMulti from "cascader-multi";
-
+import './assets/css/weui.min.css'
 Vue.use(iView);
 Vue.use(cascaderMulti);
 Vue.use(multiCascader);

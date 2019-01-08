@@ -18,11 +18,11 @@
              <el-button type="primary" class="weizhi" style="background:#ccc" v-show="!sendAuthCode" >{{auth_time}}S</el-button>
         </el-form-item>
         <el-form-item   class="aa" prop="worda">
-            <el-input  type='password' placeholder="你的密码"  v-model="form.worda" maxlength="8" min='8'></el-input>
+            <el-input  type='password' placeholder="你的密码"  v-model="form.worda"></el-input>
          
         </el-form-item>
         <el-form-item   class="aa" prop="word">
-            <el-input  type='password' placeholder="确认你的密码"  v-model="form.word" maxlength="8" min='8'></el-input>
+            <el-input  type='password' placeholder="确认你的密码"  v-model="form.word" ></el-input>
            <!-- <i  class="digweib el-icon-mobile-phone" ></i> -->
         </el-form-item>            
         <el-form-item>
@@ -90,8 +90,7 @@ import axios from 'axios'
             worda:'',
             cod:'',
             word:'',
-          },
-           
+          },           
             sendAuthCode:true,
             auth_time:80,
               rules: {
@@ -111,21 +110,49 @@ import axios from 'axios'
       },
     catchdata(){
        
-     
+    var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    var mimareg = /^[a-zA-Z0-9]{8,8}$/;
+    var codreg=/^\d{4}$/;
+     if (!phoneReg.test(this.form.phone)) {
+          this.$message.error('手机号格式有误');
+        } 
+     if (!mimareg.test(this.form.worda)) {
+          this.$message.error('一次密码格式有误');
+        }
+        if (!mimareg.test(this.form.word)) {
+          this.$message.error('二次密码格式有误');
+        }  
+    if (!codreg.test(this.form.cod)){
+          this.$message.error('验证码格式有误');
+        } 
+
      if(this.form.word==this.form.worda){
-        var params = new URLSearchParams()
+      //  console.log(phoneReg.test(this.form.phone))
+      //  console.log(mimareg.test(this.form.worda))
+      //  console.log(mimareg.test(this.form.word))
+      //  console.log(phoneReg.test(this.form.phone))
+       if(phoneReg.test(this.form.phone)&&mimareg.test(this.form.worda)&&mimareg.test(this.form.word)&&codreg.test(this.form.cod)){
+
+       console.log('1111')
+      var params = new URLSearchParams()
       params.append('mobile',this.form.phone)
       params.append('code',this.form.cod)
-        params.append('password',this.form.word)
+      params.append('password',this.form.word)
       this.dataApi.ajax('get','/user/forgetPassword',params, res => {    
                          if(res.code==0){
                          this.$message({
                                         message: '提交成功',
                                         type: 'success'
-                                      });}else{
+                                      });
+                                       this.$router.push('/')
+                                      }else{
                                          this.$message.error(res.msg);
                                       }
                  });
+                 }else{
+                    console.log('1111')
+                   this.$message.error('请重新输入');
+                 }
      }else{
       this.$message('密码不一致');
      }
@@ -133,8 +160,12 @@ import axios from 'axios'
            
     },
     catcode(){
-      console.log(this.phone)
-      var params = new URLSearchParams()
+     
+       var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+        if (!phoneReg.test(this.form.phone)) {
+          this.$message.error('手机号格式有误');
+        }else{
+           var params = new URLSearchParams()
       params.append('mobile',this.form.phone)
  
      this.dataApi.ajax('get','/user/sms',params, res => {    
@@ -160,14 +191,30 @@ import axios from 'axios'
 
                        
                  });
+        } 
+     
     },
     reg(){
        this.catcode()
     },
     creg(){
          this.catchdata()
-    }
-    }
+    },
+    keyDownLogin(e) {
+                if (!e) {
+                    e = window.event;
+                }
+                if ((e.keyCode || e.which) === 13) {
+                  this.creg()
+                }
+            },
+    },
+    created() {
+            document.addEventListener('keydown', this.keyDownLogin)
+        },
+        destroyed() {
+            document.removeEventListener('keydown', this.keyDownLogin)
+        },
   }
 </script>
 
@@ -217,7 +264,9 @@ right: 35px;
 top: 0;
 font-weight: 100;
 }
-
+.el-form-item__error{
+  padding-left:40px;
+}
 </style>
 <style>
 .aa .el-input__inner {
@@ -244,6 +293,8 @@ float: left;
   font-weight:200;
   border:1px solid #c1c1c1;
 }
-
+.el-form-item__error{
+  padding-left:40px;
+}
 </style>
 

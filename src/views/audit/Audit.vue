@@ -41,11 +41,19 @@
         <el-table-column prop="unioid" label="科蚪号"></el-table-column>
         <el-table-column prop="applyTime" label="注册时间"></el-table-column>
         <el-table-column label="审核经销商状态">
+         
+             
+          
           <template slot-scope="scope" prop="id">
+             <el-tooltip placement="top">
+              <div slot="content" class="statustip">
+                <span style="padding: 0 20px;" @click="jshenhe(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="dpushenhea(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="dpushenheb(scope.row.id)">拒绝申请</span>
+              </div>
             <el-button
               type="text"
               @click="jshenhe(scope.row)"
             >{{scope.row.isHandleAgent|capitalize}}</el-button>
+              </el-tooltip>
             <!-- <div @click="jshenhe(scope.row)">
             
               待审核
@@ -54,10 +62,15 @@
         </el-table-column>
         <el-table-column label="审核店铺状态">
           <template slot-scope="scope">
+             <el-tooltip placement="top">
+            <div slot="content" class="statustip">
+                <span style="padding: 0 20px;" @click="jshenhea(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="jshenheta(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="jshenhetb(scope.row.id)">拒绝申请</span>
+              </div>
             <el-button
               type="text"
               @click="jshenhea(scope.row)"
             >{{scope.row.isHandleShop|capitalizea}}</el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -75,7 +88,7 @@
       </div>
      
       <!-- 店铺商店铺资料 -->
-      <el-dialog title="收货地址" :visible.sync="dialogFormVisible" append-to-body width="400px">
+      <el-dialog title="收货地址1" :visible.sync="dialogFormVisible" append-to-body width="400px">
         <el-form>
           <el-form-item label="活动标志" :label-width="formLabelWidth">
             <div class="tupain">
@@ -105,7 +118,7 @@
         </div>
       </el-dialog>
        <!-- A级经销商资料 -->
-      <el-dialog title="收货地址" :visible.sync="dialogFormVisiblea" append-to-body width="400px">
+      <el-dialog title="收货地址a" :visible.sync="dialogFormVisiblea" append-to-body width="400px">
         <el-form>
           <el-form-item label="姓名" :label-width="formLabelWidth">
             <div class="wenzi">{{data.name}}</div>
@@ -309,6 +322,7 @@ export default {
     },
      //  <!-- 经销商店铺资料 -->
      dpushenhea(b){
+       console.log(b)
         var params = new URLSearchParams();
 
          params.append("id",parseInt(b));
@@ -405,6 +419,10 @@ export default {
 .tupain img {
   float: right;
   border-radius: 50%;
+}
+.statustip span{
+  text-indent: 20px;
+  
 }
 </style>
 
