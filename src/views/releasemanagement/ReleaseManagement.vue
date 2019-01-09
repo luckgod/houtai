@@ -9,38 +9,22 @@
       
        
       <div class="titcon">
-        <el-form label-position="top" label-width="80px" :model="formLabelAlign" :inline="true">
+        <el-form label-position="top"  :model="formLabelAlign" :inline="true"  :rules="rules">
           <!-- 图片上传 ============================================================================================================-->
-          <el-form-item label="封面图片" style="margin:0;">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
-            >
-              <img
-                v-if="imageUrla"
-                :src="imageUrl"
-                class="avatar"
-                style="width:38px;height:38px;border:1px solid #dcdfe6;border-radius: 25%"
-              >
-              <i
-                v-else
-                class="el-icon-plus avatar-uploader-icon"
-                style="width:38px;height:38px;position:absolute;top:-69px;"
-              ></i>
-            </el-upload>
-            <div class="tipwenzi">点击右侧上传图片</div>
+          <el-form-item label="封面图片" >
+            <div  class="imgup">
+              <image-uploader @onChange='imgChangea' :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
+              <span class="descimg">点击右侧上传图片</span>
+            </div>
           </el-form-item>
           <!-- 图片上传结束。。。。。 ========================================================================================================-->
-          <el-form-item label="主标题">
+          <el-form-item label="主标题" prop="title">
             <el-input v-model="formLabelAlign.title" placeholder="请输入主标题"></el-input>
           </el-form-item>
-          <el-form-item label="副标题">
+          <el-form-item label="副标题" prop="subTitle">
             <el-input v-model="formLabelAlign.subTitle" placeholder="请输入副标题"></el-input>
-          </el-form-item>
+          
+           </el-form-item>
           <el-form-item label="类目选择">
             <el-select v-model="formLabelAlign.agentGrades" placeholder="选择类目" >
               <div v-for="(item,index) in cayegotyIdlist" :key="index">
@@ -50,53 +34,18 @@
           </el-form-item>
           <!-- 图片上传 ============================================================================================================-->
           <el-form-item label="正文主图" style="margin:0;">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccessb"
-              :before-upload="beforeAvatarUploadb"
-              style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
-            >
-              <img
-                v-if="imageUrlb"
-                :src="imageUrlb"
-                class="avatar"
-                style="width:38px;height:38px;border:1px solid #dcdfe6;border-radius: 25%"
-              >
-              <i
-                v-else
-                class="el-icon-plus avatar-uploader-icon"
-                style="width:38px;height:38px;position:absolute;top:-69px;"
-              ></i>
-            </el-upload>
-            <div class="tipwenzi">点击右侧上传图片</div>
+            <div  class="imgup">
+              <image-uploader @onChange='imgChangeb' :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
+              <span class="descimg">点击右侧上传图片</span>
+            </div>
           </el-form-item>
           <!-- 图片上传结束。。。。。 ========================================================================================================-->
           <!-- 图片上传 ============================================================================================================-->
           <el-form-item label="正文插图" style="margin:0;">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccessc"
-              :before-upload="beforeAvatarUploadc"
-              :multiple='true'
-              style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
-            >
-              <img
-                v-if="imageUrlc"
-                :src="imageUrlc"
-                class="avatar"
-                style="width:38px;height:38px;border:1px solid #dcdfe6;border-radius: 25%"
-              >
-              <i
-                v-else
-                class="el-icon-plus avatar-uploader-icon"
-                style="width:38px;height:38px;position:absolute;top:-69px;"
-              ></i>
-            </el-upload>
-            <div class="tipwenzi">点击右侧上传图片</div>
+           <div  class="imgup">
+              <image-uploader @onChange='imgChangec' :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
+              <span class="descimg">点击右侧上传图片</span>
+            </div>
           </el-form-item>
           <!-- 图片上传结束。。。。。 ========================================================================================================-->
            <el-form-item label="" >
@@ -105,7 +54,7 @@
            <div style="display:block">
           
           
-          <el-form-item label="正文内容" >
+          <el-form-item label="正文内容" prop="content">
            <el-input type="textarea" v-model="formLabelAlign.content" style="width:800px;min-height:100px"></el-input>
           </el-form-item>
            <el-form-item label="" >
@@ -119,20 +68,15 @@
        
 
         
-             <el-form-item label="物料图片" style=" width:700px;padding-right:524px;">
-            <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove"
-                :on-success="shanwoliat"
-                style="width:548px;height:48px;border:1px solid #dcdfe6"
-                >
-                <i class="el-icon-plus " style="width:48px;height:48px;"></i>
-              </el-upload>
-              <el-dialog :visible.sync="dialogVisible" style="width:48px;height:48px;">
+             <el-form-item label="物料图片" style=" width:60%;margin-right:22%;">
+                <div  class="imgup">
+              <mostImageUploader @onChange='imgChangeb' :maxSize="maxSize" placeholder="选择或拖放图片"></mostImageUploader>
+              <span class="descimga">点击右侧多上传图片</span>
+            </div>
+
+              <!-- <el-dialog :visible.sync="dialogVisible" style="width:48px;height:48px;">
                 <img width="100%" :src="dialogImageUrl" alt="" style="width:48px;height:48px;" >
-              </el-dialog>
+              </el-dialog> -->
           </el-form-item>        
         </el-form>
         <div class="btn">
@@ -149,13 +93,42 @@
 
 import { client } from "../../alioss.js";
 import multiCascader from "multi-cascader";
+import ImageUploader from '../../components/upimg/ImageUploader'
+import mostImageUploader from '../../components/upimg/mostImageUploader'
 export default {
   name: "ReleaseManagement",
    components:{
-            multiCascader
+            multiCascader,
+            ImageUploader,
+            mostImageUploader
         },
+
   data() {
+    // 35
+    // 60
+    // 150 
+    // 100 张
+    var titreg=/^(?:[\u4e00-\u9fa5]|[a-z]{30}|\d\d){30,30}$/ig
+   
+    var titvalidate = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("标题不能为空!!"));
+      }
+      setTimeout(() => {
+        if (!titreg.test(value)) {
+          callback(new Error("标题格式不正确!!"));
+        } else {
+          callback();
+        }
+      }, 1000);
+    };
     return {
+      maxSize: 3072,
+      rules: {
+        // 校验手机号码，主要通过validator来指定验证器名称
+        title: [{ required: true, validator: titvalidate, trigger: "blur" }],
+       
+      },
       formLabelAlign: {
         title:'',
         subTitle:'',
@@ -196,17 +169,17 @@ export default {
       dialogVisible: false,
       imglist:[],
       dataa:[{
-  label: 'Volvo',
-  value: 1
-}, {
-  label: 'Saab',
-  value: 2
-}, {
-  label: 'Long long long long long long test',
-  value: 2
-}],
-    };
-  },
+          label: 'Volvo',
+          value: 1
+        }, {
+          label: 'Saab',
+          value: 2
+        }, {
+          label: 'Long long long long long long test',
+          value: 2
+        }],
+            };
+          },
   
   methods: {
     //权限选择
@@ -218,36 +191,73 @@ export default {
     changed(selected) {
       console.log(selected)
     },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePictureCardPreview(file) {
-       
-        console.log(this.dialogImageUrl)
-        this.dialogImageUrl = file.url;
-        this.dialogVisible = true;
-      },
-      shanwoliat(esponse, file, fileList){
-        
-        
-       this.Uploadf(file);
-      },
-      Uploadf(file) {
-      console.log(file, 2222);
-      var fileName = "banner" + file.raw.uid;
+    //图片上传
+     Uploada(file) {
+       var uid=new Date().getTime()
+      var fileName = "banner" + uid;
       //定义唯一的文件名，打印出来的uid其实就是时间戳
       var storeAs = "upload-file" + "/";
       client()
-        .put(storeAs + fileName, file.raw)
+        .put(storeAs + fileName, file)
         .then(result => {
           // 大功搞成
           //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
           console.log(result.url);
-          this.imglist.push(result.url)
-          console.log(this.imglist)
-          // this.imageUrlc = result.url;
+          this.imageUrla = result.url;
         });
+    
     },
+
+      Uploadb(file) {
+       var uid=new Date().getTime()
+      var fileName = "banner" + uid;
+      //定义唯一的文件名，打印出来的uid其实就是时间戳
+      var storeAs = "upload-file" + "/";
+      client()
+        .put(storeAs + fileName, file)
+        .then(result => {
+          // 大功搞成
+          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+          console.log(result.url);
+          this.imageUrlb = result.url;
+        });
+    
+    },
+
+      Uploadc(file) {
+       var uid=new Date().getTime()
+      var fileName = "banner" + uid;
+      //定义唯一的文件名，打印出来的uid其实就是时间戳
+      var storeAs = "upload-file" + "/";
+      client()
+        .put(storeAs + fileName, file)
+        .then(result => {
+          // 大功搞成
+          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+          console.log(result.url);
+          this.imageUrlc = result.url;
+        });
+    
+    },
+    imgChangea (files) {
+        if (files) {
+          console.log(files)
+         this.Uploada(files[0])
+        }
+      },
+      imgChangeb (files) {
+        if (files) {
+          console.log(files)
+         this.Uploadb(files[0])
+        }
+      },
+      imgChangec (files) {
+        if (files) {
+          console.log(files)
+         this.Uploadc(files[0])
+        }
+      },
+     
     //获取店铺 分类  /shop/shopCategoryList
     catchdata() {
       this.dataApi.ajax("get", "/admin/verify/category", {}, cb => {
@@ -285,81 +295,7 @@ export default {
       });
     },
 
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(file);
-      this.Upload(file);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = true;
-      const isLt2M = true;
 
-      return isJPG && isLt2M;
-    },
-    Upload(file) {
-      console.log(file, 2222);
-      var fileName = "banner" + file.raw.uid;
-      //定义唯一的文件名，打印出来的uid其实就是时间戳
-      var storeAs = "upload-file" + "/";
-      client()
-        .put(storeAs + fileName, file.raw)
-        .then(result => {
-          // 大功搞成
-          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-          console.log(result.url);
-          this.imageUrla = result.url;
-        });
-    },
-    handleAvatarSuccessb(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(file);
-      this.Uploadb(file);
-    },
-    beforeAvatarUploadb(file) {
-      const isJPG = true;
-      const isLt2M = true;
-
-      return isJPG && isLt2M;
-    },
-    Uploadb(file) {
-      console.log(file, 2222);
-      var fileName = "banner" + file.raw.uid;
-      //定义唯一的文件名，打印出来的uid其实就是时间戳
-      var storeAs = "upload-file" + "/";
-      client()
-        .put(storeAs + fileName, file.raw)
-        .then(result => {
-          // 大功搞成
-          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-          console.log(result.url);
-          this.imageUrlb = result.url;
-        });
-    },
-    handleAvatarSuccessc(res, file) {
-      this.imageUrlc = URL.createObjectURL(file.raw);
-      console.log(file);
-      this.Uploadc(file);
-    },
-    beforeAvatarUploadc(file) {
-      const isJPG = true;
-      const isLt2M = true;
-
-      return isJPG && isLt2M;
-    },
-    Uploadc(file) {
-      console.log(file, 2222);
-      var fileName = "banner" + file.raw.uid;
-      //定义唯一的文件名，打印出来的uid其实就是时间戳
-      var storeAs = "upload-file" + "/";
-      client()
-        .put(storeAs + fileName, file.raw)
-        .then(result => {
-          // 大功搞成
-          //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-          console.log(result.url);
-          this.imageUrlc = result.url;
-        });
-    },
     catchdatf() {
       this.dataApi.ajax("get", "/admin/verify/category", {}, cb => {
         // console.log(cb.data)
@@ -376,6 +312,32 @@ export default {
 };
 </script>
 <style>
+.imgup{
+  height: 41px;
+  background:#eee;
+  
+  margin-right: 20px;
+  line-height: 41px;
+  border-radius:5px; 
+  position: relative;
+}
+.descimg{
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+  left: 90px;
+  display:inline-block;
+  
+}
+.descimga{
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+  right:100px;
+  display:inline-block;
+  text-align: center;
+  
+}
 .el-upload--picture-card {
   width: 48px;
   height: 48px;
@@ -404,17 +366,21 @@ export default {
 
 <style scoped>
 .box-card {
-  width: 91%;
+  width: 100%;
   margin: 0;
 }
 .chose{
-  float: right;
+  
+  display: inline-block;
+  position: absolute;
+  right:0;
 }
 .tit {
   text-align: left;
   line-height: 80px;
   height: 80px;
   border-bottom: 1px solid #cccccc;
+  position: relative;
 }
 .titcon {
 }

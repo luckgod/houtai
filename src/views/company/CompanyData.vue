@@ -69,29 +69,14 @@
         :inline="true"
         :rules="rules"
       >
-        <el-form-item label="名称" style="margin:0;">
-          <!-- <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            style="width:220px;height:38px;border:1px solid #dcdfe6;position:relative;border-radius: 5%;background:#f1f1f1"
-          > -->
-          <input type="file" >
-            <img
-              v-if="imageUrl"
-              :src="imageUrl"
-              class="avatar"
-              style="width:38px;height:38px;border:1px solid #dcdfe6;border-radius: 25%"
-            >
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-              style="width:38px;height:38px;position:absolute;top:-69px;"
-            ></i>
-          </el-upload>
-          <div class="tipwenzi">点击右侧上传图片</div>
+        <el-form-item label="名称" style="margin:0;"  >
+            <div  class="imgup">
+              <image-uploader @onChange='imgChange' :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
+              <span class="descimg">点击右侧上传图片</span>
+            </div>
+              
+                
+           
         </el-form-item>
         <el-form-item label="店铺名称" prop="dname">
           <el-input v-model="formLabelAlign.dname"></el-input>
@@ -136,7 +121,7 @@
 // import aliUpload from "../../components/public/uploader";
 import { client } from "../../alioss.js";
 import multiCascader from "multi-cascader";
-
+import ImageUploader from '../../components/upimg/ImageUploader'
 
 import {
   provinceAndCityData,
@@ -149,7 +134,8 @@ import {
 export default {
   name: "companydata",
   components: {
-    multiCascader
+    multiCascader,
+     ImageUploader
   },
   data() {
     // 此处自定义校验手机号码js逻辑
@@ -206,6 +192,7 @@ export default {
       }, 1000);
     };
     return {
+       maxSize: 3072,
       formLabelAlign: {
         name: "",
         region: "",
@@ -390,10 +377,19 @@ export default {
         !this.formLabelAlign.sex ||
         !this.formLabelAlign.cayegotyId
       ) {
-        this.$message.error("经销商信息不完整");
-      }
-     
-      this.formLabelAlign.name = this.formLabelAlign.name.replace(/\s*/g,"");          
+        this.$message.error("经销商信息不正确");
+      }else{
+        console.log(this.formLabelAlign.dtime==this.formLabelAlign.mobile)
+        console.log(this.formLabelAlign.dtime=='')
+        if(this.formLabelAlign.dtime==this.formLabelAlign.mobile || this.formLabelAlign.dtime==''){
+          
+          
+           var nameareg = /^[\u4e00-\u9fa5]{2,4}$/;
+           var mimareg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+           var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+          
+          if(phoneReg.test(this.formLabelAlign.mobile)&&nameareg.test(this.formLabelAlign.name)&&mimareg.test(this.formLabelAlign.idcard)){
+                this.formLabelAlign.name = this.formLabelAlign.name.replace(/\s*/g,"");          
         var params = new URLSearchParams();
         params.append("name", this.formLabelAlign.name);
         params.append("idCard", this.formLabelAlign.idcard);
@@ -426,6 +422,24 @@ export default {
             }
           }
         );
+
+
+          }else{
+            this.$message.error('信息填写不正确');
+          }
+
+
+
+     }else{
+
+        this.$message.error('经销商与店铺手机好不一致');
+
+
+     }
+      }
+     
+     
+      
      
     },
     //节点选择
@@ -453,43 +467,40 @@ export default {
     resetChecked() {
       this.$refs.tree.setCheckedKeys([]);
     },
-    //图片上传
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(file);
-      this.Upload(file);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = true;
-      const isLt2M = true;
-
-      return isJPG && isLt2M;
-    },
+  
     Upload(file) {
-      console.log(file, 2222);
-      var fileName = "banner" + file.raw.uid;
+       var uid=new Date().getTime()
+      var fileName = "banner" + uid;
       //定义唯一的文件名，打印出来的uid其实就是时间戳
       var storeAs = "upload-file" + "/";
       client()
-        .put(storeAs + fileName, file.raw)
+        .put(storeAs + fileName, file)
         .then(result => {
           // 大功搞成
           //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
           console.log(result.url);
           this.imageUrl = result.url;
         });
-      var storeAs = "upload-file" + "/"; //命名空间
-      console.log(" => " + storeAs);
-      client
-        .multipartUpload(storeAs, file)
-        .then(function(result) {
-          console.log(result);
-          console.log(result.url);
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-    }
+      // var storeAs = "upload-file" + "/"; //命名空间
+      // console.log(" => " + storeAs);
+      // client
+      //   .multipartUpload(storeAs, file)
+      //   .then(function(result) {
+      //     console.log(result);
+      //     console.log(result.url);
+      //   })
+      //   .catch(function(err) {
+      //     console.log(err);
+      //   });
+    },
+    imgChange (files) {
+        if (files) {
+          console.log(files)
+         this.Upload(files[0])
+        }
+      },
+      
+
   },
   mounted() {
     this.catchdata();
@@ -499,8 +510,25 @@ export default {
 </script>
 
 <style scoped>
+.imgup{
+  height: 41px;
+  background:#eee;
+  
+  margin-right: 20px;
+  line-height: 41px;
+  border-radius:5px; 
+  position: relative;
+}
+.descimg{
+  position: absolute;
+  top: 0;
+  font-size: 12px;
+  left: 90px;
+  display:inline-block;
+  
+}
 .box-card {
-  width: 91%;
+  width: 100%;
   margin: 0;
 }
 .tit {
@@ -509,8 +537,7 @@ export default {
   height: 80px;
   border-bottom: 1px solid #cccccc;
 }
-.titcon {
-}
+
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;

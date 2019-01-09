@@ -10,8 +10,8 @@
           <el-form-item label="审核经销商状态">
             <el-select v-model="formInline.region" placeholder="请在下拉列表中选则">
               <el-option label="未审核" value="0"></el-option>
-              <el-option label="已通过审核" value="1"></el-option>
-              <el-option label="已拒绝审核" value="2"></el-option>
+              <el-option label="审核通过" value="1"></el-option>
+              <el-option label="审核拒绝" value="2"></el-option>
             </el-select>
           </el-form-item>
 
@@ -47,7 +47,7 @@
           <template slot-scope="scope" prop="id">
              <el-tooltip placement="top">
               <div slot="content" class="statustip">
-                <span style="padding: 0 20px;" @click="jshenhe(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="dpushenhea(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="dpushenheb(scope.row.id)">拒绝申请</span>
+                <span style="padding: 0 20px;" @click="jshenhe(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="dpushenhea(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="dpushenheb(scope.row)">拒绝申请</span>
               </div>
             <el-button
               type="text"
@@ -64,7 +64,7 @@
           <template slot-scope="scope">
              <el-tooltip placement="top">
             <div slot="content" class="statustip">
-                <span style="padding: 0 20px;" @click="jshenhea(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="jshenheta(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="jshenhetb(scope.row.id)">拒绝申请</span>
+                <span style="padding: 0 20px;" @click="jshenhea(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="jshenheta(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="jshenhetb(scope.row)">拒绝申请</span>
               </div>
             <el-button
               type="text"
@@ -111,7 +111,7 @@
             <div class="wenzi">{{date.opentime+'-'+date.closetime}}</div>
           </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer" v-if="date.isHandleShop=='0' ? true:false">
           <el-button @click="jshenheta(date.id)">通过申请</el-button>
           <el-button type="primary" @click="jshenhetb(date.id)">拒绝申请</el-button>
           <!-- dialogFormVisible = false -->
@@ -136,15 +136,15 @@
             <div class="wenzi">{{data.shopCategoryName}}</div>
           </el-form-item>
           <el-form-item label="代理区域" :label-width="formLabelWidth">
-            <div class="wenzi">{{data.locidNames}}</div>
+            <div class="wenzile" >{{data.locidNames}}</div>
           </el-form-item>
           <el-form-item label="代理级别" :label-width="formLabelWidth">
             <div class="wenzi">A级</div>
           </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dpushenhea(data.id)">通过申请</el-button>
-          <el-button type="primary" @click="dpushenheb(data.id)">拒绝申请</el-button>
+        <div slot="footer" class="dialog-footer" v-if="data.isHandleAgent==''||data.isHandleAgent=='0'? true:false">
+          <el-button @click="dpushenhea(data)">通过申请</el-button>
+          <el-button type="primary" @click="dpushenheb(data)">拒绝申请</el-button>
           <!-- dialogFormVisiblea = false -->
         </div>
       </el-dialog>
@@ -174,6 +174,7 @@ export default {
         sex: "",
         shopCategoryName: "",
         locidNames: "",
+        isHandleAgent:'',
          id:'',
       },
       date: {
@@ -184,6 +185,7 @@ export default {
         opentime: "",
         closetime: "",
         shopPhone: "",
+        isHandleShop:'',
         id:'',
       },
       //分页
@@ -228,7 +230,7 @@ export default {
     },
     //经销商详细信息
     jshenhe(ta) {
-      console.log(ta);
+       console.log(ta);
       this.data.name = ta.name;
       this.data.idCard = ta.idCard;
       this.data.mobile = ta.mobile;
@@ -236,7 +238,9 @@ export default {
       this.data.shopCategoryName = ta.shopCategoryName;
       this.data.locidNames = ta.locidNames;
        this.data.id = ta.id;
+       this.data.isHandleAgent=ta.isHandleAgent
       this.dialogFormVisiblea = true;
+      console.log()
     },
     //店铺详细信息
     jshenhea(ta) {
@@ -248,6 +252,8 @@ export default {
       this.date.opentime = ta.openTime;
       this.date.closetime = ta.closeTime;
       this.date.shopPhone = ta.shopPhone;
+       this.date.isHandleShop=ta.isHandleShop
+      
       this.date.id=ta.id
       this.dialogFormVisible = true;
     },
@@ -322,9 +328,8 @@ export default {
     },
      //  <!-- 经销商店铺资料 -->
      dpushenhea(b){
-       console.log(b)
+        console.log(b.id)
         var params = new URLSearchParams();
-
          params.append("id",parseInt(b));
          params.append("ishandAgent",true);
          params.append("isAgree",true);
@@ -347,7 +352,7 @@ export default {
      dpushenheb(b){
          var params = new URLSearchParams();
 
-         params.append("id",parseInt(b));
+         params.append("id",parseInt(b.id));
          params.append("ishandAgent",true);
          params.append("isAgree",false);
         this.dataApi.ajax("post", "/admin/verify/handleApply", params, res => {
@@ -386,8 +391,8 @@ export default {
 </script>
 <style scoped>
 .box-card {
-  width: 91%;
-  margin: 0 60px;
+  width: 100%;
+ 
 }
 .tit {
   text-align: left;
@@ -396,7 +401,7 @@ export default {
   border-bottom: 1px solid #cccccc;
 }
 .titcon {
-  height: 160px;
+  height: 174px;
 }
 .el-form-item {
   width: 30%;
@@ -412,6 +417,14 @@ export default {
 .wenzi {
   width: 280px;
   text-align: right;
+}
+.wenzile {
+    width: 280px;
+    height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: right;
 }
 .tupain {
   width: 280px;

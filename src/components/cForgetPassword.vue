@@ -9,20 +9,20 @@
     <el-form class="demo-ruleForm" :rules="rules" :model="form">
        
           <el-form-item   class="aa" prop="phone">
-            <el-input  placeholder="你的手机号码" v-model="form.phone" maxlength="11" min='11'></el-input>
+            <el-input  placeholder="你的手机号码" v-model="form.phone" ></el-input>
            
         </el-form-item>
          <el-form-item   class="bb"  prop="cod">
-            <el-input  placeholder="验证码" v-model="form.cod" maxlength="6" min='6'></el-input>
+            <el-input  placeholder="验证码" v-model="form.cod" maxlength="4" min='4'></el-input>
             <el-button type="primary" class="weizhi"  @click="reg" v-show="sendAuthCode" >发送</el-button>
              <el-button type="primary" class="weizhi" style="background:#ccc" v-show="!sendAuthCode" >{{auth_time}}S</el-button>
         </el-form-item>
         <el-form-item   class="aa" prop="worda">
-            <el-input  type='password' placeholder="你的密码"  v-model="form.worda"></el-input>
+            <el-input  type='password' placeholder="请输入八位数密码"  v-model="form.worda" maxlength="8" min='8'></el-input>
          
         </el-form-item>
         <el-form-item   class="aa" prop="word">
-            <el-input  type='password' placeholder="确认你的密码"  v-model="form.word" ></el-input>
+            <el-input  type='password' placeholder="请输入认八位数密码"  v-model="form.word" maxlength="8" min='8'></el-input>
            <!-- <i  class="digweib el-icon-mobile-phone" ></i> -->
         </el-form-item>            
         <el-form-item>
@@ -127,31 +127,32 @@ import axios from 'axios'
         } 
 
      if(this.form.word==this.form.worda){
-      //  console.log(phoneReg.test(this.form.phone))
-      //  console.log(mimareg.test(this.form.worda))
-      //  console.log(mimareg.test(this.form.word))
-      //  console.log(phoneReg.test(this.form.phone))
+       
        if(phoneReg.test(this.form.phone)&&mimareg.test(this.form.worda)&&mimareg.test(this.form.word)&&codreg.test(this.form.cod)){
 
-       console.log('1111')
+      console.log('1111')
       var params = new URLSearchParams()
       params.append('mobile',this.form.phone)
       params.append('code',this.form.cod)
       params.append('password',this.form.word)
+    
       this.dataApi.ajax('get','/user/forgetPassword',params, res => {    
+                          console.log(res)
                          if(res.code==0){
+                           console.log('44444')
                          this.$message({
                                         message: '提交成功',
                                         type: 'success'
                                       });
                                        this.$router.push('/')
                                       }else{
+                                        console.log('3333')
                                          this.$message.error(res.msg);
                                       }
                  });
                  }else{
-                    console.log('1111')
-                   this.$message.error('请重新输入');
+                    console.log('222')
+                   this.$message.error('输入有误');
                  }
      }else{
       this.$message('密码不一致');

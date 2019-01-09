@@ -292,14 +292,15 @@ let ajax = function (posttype, url, params, cb) {
                     
 		        } else if(res.data.code == -1) {
                     //登录获取的sessionkey失效等逻辑的处理
-                    this.$message.error(res.data.msg);
+                    // this.$message.error(res.data.msg);
+                    cb(res.data);
 		        } else {
 			        //code=0的处理
-			         alert(res.data.msg);
+                    cb(res.data);
 		        }
             })
             .catch(function(error) {
-                            console.log(error)
+                            // console.log(error)
                          })   
 	} else if(method_type == "post") {					
         //get和post传参不同，get最前变需要增加"params:"而post不需要
