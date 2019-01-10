@@ -324,7 +324,14 @@ export default {
       console.log( this.imageUrla);
       console.log(  this.formLabelAlign.agentGrades);
       console.log(this.imageUrlm)
-
+      var Saab=''
+      for (let index = 0; index < this.imageUrlm.length; index++) {
+        const element = this.imageUrlm[index];
+        Saab  = element+','+Saab
+        
+        
+      }
+      console.log(Saab)
     //   var params = new URLSearchParams();
     //   params.append("title", this.formLabelAlign.maintitle);
     //   params.append("subTitle", this.formLabelAlign.subTitle);
