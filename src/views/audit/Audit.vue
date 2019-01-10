@@ -4,20 +4,22 @@
       <div class="tit">筛选查询</div>
       <div class="titcon">
         <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
-          <el-form-item label="审批人">
-            <el-input v-model="formInline.user" placeholder="请输入真实姓名或手机"></el-input>
+          <el-form-item label="姓名或手机号">
+            <el-input v-model="formInline.user" placeholder="请输入真实姓名/手机号"></el-input>
+          </el-form-item>
+          <el-form-item label="注册时间">
+            <el-date-picker v-model="value1" type="date" placeholder="请在日历中选择"></el-date-picker>
           </el-form-item>
           <el-form-item label="审核经销商状态">
             <el-select v-model="formInline.region" placeholder="请在下拉列表中选则">
               <el-option label="未审核" value="0"></el-option>
               <el-option label="审核通过" value="1"></el-option>
               <el-option label="审核拒绝" value="2"></el-option>
+              <el-option label="全部" value=""></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="注册时间">
-            <el-date-picker v-model="value1" type="date" placeholder="请在日历中选择"></el-date-picker>
-          </el-form-item>
+          
           <el-form-item>
             <el-button type="primary" @click="onSubmit">查询</el-button>
           </el-form-item>
@@ -64,7 +66,7 @@
           <template slot-scope="scope">
              <el-tooltip placement="top">
             <div slot="content" class="statustip">
-                <span style="padding: 0 20px;" @click="jshenhea(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="jshenheta(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="jshenhetb(scope.row)">拒绝申请</span>
+                <span style="padding: 0 20px;" @click="jshenhea(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="jshenheta(scope.row)">通过申请</span><span style="padding: 0 20px;" @click="jshenhetb(scope.row)">拒绝申请</span>
               </div>
             <el-button
               type="text"
@@ -112,8 +114,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer" v-if="date.isHandleShop=='0' ? true:false">
-          <el-button @click="jshenheta(date.id)">通过申请</el-button>
-          <el-button type="primary" @click="jshenhetb(date.id)">拒绝申请</el-button>
+          <el-button @click="jshenheta(date)">通过申请</el-button>
+          <el-button type="primary" @click="jshenhetb(date)">拒绝申请</el-button>
           <!-- dialogFormVisible = false -->
         </div>
       </el-dialog>
@@ -200,6 +202,7 @@ export default {
   methods: {
     onSubmit() {
       if (this.value1) {
+        
         var d = new Date(this.value1);
         var sa = d.getMonth() + 1;
         var sb = d.getDate();
@@ -213,7 +216,7 @@ export default {
       } else {
         var youWant = "";
       }
-
+      console.log(youWant)
       var params = new URLSearchParams();
       params.append("page", this.datc.current);
       params.append("nameOrMobile", this.formInline.user);
@@ -244,18 +247,32 @@ export default {
     },
     //店铺详细信息
     jshenhea(ta) {
-      console.log(ta);
-      this.date.shopLogo = ta.shopLogo;
-      this.date.shopName = ta.shopName;
-      this.date.category = ta.category;
-      this.date.addr = ta.shopAddr;
-      this.date.opentime = ta.openTime;
-      this.date.closetime = ta.closeTime;
-      this.date.shopPhone = ta.shopPhone;
-       this.date.isHandleShop=ta.isHandleShop
+      console.log(ta)
+      console.log(ta.isHandleShop ==null);
+      if(ta.isHandleAgent=='0'){
+          this.$message.error('请先审核经销商');
+    
+      }else{
+        if(ta.isHandleShop ==null){
+           this.$message.error('店铺未开通');
+             
+        }else{
+             this.date.shopLogo = ta.shopLogo;
+              this.date.shopName = ta.shopName;
+              this.date.category = ta.category;
+              this.date.addr = ta.shopAddr;
+              this.date.opentime = ta.openTime;
+              this.date.closetime = ta.closeTime;
+              this.date.shopPhone = ta.shopPhone;
+              this.date.isHandleShop=ta.isHandleShop
+              
+              this.date.id=ta.id
+              this.dialogFormVisible = true;
+        }
+    
       
-      this.date.id=ta.id
-      this.dialogFormVisible = true;
+      }
+      
     },
     handleEdit(index, row) {
       console.log(index, row);
@@ -286,9 +303,11 @@ export default {
     },
     //  <!-- 店铺商店铺资料 -->
     jshenheta(a){
-         var params = new URLSearchParams();
+      if(a.isHandleAgent!=='0'){
+        if(a.isHandleShop!=='null'){
+          var params = new URLSearchParams();
 
-         params.append("id",parseInt(a));
+         params.append("id",parseInt(a.id));
          params.append("ishandAgent",false);
          params.append("isAgree",true);
          
@@ -305,11 +324,20 @@ export default {
           this.$message.error(res.msg);
         }
       });
+        }else{
+          this.$message.error('店铺未开通');
+        }
+        
+      }else{
+         this.$message.error('请先审核经销商');
+      }
+         
     },
     jshenhetb(a){
+      if(a.isHandleAgent!=='0'){
+          if(a.isHandleShop!=='null'){
          var params = new URLSearchParams();
-
-         params.append("id",parseInt(a));
+         params.append("id",parseInt(a.id));
          params.append("ishandAgent",false);
          params.append("isAgree",false);
         this.dataApi.ajax("post", "/admin/verify/handleApply", params, res => {
@@ -321,10 +349,18 @@ export default {
         });
         this.dialogFormVisible = false
         this.onSubmit();
+        
         }else{
           this.$message.error(res.msg);
         }
       });
+       }else{
+          this.$message.error('店铺未开通');
+        }
+      }else{
+        this.$message.error('请先审核经销商');
+      }
+        
     },
      //  <!-- 经销商店铺资料 -->
      dpushenhea(b){

@@ -14,18 +14,10 @@
             <el-input v-model="formLabelAlign.name" placeholder="请输入真实姓名"></el-input>
           </el-form-item>
           <el-form-item label="身份证号" prop="idcard">
-            <el-input
-              v-model="formLabelAlign.idcard"
-              placeholder="请输入真实身份证号"
-             
-            ></el-input>
+            <el-input v-model="formLabelAlign.idcard" placeholder="请输入真实身份证号"></el-input>
           </el-form-item>
           <el-form-item label="手机号" prop="mobile">
-            <el-input
-              v-model="formLabelAlign.mobile"
-              placeholder="请输入您的手机号"
-             
-            ></el-input>
+            <el-input v-model="formLabelAlign.mobile" placeholder="请输入您的手机号"></el-input>
           </el-form-item>
           <el-form-item label="性别">
             <el-select v-model="formLabelAlign.sex" placeholder="活动区域">
@@ -41,26 +33,39 @@
           <el-form-item label="所属行业">
             <el-select v-model="formLabelAlign.cayegotyId" placeholder="请选择你当前行业的类型">
               <div v-for="(item,index) in cayegotyIdlist" :key="index">
-                <el-option :label="item.categoryName" :value="item.id+1"></el-option>
+                <el-option :label="item.categoryName" :value="item.id"></el-option>
               </div>
             </el-select>
           </el-form-item>
           <el-form-item label="代理区域市">
-          
-             <cascaderMulti v-model="formLabelAlign.locid" :data="options" placeholder="状态码" style="z-index:100"></cascaderMulti>
-          
+            <cascaderMulti
+              v-model="formLabelAlign.locid"
+              :data="options"
+              placeholder="状态码"
+              style="z-index:100"
+            ></cascaderMulti>
           </el-form-item>
 
           <el-form-item></el-form-item>
           <el-form-item></el-form-item>
           <el-form-item></el-form-item>
         </el-form>
-      
+        <div v-if="!shopshow">
+          <div class="btn">
+            <el-button type="success" @click="addplydealer">提交申请</el-button>
+          </div>
+          <div class="showshopapplyfor" @click="shopshow=true">展开店铺申请</div>
+        </div>
+        <div>
+          <div class="packupshopapplyfor" v-if="shopshow" @click="shopshow=false">
+            <span>收起店铺申请</span>
+          </div>
+        </div>
       </div>
-    <!-- </el-card> -->
+    </el-card>
 
     <!-- ==============================================2==================================================================================================================2 -->
-    <!-- <el-card class="box-card cardtwo"> -->
+    <el-card class="box-card cardtwo" v-if="shopshow">
       <div class="tit">店铺信息</div>
       <el-form
         label-position="top"
@@ -69,14 +74,11 @@
         :inline="true"
         :rules="rules"
       >
-        <el-form-item label="名称" style="margin:0;"  >
-            <div  class="imgup">
-              <image-uploader @onChange='imgChange' :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
-              <span class="descimg">点击右侧上传图片</span>
-            </div>
-              
-                
-           
+        <el-form-item label="名称" style="margin:0;">
+          <div class="imgup">
+            <image-uploader @onChange="imgChange" :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
+            <span class="descimg">点击右侧上传图片</span>
+          </div>
         </el-form-item>
         <el-form-item label="店铺名称" prop="dname">
           <el-input v-model="formLabelAlign.dname"></el-input>
@@ -84,7 +86,7 @@
         <el-form-item label="所属品类">
           <el-select v-model="formLabelAlign.dregion" placeholder="活动区域">
             <div v-for="(item,index) in cayegotyIdlist" :key="index">
-              <el-option :label="item.categoryName" :value="item.id+1"></el-option>
+              <el-option :label="item.categoryName" :value="item.id"></el-option>
             </div>
           </el-select>
         </el-form-item>
@@ -121,7 +123,7 @@
 // import aliUpload from "../../components/public/uploader";
 import { client } from "../../alioss.js";
 import multiCascader from "multi-cascader";
-import ImageUploader from '../../components/upimg/ImageUploader'
+import ImageUploader from "../../components/upimg/ImageUploader";
 
 import {
   provinceAndCityData,
@@ -135,7 +137,7 @@ export default {
   name: "companydata",
   components: {
     multiCascader,
-     ImageUploader
+    ImageUploader
   },
   data() {
     // 此处自定义校验手机号码js逻辑
@@ -170,7 +172,7 @@ export default {
       if (!value) {
         return callback(new Error("不能为空!!"));
       }
-       setTimeout(() => {
+      setTimeout(() => {
         if (!nameareg.test(value)) {
           callback(new Error("格式有误"));
         } else {
@@ -183,7 +185,7 @@ export default {
       if (!value) {
         return callback(new Error("不能为空!!"));
       }
-       setTimeout(() => {
+      setTimeout(() => {
         if (!shopnameareg.test(value)) {
           callback(new Error("格式有误"));
         } else {
@@ -192,7 +194,8 @@ export default {
       }, 1000);
     };
     return {
-       maxSize: 3072,
+      shopshow: false,
+      maxSize: 3072,
       formLabelAlign: {
         name: "",
         region: "",
@@ -206,7 +209,7 @@ export default {
         idcard: "",
         cayegotyId: "",
         dname: "",
-        dregion: "",
+
         dizhi: "",
         dtime: "",
         detail: "",
@@ -236,11 +239,12 @@ export default {
         mobile: [{ required: true, validator: validatePhone, trigger: "blur" }],
         idcard: [{ required: true, validator: mimaregPhone, trigger: "blur" }],
         name: [{ required: true, validator: nameregPhone, trigger: "blur" }],
-        dname: [{ required: true, validator: shopnameregPhone, trigger: "blur" }],
+        dname: [
+          { required: true, validator: shopnameregPhone, trigger: "blur" }
+        ],
         dtime: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
-      options: [
-      ]
+      options: []
     };
   },
   watch: {
@@ -256,7 +260,7 @@ export default {
     //获取店铺 分类  /shop/shopCategoryList
     catchdata() {
       this.dataApi.ajax("get", "/admin/verify/category", {}, cb => {
-        // console.log(cb.data)
+        console.log(cb.data);
         // console.log('获取店铺分类')
         this.cayegotyIdlist = cb.data;
       });
@@ -276,10 +280,10 @@ export default {
         arr.map((data, index) => {
           var child = {};
           // console.log(index + '----' + data[1]);
-         //
+          //
           child["value"] = index;
           child["label"] = data[0];
-          
+
           child["multiple"] = false;
           child["children"] = new Array();
           var data1 = data[1];
@@ -298,7 +302,7 @@ export default {
               threeChild["value"] = location.areaCode;
               threeChild["label"] = location.area;
               threeChild["multiple"] = true;
-           
+
               threeArr.push(threeChild);
             });
             subArr.push(subChild);
@@ -310,66 +314,24 @@ export default {
       });
     },
     //经销商选择上传
-    
+
     getSelected(val) {
       this.selectGroups = val;
       this.configTips = `已选择${val.length}个分组`;
     },
-    //店铺选择上传
-    subd() {
-      
-      // console.log(this.value4[0].getHours(),this.value4[0].getMinutes())
-      var element=''
-      if(this.formLabelAlign.locid.length==3){
+    //经销商信息提交
+    addplydealer() {
+      console.log("111");
+      var element = "";
+      if (this.formLabelAlign.locid.length == 3) {
         for (let index = 2; index < this.formLabelAlign.locid.length; index++) {
-         element = this.formLabelAlign.locid[index];
-        
-      }
-      }else{
-         
-      for (let index = 2; index < this.formLabelAlign.locid.length; index++) {
-         element = this.formLabelAlign.locid[index]+','+element;
-        
-      }
-
-      }
-      console.log(element)
-      var selectGroups=this.selectGroups
-          // selectGroups=selectGroups.join()
-      if (this.value4[0].getHours() < 10) {
-        var sa = "0" + this.value4[0].getHours();
+          element = this.formLabelAlign.locid[index];
+        }
       } else {
-        var sa = this.value4[0].getHours();
+        for (let index = 2; index < this.formLabelAlign.locid.length; index++) {
+          element = this.formLabelAlign.locid[index] + "," + element;
+        }
       }
-      if (this.value4[0].getMinutes() < 10) {
-        var st = "0" + this.value4[0].getMinutes();
-      } else {
-        var st = +this.value4[0].getMinutes();
-      }
-      if (this.value4[1].getHours() < 10) {
-        var sc = "0" + this.value4[1].getHours();
-      } else {
-        var sc = this.value4[1].getHours();
-      }
-      if (this.value4[1].getMinutes() < 10) {
-        var sg = "0" + this.value4[1].getMinutes();
-      } else {
-        var sg = +this.value4[1].getMinutes();
-      }
-      // console.log(this.formLabelAlign.name)
-      // console.log( this.formLabelAlign.idcard)
-      // console.log(this.formLabelAlign.mobile)
-      // console.log(this.formLabelAlign.sex)
-      // console.log(this.formLabelAlign.cayegotyId)
-      // console.log(this.formLabelAlign.roleId)
-      // console.log(this.formLabelAlign.dname)
-      // console.log(this.imageUrl)
-      // console.log(this.formLabelAlign.dtime)
-      // console.log(this.formLabelAlign.dregion)
-      // console.log(this.formLabelAlign.dizhi)
-      // console.log(sa + ":" + st)
-      // console.log(sc + ":" + sg)
-      var storesubmit = false;
       if (
         !this.formLabelAlign.name ||
         !this.formLabelAlign.idcard ||
@@ -377,70 +339,180 @@ export default {
         !this.formLabelAlign.sex ||
         !this.formLabelAlign.cayegotyId
       ) {
-        this.$message.error("经销商信息不正确");
-      }else{
-        console.log(this.formLabelAlign.dtime==this.formLabelAlign.mobile)
-        console.log(this.formLabelAlign.dtime=='')
-        if(this.formLabelAlign.dtime==this.formLabelAlign.mobile || this.formLabelAlign.dtime==''){
-          
-          
-           var nameareg = /^[\u4e00-\u9fa5]{2,4}$/;
-           var mimareg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-           var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
-          
-          if(phoneReg.test(this.formLabelAlign.mobile)&&nameareg.test(this.formLabelAlign.name)&&mimareg.test(this.formLabelAlign.idcard)){
-                this.formLabelAlign.name = this.formLabelAlign.name.replace(/\s*/g,"");          
-        var params = new URLSearchParams();
-        params.append("name", this.formLabelAlign.name);
-        params.append("idCard", this.formLabelAlign.idcard);
-        params.append("mobile", this.formLabelAlign.mobile);
-        params.append("sex", this.formLabelAlign.sex);
-        params.append("locid", element);
-        params.append("cayegotyId", this.formLabelAlign.cayegotyId);
-        params.append("roleId", this.formLabelAlign.roleId);
-        params.append("shopName", this.formLabelAlign.dname);
-        params.append("shopLogo", this.imageUrl);
-        params.append("phone", this.formLabelAlign.dtime);
-        params.append("category", this.formLabelAlign.dregion);
-        params.append("detail", "测试数据");
-        params.append("addr", this.formLabelAlign.dizhi);
-        params.append("opentime", sa + ":" + st);
-        params.append("closetime", sc + ":" + sg);
-        // console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
-        this.dataApi.ajax(
-          "post",
-          "/admin/verify/applyForAagent",
-          params,
-          res => {
-            if (res.code == 0) {
-              this.$message({
-                message: "恭喜你,提交成功",
-                type: "success"
-              });
-            } else {
-              this.$message.error(res.msg);
+        this.$message.error("经销商信息填写不完整");
+      } else {
+        var nameareg = /^[\u4e00-\u9fa5]{2,4}$/;
+        var mimareg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+
+        if (
+          phoneReg.test(this.formLabelAlign.mobile) &&
+          nameareg.test(this.formLabelAlign.name) &&
+          mimareg.test(this.formLabelAlign.idcard)
+        ) {
+          var params = new URLSearchParams();
+          params.append("name", this.formLabelAlign.name);
+          params.append("idCard", this.formLabelAlign.idcard);
+          params.append("mobile", this.formLabelAlign.mobile);
+          params.append("sex", this.formLabelAlign.sex);
+          params.append("locid", element);
+          params.append("cayegotyId", parseInt(this.formLabelAlign.cayegotyId));
+          params.append("roleId", this.formLabelAlign.roleId);
+          console.log(this.formLabelAlign.cayegotyId);
+          // console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
+          this.dataApi.ajax(
+            "post",
+            "/admin/verify/applyForAagent",
+            params,
+            res => {
+              if (res.code == 0) {
+                this.$message({
+                  message: "恭喜你,经销信息提交成功",
+                  type: "success"
+                });
+              } else {
+                this.$message.error(res.msg);
+              }
             }
-          }
-        );
-
-
-          }else{
-            this.$message.error('信息填写不正确');
-          }
-
-
-
-     }else{
-
-        this.$message.error('经销商与店铺手机好不一致');
-
-
-     }
+          );
+        } else {
+          this.$message.error("经销商信息填写不正确");
+        }
       }
-     
-     
-      
-     
+    },
+    //店铺选择上传
+    subd() {
+      var element = "";
+      if (this.formLabelAlign.locid.length == 3) {
+        for (let index = 2; index < this.formLabelAlign.locid.length; index++) {
+          element = this.formLabelAlign.locid[index];
+        }
+      } else {
+        for (let index = 2; index < this.formLabelAlign.locid.length; index++) {
+          element = this.formLabelAlign.locid[index] + "," + element;
+        }
+      }
+      // console.log(element)
+      var selectGroups = this.selectGroups;
+      console.log(this.value4);
+      var opentime = "";
+      var closetime = "";
+      if (this.value4 !== null) {
+        if (this.value4[0].getHours() < 10) {
+          var sa = "0" + this.value4[0].getHours();
+        } else {
+          var sa = this.value4[0].getHours();
+        }
+        if (this.value4[0].getMinutes() < 10) {
+          var st = "0" + this.value4[0].getMinutes();
+        } else {
+          var st = +this.value4[0].getMinutes();
+        }
+        if (this.value4[1].getHours() < 10) {
+          var sc = "0" + this.value4[1].getHours();
+        } else {
+          var sc = this.value4[1].getHours();
+        }
+        if (this.value4[1].getMinutes() < 10) {
+          var sg = "0" + this.value4[1].getMinutes();
+        } else {
+          var sg = +this.value4[1].getMinutes();
+        }
+        opentime = sa + ":" + st;
+        closetime = sc + ":" + sg;
+      }
+
+      // console.log(this.formLabelAlign.dname)
+      // console.log(this.imageUrl)
+      // console.log(this.formLabelAlign.dtime)
+      console.log(this.formLabelAlign.dregion);
+      // console.log(this.formLabelAlign.dizhi)
+
+      if (
+        !this.formLabelAlign.name ||
+        !this.formLabelAlign.idcard ||
+        !this.formLabelAlign.mobile ||
+        !this.formLabelAlign.sex ||
+        !this.formLabelAlign.dname ||
+        !this.formLabelAlign.dtime ||
+        !this.formLabelAlign.dizhi
+      ) {
+        this.$message.error("信息不完整");
+      } else {
+        console.log(this.formLabelAlign.dtime == this.formLabelAlign.mobile);
+        console.log(this.formLabelAlign.dtime == "");
+        if (
+          this.formLabelAlign.dtime == this.formLabelAlign.mobile ||
+          this.formLabelAlign.dtime == ""
+        ) {
+          var nameareg = /^[\u4e00-\u9fa5]{2,4}$/;
+          var mimareg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+          var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
+          var shopnameareg = /^[\d\w\u4e00-\u9fa5,]{2,8}$/;
+
+          if (
+            phoneReg.test(this.formLabelAlign.mobile) &&
+            nameareg.test(this.formLabelAlign.name) &&
+            mimareg.test(this.formLabelAlign.idcard) &&
+            shopnameareg.test(this.formLabelAlign.dname)
+          ) {
+            if (opentime !== "" && closetime !== "") {
+              if (this.formLabelAlign.dregion !== "") {
+                console.log();
+                var str = this.formLabelAlign.dizhi.replace(/\s*/g, "");
+                if (str == "") {
+                  this.$message.error("店铺地址有误");
+                } else {
+                  var params = new URLSearchParams();
+                  params.append("name", this.formLabelAlign.name);
+                  params.append("idCard", this.formLabelAlign.idcard);
+                  params.append("mobile", this.formLabelAlign.mobile);
+                  params.append("sex", this.formLabelAlign.sex);
+                  params.append("locid", element);
+                  params.append("cayegotyId", this.formLabelAlign.cayegotyId);
+                  params.append("roleId", this.formLabelAlign.roleId);
+                  params.append("shopName", this.formLabelAlign.dname);
+                  params.append("shopLogo", this.imageUrl);
+                  params.append("phone", this.formLabelAlign.dtime);
+                  params.append(
+                    "category",
+                    parseInt(this.formLabelAlign.dregion)
+                  );
+                  params.append("detail", "测试数据");
+                  params.append("addr", this.formLabelAlign.dizhi);
+                  params.append("opentime", opentime);
+                  params.append("closetime", closetime);
+
+                  // console.log(this.formLabelAlign.sex, this.formLabelAlign.cayegotyId);
+                  this.dataApi.ajax(
+                    "post",
+                    "/admin/verify/applyForAagent",
+                    params,
+                    res => {
+                      if (res.code == 0) {
+                        this.$message({
+                          message: "恭喜你,提交成功",
+                          type: "success"
+                        });
+                      } else {
+                        this.$message.error(res.msg);
+                      }
+                    }
+                  );
+                }
+              } else {
+                this.$message.error("所属品类未选");
+              }
+            } else {
+              this.$message.error("营业时间不完整");
+            }
+          } else {
+            this.$message.error("信息填写不正确");
+          }
+        } else {
+          this.$message.error("经销商与店铺手机好不一致");
+        }
+      }
     },
     //节点选择
     getCheckedNodes() {
@@ -467,9 +539,9 @@ export default {
     resetChecked() {
       this.$refs.tree.setCheckedKeys([]);
     },
-  
+
     Upload(file) {
-       var uid=new Date().getTime()
+      var uid = new Date().getTime();
       var fileName = "banner" + uid;
       //定义唯一的文件名，打印出来的uid其实就是时间戳
       var storeAs = "upload-file" + "/";
@@ -493,14 +565,12 @@ export default {
       //     console.log(err);
       //   });
     },
-    imgChange (files) {
-        if (files) {
-          console.log(files)
-         this.Upload(files[0])
-        }
-      },
-      
-
+    imgChange(files) {
+      if (files) {
+        console.log(files);
+        this.Upload(files[0]);
+      }
+    }
   },
   mounted() {
     this.catchdata();
@@ -510,22 +580,21 @@ export default {
 </script>
 
 <style scoped>
-.imgup{
+.imgup {
   height: 41px;
-  background:#eee;
-  
+  background: #eee;
+
   margin-right: 20px;
   line-height: 41px;
-  border-radius:5px; 
+  border-radius: 5px;
   position: relative;
 }
-.descimg{
+.descimg {
   position: absolute;
   top: 0;
   font-size: 12px;
   left: 90px;
-  display:inline-block;
-  
+  display: inline-block;
 }
 .box-card {
   width: 100%;
@@ -581,5 +650,25 @@ export default {
   line-height: 42px;
 
   left: 48px;
+}
+.showshopapplyfor {
+  text-decoration: underline;
+  font-size: 21px;
+  color: #088cee;
+  float: left;
+  line-height: 110px;
+  padding-left: 41px;
+  padding-bottom: 76px;
+}
+
+.packupshopapplyfor {
+  width: 270px;
+
+  text-align: left;
+  font-size: 21px;
+  line-height: 170px;
+  padding-left: 139px;
+  text-decoration: underline;
+  color: #088cee;
 }
 </style>

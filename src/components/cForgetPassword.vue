@@ -92,7 +92,7 @@ import axios from 'axios'
             word:'',
           },           
             sendAuthCode:true,
-            auth_time:80,
+            auth_time:60,
               rules: {
                 // 校验手机号码，主要通过validator来指定验证器名称
                 phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
@@ -177,7 +177,7 @@ import axios from 'axios'
                                         type: 'success'
                                       });
                         this.sendAuthCode = false;
-                        this.auth_time = 80;
+                        this.auth_time = 60;
                         var auth_timetimer =  setInterval(()=>{
                             this.auth_time--;
                             if(this.auth_time<=0){
