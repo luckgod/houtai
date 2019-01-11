@@ -85,6 +85,12 @@
             <div class="imgup">
               <mostImageUploader @onChange="mostimgChange" :maxSize="maxSize" placeholder="选择或拖放图片" ></mostImageUploader>
               <span class="descimga">点击右侧多上传图片</span>
+              <div  class="materialimgwarp">
+                <ul class="materialimglist">
+                  <li v-for="(item,index) in imageUrlm" :key="index"><img :src="item" class="uploader-delete-btnimg" alt=""><img src="../../assets/round_close.svg" class="uploader-delete-btn" @click="deleteImg(index)" /></li>
+                </ul>
+              </div>
+
             </div>
 
             <!-- <el-dialog :visible.sync="dialogVisible" style="width:48px;height:48px;">
@@ -155,7 +161,7 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       imglist: [],
-      imageUrlm: "",
+      imageUrlm:[],
       dataa: [
         {
           label: "Volvo",
@@ -242,7 +248,7 @@ export default {
             // 大功搞成
             //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
             console.log(result.url);
-            this.imageUrlm = result.url;
+            // this.imageUrlm = result.url;
           });
       } else {
         var element = [];
@@ -262,10 +268,13 @@ export default {
               element.push(result.url);
             });
         }
-
+        console.log(element)
         this.imageUrlm = element;
         
       }
+    },
+    deleteImg(index){
+      this.imageUrlm.splice(index, 1);
     },
 
     imgChangea(files) {
@@ -420,6 +429,42 @@ export default {
 };
 </script>
 <style>
+.materialimglist{
+ 
+  overflow: hidden;
+}
+.materialimglist li{
+  float: left; 
+}
+.uploader-delete-btnimg{
+  width: 40px;
+  height:40px;
+  padding: 4px;
+  border-radius:10px; 
+
+}
+
+.materialimgwarp{
+  position: absolute;
+  top: 0;
+  left:50px;
+}
+.uploader-delete-btn{
+     
+    position: absolute;
+    /* top: -10px;
+    right: -10px;
+    margin: 5px;
+    width: 15px;
+    height: 15px; */
+     width: 16px;
+
+    height: 16px;
+    top: 0;
+    margin-left: 24px;
+   
+}
+
 .imgup {
   height: 41px;
   background: #eee;

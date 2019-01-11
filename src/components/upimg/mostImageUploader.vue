@@ -7,8 +7,8 @@
     
     <img src="../../assets/img/addimg.png" alt="" style="width:40px;height:40px;display:inline-block;">
     <!--图片预览列表-->
-    <div v-if="hasImages" class="img-uploader-preview-list">
-      <div v-for="(data,index) in imageDataList" class="img-uploader-preview">
+    <div v-if="false" class="img-uploader-preview-list">
+      <div v-for="(data,index) in imageDataList" class="img-uploader-preview" :key="index">
 
         <div class="preview-img">
           <img :src="data" style="width:30px;height:30px;float:left;"/>
@@ -155,7 +155,8 @@
         }
         // 文件选择事件
 //        this.onChange && this.onChange(files)
-        this.$emit('onChange', files,this.imageDataList);
+      // console.log(files)
+        this.$emit('onChange', files);
 
         this.preview(files);
       },
@@ -236,17 +237,17 @@
   }
 
   .img-uploader-preview:hover {
-    transform: scale(1.02);
+    /* transform: scale(1.02); */
   }
 
   /* .img-uploader-preview:hover .img-uploader-mask {
     display: block;
   } */
 
-  .img-uploader-preview:hover .img-uploader-delete-btn {
+  /* .img-uploader-preview:hover .img-uploader-delete-btn {
     display: block;
     background: #ebebeb;
-  }
+  } */
 
   .img-uploader-preview .preview-img {
     /* width: 50px;
