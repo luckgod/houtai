@@ -62,6 +62,9 @@
       maxSize: {
         default: 3072,
         type: Number
+      },
+      onlist:{
+          type: Function
       }
     },
     data () {
@@ -122,8 +125,12 @@
         document.getElementById(this.inputId).click();
       },
       deleteImg(index){
+       
         this.imageDataList.splice(index, 1);
         this.countText = `${this.imageDataList.length}张图片`;
+         
+        
+        // this.$emit('onlist', this.imageDataList);
       },
       // 处理图片
       handleFile (files) {
@@ -148,7 +155,7 @@
         }
         // 文件选择事件
 //        this.onChange && this.onChange(files)
-        this.$emit('onChange', files);
+        this.$emit('onChange', files,this.imageDataList);
 
         this.preview(files);
       },

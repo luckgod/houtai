@@ -236,10 +236,10 @@
     display: block;
   } */
 
-  .img-uploader-preview:hover .img-uploader-delete-btn {
+  /* .img-uploader-preview:hover .img-uploader-delete-btn {
     display: block;
     background: #ebebeb;
-  }
+  } */
 
   .img-uploader-preview .preview-img {
     /* width: 50px;

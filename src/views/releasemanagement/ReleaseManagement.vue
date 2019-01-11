@@ -8,10 +8,17 @@
       </div>
 
       <div class="titcon">
-        <el-form label-position="top" :model="formLabelAlign" :inline="true" :rules="rules" ref="formLabelAlign" label-width="100px">
+        <el-form
+          label-position="top"
+          :model="formLabelAlign"
+          :inline="true"
+          :rules="rules"
+          ref="formLabelAlign"
+          label-width="100px"
+        >
           <!-- 图片上传 ============================================================================================================-->
           <div class="buju">
-            <el-form-item label="封面图片" >
+            <el-form-item label="封面图片">
               <div class="imgup">
                 <image-uploader @onChange="imgChangea" :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
                 <span class="descimg">点击右侧上传图片</span>
@@ -21,22 +28,22 @@
             <!-- 图片上传结束。。。。。 ========================================================================================================-->
             <el-form-item label="主标题">
               <div>
-              <el-input
-                v-model="formLabelAlign.maintitle"
-                placeholder="请输入主标题（15字以内）"
-                size="medium"
-                :minlength="255"
-              ></el-input>
+                <el-input
+                  v-model="formLabelAlign.maintitle"
+                  placeholder="请输入主标题（15字以内）"
+                  size="medium"
+                  :minlength="255"
+                ></el-input>
               </div>
             </el-form-item>
 
-            <el-form-item label="副标题" >
+            <el-form-item label="副标题">
               <el-input v-model="formLabelAlign.subTitle" placeholder="请输入副标题（30字以内）"></el-input>
             </el-form-item>
             <el-form-item label="类目选择">
               <el-select v-model="formLabelAlign.agentGrades" placeholder="选择类目">
                 <div v-for="(item,index) in cayegotyIdlist" :key="index">
-                  <el-option :label="item.categoryName" :value="item.id+1"></el-option>
+                  <el-option :label="item.categoryName" :value="item.id"></el-option>
                 </div>
               </el-select>
             </el-form-item>
@@ -53,7 +60,7 @@
             <!-- 图片上传 ============================================================================================================-->
             <el-form-item label="正文插图" style="margin:0;">
               <div class="imgup">
-                <image-uploader @onChange="imgChangec" :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
+                <image-uploader @onChange="imgChangec" :maxSize="maxSize" placeholder="选择或拖放图片" ></image-uploader>
                 <span class="descimg">点击右侧上传图片</span>
               </div>
             </el-form-item>
@@ -76,7 +83,7 @@
 
           <el-form-item label="物料图片" style=" width:60%;margin-right:22%;">
             <div class="imgup">
-              <mostImageUploader @onChange="mostimgChange" :maxSize="maxSize" placeholder="选择或拖放图片"></mostImageUploader>
+              <mostImageUploader @onChange="mostimgChange" :maxSize="maxSize" placeholder="选择或拖放图片" ></mostImageUploader>
               <span class="descimga">点击右侧多上传图片</span>
             </div>
 
@@ -114,12 +121,10 @@ export default {
     // 150
     // 100 张
 
-   
     return {
       maxSize: 3072,
       rules: {
         // 校验手机号码，主要通过validator来指定验证器名称
-      
       },
       formLabelAlign: {
         maintitle: "",
@@ -129,27 +134,19 @@ export default {
       },
       options: [
         {
-          value: "A级经销商",
+          value: "1",
           label: "A级经销商"
         },
         {
-          value: "B级经销商",
+          value: "2",
           label: "B级经销商"
         },
         {
-          value: "C级经销商",
+          value: "3",
           label: "C级经销商"
-        },
-        {
-          value: "D级经销商",
-          label: "D级经销商"
-        },
-        {
-          value: "E级经销商",
-          label: "E级经销商"
         }
       ],
-
+      selectGroups: "",
       configTips: "",
       cayegotyIdlist: "",
       imageUrla: "",
@@ -158,7 +155,7 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       imglist: [],
-      imageUrlm:'',
+      imageUrlm: "",
       dataa: [
         {
           label: "Volvo",
@@ -234,28 +231,27 @@ export default {
     Uploadmost(file) {
       // console.log(file)
       // console.log(file[0])
-      if(file.length==1){
+      if (file.length == 1) {
+        var uid = new Date().getTime();
+        var fileName = "banner" + uid;
+        //定义唯一的文件名，打印出来的uid其实就是时间戳
+        var storeAs = "upload-file" + "/";
+        client()
+          .put(storeAs + fileName, file[0])
+          .then(result => {
+            // 大功搞成
+            //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+            console.log(result.url);
+            this.imageUrlm = result.url;
+          });
+      } else {
+        var element = [];
+        for (let index = 0; index < file.length; index++) {
           var uid = new Date().getTime();
           var fileName = "banner" + uid;
           //定义唯一的文件名，打印出来的uid其实就是时间戳
           var storeAs = "upload-file" + "/";
-          client()
-            .put(storeAs + fileName, file[0])
-            .then(result => {
-              // 大功搞成
-              //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-              console.log(result.url);
-              this.imageUrlm = result.url;
-            });
-      }else{
-        var element=[]
-          for (let index = 0; index < file.length; index++) {
 
-          var uid = new Date().getTime();
-          var fileName = "banner" + uid;
-          //定义唯一的文件名，打印出来的uid其实就是时间戳
-          var storeAs = "upload-file" + "/";
-         
           client()
             .put(storeAs + fileName, file[index])
             .then(result => {
@@ -263,20 +259,15 @@ export default {
               //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
               // console.log(result.url);
 
-            
-             element.push(result.url)
-             
+              element.push(result.url);
             });
+        }
 
-            
-          }
-          
-          this.imageUrlm = element;
-          
+        this.imageUrlm = element;
+        
       }
-   
     },
-    
+
     imgChangea(files) {
       if (files) {
         console.log(files);
@@ -290,12 +281,16 @@ export default {
       }
     },
     imgChangec(files) {
+      console.log(files)
       if (files) {
         console.log(files);
         this.Uploadc(files[0]);
       }
     },
     mostimgChange(files) {
+       
+      //  console.log(files)
+      // console.log(b)
       if (files) {
         // console.log(files);
 
@@ -303,6 +298,7 @@ export default {
       }
     },
     
+
     //获取店铺 分类  /shop/shopCategoryList
     catchdata() {
       this.dataApi.ajax("get", "/admin/verify/category", {}, cb => {
@@ -316,38 +312,90 @@ export default {
 
     //店铺选择上传
     subd() {
-      console.log(this.formLabelAlign.maintitle);
-      console.log( this.formLabelAlign.subTitle);
-      console.log(this.formLabelAlign.content);
-      console.log( this.imageUrlb);
-      console.log( this.imageUrlc);
-      console.log( this.imageUrla);
-      console.log(  this.formLabelAlign.agentGrades);
-      console.log(this.imageUrlm)
-      var Saab=''
+      // console.log(this.formLabelAlign.maintitle);
+      // console.log( this.formLabelAlign.subTitle);
+      // console.log(this.formLabelAlign.content);
+      // console.log( this.imageUrlb);
+      // console.log( this.imageUrlc);
+      // console.log( this.imageUrla);
+      // console.log(  this.formLabelAlign.agentGrades);
+      console.log(this.imageUrlm);
+      var mostimglist = [];
       for (let index = 0; index < this.imageUrlm.length; index++) {
-        const element = this.imageUrlm[index];
-        Saab  = element+','+Saab
-        
-        
+        var element = this.imageUrlm[index];
+        mostimglist.push(element);
       }
-      console.log(Saab)
-    //   var params = new URLSearchParams();
-    //   params.append("title", this.formLabelAlign.maintitle);
-    //   params.append("subTitle", this.formLabelAlign.subTitle);
-    //   params.append("content", this.formLabelAlign.content);
-    //   params.append("mainpic", this.imageUrlb);
-    //   params.append("subPics", this.imageUrlc);
-    //   params.append("category", this.imageUrla);
-    //   params.append("categoryId", 1);
-    //   params.append("agentGrades", this.formLabelAlign.agentGrades);
+      console.log(mostimglist)
+      console.log(this.formLabelAlign.agentGrades);
+      if (this.imageUrla == "") {
+        this.$message.error("封面图片有误");
+      } else {
+        // console.log(this.formLabelAlign.maintitle.length)
+        // console.log(this.formLabelAlign.maintitle.length>15)
 
-    //   params.append("downloadPics", imageUrlm);
+        var str = this.formLabelAlign.maintitle.replace(/\s*/g, "");
+        console.log(str !== "");
+        if (this.formLabelAlign.maintitle.length > 15 || str == "") {
+          this.$message.error("主标题格式错误");
+        } else {
+          var stra = this.formLabelAlign.subTitle.replace(/\s*/g, "");
+          if (this.formLabelAlign.maintitle.subTitle > 30 || stra == "") {
+            this.$message.error("副标题格式错误");
+          } else {
+            if (this.formLabelAlign.agentGrades == "") {
+              this.$message.error("类目无选择");
+            } else {
+              if (this.imageUrlb == "") {
+                this.$message.error("正文主图有误");
+              } else {
+                if (this.imageUrlc == "") {
+                  this.$message.error("正文插图有误");
+                } else {
+                  var strb = this.formLabelAlign.content.replace(/\s*/g, "");
+                  if (
+                    this.formLabelAlign.maintitle.subTitle > 150 ||
+                    strb == ""
+                  ) {
+                    this.$message.error("正文内容有误");
+                  } else {
+                    if (this.selectGroups == "") {
+                      this.$message.error("请选择级别");
+                    } else {
+                      if (this.formLabelAlign.agentGrades == "") {
+                        this.$message.error("请选择类目");
+                      } else {
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      // var Saab=''
+      // for (let index = 0; index < this.imageUrlm.length; index++) {
+      //   const element = this.imageUrlm[index];
+      //   Saab  = element+','+Saab
 
-    //   this.dataApi.ajax("post", "/admin/verify/uploadMateriel", params, res => {
-    //     console.log("提交执行");
-    //     console.log(res);
-    //   });
+      //   var params = new URLSearchParams();
+      //   params.append("title", this.formLabelAlign.maintitle);
+      //   params.append("subTitle", this.formLabelAlign.subTitle);
+      //   params.append("content", this.formLabelAlign.content);
+      //   params.append("mainpic", this.imageUrlb);
+      //   params.append("subPics", this.imageUrlc);
+      //   params.append("category", this.imageUrla);
+      //   params.append("categoryId", this.selectGroups.join(','));
+      //   params.append("agentGrades", this.formLabelAlign.agentGrades);
+
+      //   params.append("downloadPics", imageUrlm);
+
+      // this.dataApi.ajax("post", "/admin/verify/uploadMateriel", params, res => {
+      //   console.log("提交执行");
+      //   console.log(res);
+      // });
+      // }
+      // console.log(Saab)
     },
 
     catchdatf() {
@@ -356,6 +404,13 @@ export default {
         // console.log('获取店铺分类')
         this.cayegotyIdlist = cb.data;
       });
+    },
+  
+  },
+   computed: {
+    fullName: function () {
+      this.mostimgChange()
+      return this.firstName + '' + this.lastName
     }
   },
   mounted() {
@@ -491,5 +546,11 @@ export default {
   flex-wrap:nowrap;
   justify-content: space-between; 
 } */
+
+</style>
+<style>
+.el-textarea__inner{
+  height: 200px;
+}
 </style>
 
