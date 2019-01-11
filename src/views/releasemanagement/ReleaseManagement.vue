@@ -237,21 +237,23 @@ export default {
     Uploadmost(file) {
       // console.log(file)
       // console.log(file[0])
-      if (file.length == 1) {
-        var uid = new Date().getTime();
-        var fileName = "banner" + uid;
-        //定义唯一的文件名，打印出来的uid其实就是时间戳
-        var storeAs = "upload-file" + "/";
-        client()
-          .put(storeAs + fileName, file[0])
-          .then(result => {
-            // 大功搞成
-            //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-            console.log(result.url);
-            // this.imageUrlm = result.url;
-          });
-      } else {
-        var element = [];
+      var element = [];
+      // if (file.length == 1) {
+      //   var uid = new Date().getTime();
+      //   var fileName = "banner" + uid;
+      //   //定义唯一的文件名，打印出来的uid其实就是时间戳
+      //   var storeAs = "upload-file" + "/";
+      //   client()
+      //     .put(storeAs + fileName, file[0])
+      //     .then(result => {
+      //       // 大功搞成
+      //       //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+      //       // console.log(result.url);
+      //        element.push(result.url);
+      //       // this.imageUrlm = result.url;
+      //     });
+      // } else {
+        
         for (let index = 0; index < file.length; index++) {
           var uid = new Date().getTime();
           var fileName = "banner" + uid;
@@ -271,7 +273,7 @@ export default {
         console.log(element)
         this.imageUrlm = element;
         
-      }
+      // }
     },
     deleteImg(index){
       this.imageUrlm.splice(index, 1);
