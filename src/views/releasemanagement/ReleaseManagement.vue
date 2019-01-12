@@ -12,7 +12,6 @@
           label-position="top"
           :model="formLabelAlign"
           :inline="true"
-          :rules="rules"
           ref="formLabelAlign"
           label-width="100px"
         >
@@ -32,7 +31,6 @@
                   v-model="formLabelAlign.maintitle"
                   placeholder="请输入主标题（15字以内）"
                   size="medium"
-                  :minlength="255"
                 ></el-input>
               </div>
             </el-form-item>
@@ -60,7 +58,7 @@
             <!-- 图片上传 ============================================================================================================-->
             <el-form-item label="正文插图" style="margin:0;">
               <div class="imgup">
-                <image-uploader @onChange="imgChangec" :maxSize="maxSize" placeholder="选择或拖放图片" ></image-uploader>
+                <image-uploader @onChange="imgChangec" :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
                 <span class="descimg">点击右侧上传图片</span>
               </div>
             </el-form-item>
@@ -83,14 +81,20 @@
 
           <el-form-item label="物料图片" style=" width:60%;margin-right:22%;">
             <div class="imgup">
-              <mostImageUploader @onChange="mostimgChange" :maxSize="maxSize" placeholder="选择或拖放图片" ></mostImageUploader>
+              <mostImageUploader @onChange="mostimgChange" :maxSize="maxSize" placeholder="选择或拖放图片"></mostImageUploader>
               <span class="descimga">点击右侧多上传图片</span>
-              <div  class="materialimgwarp">
+              <div class="materialimgwarp">
                 <ul class="materialimglist">
-                  <li v-for="(item,index) in imageUrlm" :key="index"><img :src="item" class="uploader-delete-btnimg" alt=""><img src="../../assets/round_close.svg" class="uploader-delete-btn" @click="deleteImg(index)" /></li>
+                  <li v-for="(item,index) in imageUrlm" :key="index">
+                    <img :src="item" class="uploader-delete-btnimg" alt>
+                    <img
+                      src="../../assets/round_close.svg"
+                      class="uploader-delete-btn"
+                      @click="deleteImg(index)"
+                    >
+                  </li>
                 </ul>
               </div>
-
             </div>
 
             <!-- <el-dialog :visible.sync="dialogVisible" style="width:48px;height:48px;">
@@ -161,7 +165,8 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       imglist: [],
-      imageUrlm:[],
+      imageUrlm: [],
+      imageUrlma: [],
       dataa: [
         {
           label: "Volvo",
@@ -237,45 +242,109 @@ export default {
     Uploadmost(file) {
       // console.log(file)
       // console.log(file[0])
-      var element = [];
-      // if (file.length == 1) {
-      //   var uid = new Date().getTime();
-      //   var fileName = "banner" + uid;
-      //   //定义唯一的文件名，打印出来的uid其实就是时间戳
-      //   var storeAs = "upload-file" + "/";
-      //   client()
-      //     .put(storeAs + fileName, file[0])
-      //     .then(result => {
-      //       // 大功搞成
-      //       //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-      //       // console.log(result.url);
-      //        element.push(result.url);
-      //       // this.imageUrlm = result.url;
-      //     });
-      // } else {
-        
-        for (let index = 0; index < file.length; index++) {
-          var uid = new Date().getTime();
-          var fileName = "banner" + uid;
-          //定义唯一的文件名，打印出来的uid其实就是时间戳
-          var storeAs = "upload-file" + "/";
+      
+      function randomWord(randomFlag, min, max) {
+        var str = "";
+        var range = min;
+        var arr = [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "q",
+          "r",
+          "s",
+          "t",
+          "u",
+          "v",
+          "w",
+          "x",
+          "y",
+          "z",
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+          "K",
+          "L",
+          "M",
+          "N",
+          "O",
+          "P",
+          "Q",
+          "R",
+          "S",
+          "T",
+          "U",
+          "V",
+          "W",
+          "X",
+          "Y",
+          "Z"
+        ];
 
-          client()
-            .put(storeAs + fileName, file[index])
-            .then(result => {
-              // 大功搞成
-              //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
-              // console.log(result.url);
-
-              element.push(result.url);
-            });
+        // 随机产生
+        if (randomFlag) {
+          range = Math.round(Math.random() * (max - min)) + min;
         }
-        console.log(element)
-        this.imageUrlm = element;
-        
+        for (var i = 0; i < range; i++) {
+          var pos = Math.round(Math.random() * (arr.length - 1));
+          str += arr[pos];
+        }
+        return str;
+      }
+      for (let index = 0; index < file.length; index++) {
+        var uid = new Date().getTime();
+        var fileName = "banner" + uid + randomWord(true, 3, 20);
+        //定义唯一的文件名，打印出来的uid其实就是时间戳
+        var storeAs = "upload-file" + "/";
+
+        client()
+          .put(storeAs + fileName, file[index])
+          .then(result => {
+            // 大功搞成
+            //下面是如果对返回结果再进行处理，根据项目需要，下面是我们自己项目所用的，仅供参考
+            // console.log(result.url);
+
+           this.imageUrlm.push(result.url);
+          });
+      }
+      // console.log(element);
+      // this.imageUrlm = element;
+      // this.imageUrlma=this.imageUrlm 
+      // console.log(this.imageUrlm)
+      // console.log(this.imageUrlma)
       // }
     },
-    deleteImg(index){
+    deleteImg(index) {
       this.imageUrlm.splice(index, 1);
     },
 
@@ -292,23 +361,17 @@ export default {
       }
     },
     imgChangec(files) {
-      console.log(files)
+      console.log(files);
       if (files) {
         console.log(files);
         this.Uploadc(files[0]);
       }
     },
     mostimgChange(files) {
-       
-      //  console.log(files)
-      // console.log(b)
       if (files) {
-        // console.log(files);
-
         this.Uploadmost(files);
       }
     },
-    
 
     //获取店铺 分类  /shop/shopCategoryList
     catchdata() {
@@ -323,21 +386,7 @@ export default {
 
     //店铺选择上传
     subd() {
-      // console.log(this.formLabelAlign.maintitle);
-      // console.log( this.formLabelAlign.subTitle);
-      // console.log(this.formLabelAlign.content);
-      // console.log( this.imageUrlb);
-      // console.log( this.imageUrlc);
-      // console.log( this.imageUrla);
-      // console.log(  this.formLabelAlign.agentGrades);
-      console.log(this.imageUrlm);
-      var mostimglist = [];
-      for (let index = 0; index < this.imageUrlm.length; index++) {
-        var element = this.imageUrlm[index];
-        mostimglist.push(element);
-      }
-      console.log(mostimglist)
-      console.log(this.formLabelAlign.agentGrades);
+     
       if (this.imageUrla == "") {
         this.$message.error("封面图片有误");
       } else {
@@ -375,6 +424,46 @@ export default {
                       if (this.formLabelAlign.agentGrades == "") {
                         this.$message.error("请选择类目");
                       } else {
+                        if (this.imageUrlm.length == 0) {
+                          this.$message.error("请选择上传物料");
+                        } else {
+                          var params = new URLSearchParams();
+                          params.append("title", this.formLabelAlign.maintitle);
+                          params.append(
+                            "subTitle",
+                            this.formLabelAlign.subTitle
+                          );
+                          params.append("content", this.formLabelAlign.content);
+                          params.append("mainpic", this.imageUrlb);
+                          params.append("subPics", this.imageUrlc);
+                          params.append("category", this.imageUrla);
+                          params.append(
+                            "categoryId",
+                            parseInt(this.formLabelAlign.agentGrades)
+                          );
+                          params.append(
+                            "agentGrades",
+                            this.selectGroups.join()
+                          );
+
+                          params.append("downloadPics", this.imageUrlm.join());
+
+                          this.dataApi.ajax(
+                            "post",
+                            "/admin/verify/uploadMateriel",
+                            params,
+                            res => {
+                              console.log("提交执行");
+                              console.log();
+                              if (res.code == 0) {
+                                this.$message({
+                                  message: "物料发布成功",
+                                  type: "success"
+                                });
+                              }
+                            }
+                          );
+                        }
                       }
                     }
                   }
@@ -389,22 +478,6 @@ export default {
       //   const element = this.imageUrlm[index];
       //   Saab  = element+','+Saab
 
-      //   var params = new URLSearchParams();
-      //   params.append("title", this.formLabelAlign.maintitle);
-      //   params.append("subTitle", this.formLabelAlign.subTitle);
-      //   params.append("content", this.formLabelAlign.content);
-      //   params.append("mainpic", this.imageUrlb);
-      //   params.append("subPics", this.imageUrlc);
-      //   params.append("category", this.imageUrla);
-      //   params.append("categoryId", this.selectGroups.join(','));
-      //   params.append("agentGrades", this.formLabelAlign.agentGrades);
-
-      //   params.append("downloadPics", imageUrlm);
-
-      // this.dataApi.ajax("post", "/admin/verify/uploadMateriel", params, res => {
-      //   console.log("提交执行");
-      //   console.log(res);
-      // });
       // }
       // console.log(Saab)
     },
@@ -415,13 +488,12 @@ export default {
         // console.log('获取店铺分类')
         this.cayegotyIdlist = cb.data;
       });
-    },
-  
+    }
   },
-   computed: {
-    fullName: function () {
-      this.mostimgChange()
-      return this.firstName + '' + this.lastName
+  computed: {
+    fullName: function() {
+      this.mostimgChange();
+      return this.firstName + "" + this.lastName;
     }
   },
   mounted() {
@@ -431,40 +503,36 @@ export default {
 };
 </script>
 <style>
-.materialimglist{
- 
+.materialimglist {
   overflow: hidden;
 }
-.materialimglist li{
-  float: left; 
+.materialimglist li {
+  float: left;
 }
-.uploader-delete-btnimg{
+.uploader-delete-btnimg {
   width: 40px;
-  height:40px;
+  height: 40px;
   padding: 4px;
-  border-radius:10px; 
-
+  border-radius: 10px;
 }
 
-.materialimgwarp{
+.materialimgwarp {
   position: absolute;
   top: 0;
-  left:50px;
+  left: 50px;
 }
-.uploader-delete-btn{
-     
-    position: absolute;
-    /* top: -10px;
+.uploader-delete-btn {
+  position: absolute;
+  /* top: -10px;
     right: -10px;
     margin: 5px;
     width: 15px;
     height: 15px; */
-     width: 16px;
+  width: 16px;
 
-    height: 16px;
-    top: 0;
-    margin-left: 24px;
-   
+  height: 16px;
+  top: 0;
+  margin-left: 24px;
 }
 
 .imgup {
@@ -593,10 +661,9 @@ export default {
   flex-wrap:nowrap;
   justify-content: space-between; 
 } */
-
 </style>
 <style>
-.el-textarea__inner{
+.el-textarea__inner {
   height: 200px;
 }
 </style>

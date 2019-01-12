@@ -5,13 +5,13 @@
       <div class="titcon">
         <el-form
           label-position="top"
-          label-width="80px"
+          label-width="324px"
           :model="formLabelAlign"
           :inline="true"
           :rules="rules"
         >
           <el-form-item label="姓名" prop="name">
-            <el-input v-model="formLabelAlign.name" placeholder="请输入真实姓名"></el-input>
+            <el-input v-model="formLabelAlign.name" placeholder="请输入真实姓名" style="width：200px;"></el-input>
           </el-form-item>
           <el-form-item label="身份证号" prop="idcard">
             <el-input v-model="formLabelAlign.idcard" placeholder="请输入真实身份证号"></el-input>
@@ -20,7 +20,7 @@
             <el-input v-model="formLabelAlign.mobile" placeholder="请输入您的手机号"></el-input>
           </el-form-item>
           <el-form-item label="性别">
-            <el-select v-model="formLabelAlign.sex" placeholder="活动区域">
+            <el-select v-model="formLabelAlign.sex" placeholder="性别">
               <el-option label="男" value="1"></el-option>
               <el-option label="女" value="2"></el-option>
             </el-select>
@@ -41,7 +41,7 @@
             <cascaderMulti
               v-model="formLabelAlign.locid"
               :data="options"
-              placeholder="状态码"
+              placeholder="请输入代理区域"
               style="z-index:100"
             ></cascaderMulti>
           </el-form-item>

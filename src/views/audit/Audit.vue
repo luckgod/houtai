@@ -49,11 +49,11 @@
           <template slot-scope="scope" prop="id">
              <el-tooltip placement="top">
               <div slot="content" class="statustip">
-                <span style="padding: 0 20px;" @click="jshenhe(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="dpushenhea(scope.row.id)">通过申请</span><span style="padding: 0 20px;" @click="dpushenheb(scope.row)">拒绝申请</span>
+                <span style="padding: 0 20px;" @click="jshenhe(scope.row)" class="mousecs" >查看详情</span><span style="padding: 0 20px;"  class="mousecs" @click="dpushenhea(scope.row)">通过申请</span><span style="padding: 0 20px;" @click="dpushenheb(scope.row)"  class="mousecs" >拒绝申请</span>
               </div>
             <el-button
               type="text"
-              @click="jshenhe(scope.row)"
+             
             >{{scope.row.isHandleAgent|capitalize}}</el-button>
               </el-tooltip>
             <!-- <div @click="jshenhe(scope.row)">
@@ -66,11 +66,11 @@
           <template slot-scope="scope">
              <el-tooltip placement="top">
             <div slot="content" class="statustip">
-                <span style="padding: 0 20px;" @click="jshenhea(scope.row)">查看详情</span><span style="padding: 0 20px;" @click="jshenheta(scope.row)">通过申请</span><span style="padding: 0 20px;" @click="jshenhetb(scope.row)">拒绝申请</span>
+                <span style="padding: 0 20px;"  class="mousecs" @click="jshenhea(scope.row)">查看详情</span><span style="padding: 0 20px;"  class="mousecs" @click="jshenheta(scope.row)">通过申请</span><span style="padding: 0 20px;"  class="mousecs" @click="jshenhetb(scope.row)">拒绝申请</span>
               </div>
             <el-button
               type="text"
-              @click="jshenhea(scope.row)"
+             
             >{{scope.row.isHandleShop|capitalizea}}</el-button>
             </el-tooltip>
           </template>
@@ -90,7 +90,7 @@
       </div>
      
       <!-- 店铺商店铺资料 -->
-      <el-dialog title="收货地址1" :visible.sync="dialogFormVisible" append-to-body width="400px">
+      <el-dialog title="店铺资料" :visible.sync="dialogFormVisible" append-to-body width="400px">
         <el-form>
           <el-form-item label="活动标志" :label-width="formLabelWidth">
             <div class="tupain">
@@ -120,7 +120,7 @@
         </div>
       </el-dialog>
        <!-- A级经销商资料 -->
-      <el-dialog title="收货地址a" :visible.sync="dialogFormVisiblea" append-to-body width="400px">
+      <el-dialog title="经销商资料" :visible.sync="dialogFormVisiblea" append-to-body width="400px">
         <el-form>
           <el-form-item label="姓名" :label-width="formLabelWidth">
             <div class="wenzi">{{data.name}}</div>
@@ -132,10 +132,10 @@
             <div class="wenzi">{{data.mobile}}</div>
           </el-form-item>
           <el-form-item label="性别" :label-width="formLabelWidth">
-            <div class="wenzi">{{data.sex}}</div>
+            <div class="wenzi">{{data.sex|sexitalizea}}</div>
           </el-form-item>
           <el-form-item label="所属行业" :label-width="formLabelWidth">
-            <div class="wenzi">{{data.shopCategoryName}}</div>
+            <div class="wenzi">{{data.category}}</div>
           </el-form-item>
           <el-form-item label="代理区域" :label-width="formLabelWidth">
             <div class="wenzile" >{{data.locidNames}}</div>
@@ -175,6 +175,7 @@ export default {
         mobile: "",
         sex: "",
         shopCategoryName: "",
+        category:'',
         locidNames: "",
         isHandleAgent:'',
          id:'',
@@ -238,7 +239,7 @@ export default {
       this.data.idCard = ta.idCard;
       this.data.mobile = ta.mobile;
       this.data.sex = ta.sex;
-      this.data.shopCategoryName = ta.shopCategoryName;
+      this.data.category = ta.category;
       this.data.locidNames = ta.locidNames;
        this.data.id = ta.id;
        this.data.isHandleAgent=ta.isHandleAgent
@@ -366,7 +367,7 @@ export default {
      dpushenhea(b){
         console.log(b.id)
         var params = new URLSearchParams();
-         params.append("id",parseInt(b));
+         params.append("id",parseInt(b.id));
          params.append("ishandAgent",true);
          params.append("isAgree",true);
         this.dataApi.ajax("post", "/admin/verify/handleApply", params, res => {
@@ -386,6 +387,7 @@ export default {
       });
      },
      dpushenheb(b){
+       console.log(b.id)
          var params = new URLSearchParams();
 
          params.append("id",parseInt(b.id));
@@ -421,6 +423,11 @@ export default {
       if (value == 0) return "未审核";
       if (value == 1) return "已通过审核";
       if (value == 2) return "已拒绝审核";
+    },
+    sexitalizea: function(value) {
+    
+      if (value == 1) return "男";
+      if (value == 2) return "女";
     }
   }
 };
@@ -473,5 +480,6 @@ export default {
   text-indent: 20px;
   
 }
+
 </style>
 
