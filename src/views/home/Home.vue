@@ -10,7 +10,7 @@
                               <navleft></navleft>  
                                 
             </el-aside>
-            <el-main style="100vh">
+            <el-main style="padding:0;">
                <router-view/>
             </el-main>
           </el-container>
@@ -74,6 +74,12 @@ position: absolute;
   }
   
 </style>
+<style>
+.el-header{
+  font-size:16px;
+}
+</style>
+
 <script>
 export default {
   name: "Home"

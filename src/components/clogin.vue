@@ -149,16 +149,19 @@ export default {
                     e = window.event;
                 }
                 if ((e.keyCode || e.which) === 13) {
-                  this.log()
+                  this.catchdata()
                 }
             },
   },
+  // mounted(){
+  //    document.addEventListener('keydown', this.keyDownLogin)
+  // },
    created() {
             document.addEventListener('keydown', this.keyDownLogin)
         },
-        destroyed() {
+  destroyed() {
             document.removeEventListener('keydown', this.keyDownLogin)
-        },
+  },
 };
 </script>
 

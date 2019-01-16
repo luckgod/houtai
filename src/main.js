@@ -6,6 +6,9 @@ import store from './store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+import Echarts from 'echarts'
+
+Vue.use(Echarts)
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import Promise from "promise-polyfill";
@@ -13,6 +16,7 @@ import Dropdown from 'hsy-vue-dropdown'
 import multiCascader from "multi-cascader";
 import cascaderMulti from "cascader-multi";
 import './assets/css/weui.min.css'
+window.echarts = require('echarts');
 Vue.use(iView);
 Vue.use(cascaderMulti);
 Vue.use(multiCascader);
@@ -33,3 +37,6 @@ new Vue({
 }).$mount('#app')
 Vue.prototype.dataApi = require('./dataApi').default
 Vue.prototype.uploadF = require('./assets/js/uploadAliyun').default
+Vue.prototype.echarts = Echarts
+
+Vue.prototype.$echarts = echarts

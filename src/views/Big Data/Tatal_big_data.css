@@ -1,0 +1,85 @@
+.warp{
+   
+    background: #2a334b;
+    /* border: 1px solid #000; */
+    padding: 62px 28px;
+}
+.el-main{
+    background: #2a334b;
+}
+.map_warp{
+    width:930px;
+    height:593px;
+    background: palegoldenrod;
+    float: left;
+}
+.sefirst{
+    width: 100%;
+    height:593px;
+    background: palegreen;
+}
+.sefirst_seone{
+    float: left;
+    width: 641px;
+    height:593px;
+    margin-left: 9px;
+    /* border: 1px solid #2a334b; */
+}
+.sefirst_seone_up{
+width: 641px;
+height: 198px;
+border: 1px solid #ffffff;
+}
+.sefirst_seone_con{
+    width: 641px;
+    height: 106px;
+    border: 1px solid #ffffff;
+    margin-top: 10px;
+}
+.sefirst_seone_bot{
+    width: 641px;
+    height: 267px;
+    border: 1px solid #ffffff;
+    margin-top: 10px;
+}
+.setwo{
+    width: 100%;
+    height: 273px;
+    margin-top:12px;
+    background: palevioletred; 
+}
+.setwo_oul{
+    
+}
+.setwo_oul li{
+    float: left;
+}
+.setwo_one{
+width: 459px;
+height:274px;
+border: 1px solid #ffffff;
+}
+.setwo_two{
+    width: 459px;
+    height:274px;
+    border: 1px solid #ffffff;
+    margin-left: 10px;
+}
+.setwo_three{
+    width: 205px;
+    height:274px;
+    border: 1px solid #ffffff;
+    margin-left: 10px;
+}
+.setwo_four{
+    width: 205px;
+    height:274px;
+    border: 1px solid #ffffff;
+    margin-left: 10px;
+}
+.setwo_five{
+    width: 205px;
+    height:274px;
+    border: 1px solid #ffffff;
+    margin-left: 10px;
+}

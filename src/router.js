@@ -81,6 +81,14 @@ export default new Router({
                       // meta: { keepAlive: true },
               
               },
+              {
+                path: '/tatal_big_data',
+                      component: resolve => require(['./views/Big Data/Tatal_big_data.vue'], resolve),
+                      name:'Tatal_big_data',
+                      hidden: true,
+                      // meta: { keepAlive: true },
+              
+              },
             ]
     
     },

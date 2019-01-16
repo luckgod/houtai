@@ -2,9 +2,11 @@
   <div>
     <el-card class="box-card">
       <div class="tit">经销商信息
-        <div class="chose">
-          <multiCascader :options="options" @on-selected="getSelected" :inputValue="configTips"></multiCascader>
-        </div>
+        <!-- <div class="chose"> -->
+          <!-- <el-dropdown> -->
+      
+          <!-- <multiCascader :options="options" @on-selected="getSelected" :inputValue="configTips" placeholder="选择可见对象"></multiCascader> -->
+        <!-- </div> -->
       </div>
 
       <div class="titcon">
@@ -17,10 +19,20 @@
         >
           <!-- 图片上传 ============================================================================================================-->
           <div class="buju">
+            <div class="bujus">
+                 <el-select v-model="selectGroups" clearable placeholder="选择可见对象" :multiple="true" >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
             <el-form-item label="封面图片">
               <div class="imgup">
                 <image-uploader @onChange="imgChangea" :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
-                <span class="descimg">点击右侧上传图片</span>
+                <span class="descimg" v-if="imageUrla==''">点击右侧上传图片</span>
               </div>
             </el-form-item>
 
@@ -34,7 +46,7 @@
                 ></el-input>
               </div>
             </el-form-item>
-
+            
             <el-form-item label="副标题">
               <el-input v-model="formLabelAlign.subTitle" placeholder="请输入副标题（30字以内）"></el-input>
             </el-form-item>
@@ -51,7 +63,7 @@
             <el-form-item label="正文主图">
               <div class="imgup">
                 <image-uploader @onChange="imgChangeb" :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
-                <span class="descimg">点击右侧上传图片</span>
+                <span class="descimg" v-if="imageUrla==''">点击右侧上传图片</span>
               </div>
             </el-form-item>
             <!-- 图片上传结束。。。。。 ========================================================================================================-->
@@ -59,7 +71,7 @@
             <el-form-item label="正文插图" style="margin:0;">
               <div class="imgup">
                 <image-uploader @onChange="imgChangec" :maxSize="maxSize" placeholder="选择或拖放图片"></image-uploader>
-                <span class="descimg">点击右侧上传图片</span>
+                <span class="descimg" v-if="imageUrlc==''">点击右侧上传图片</span>
               </div>
             </el-form-item>
             <!-- 图片上传结束。。。。。 ========================================================================================================-->
@@ -82,7 +94,7 @@
           <el-form-item label="物料图片" style=" width:60%;margin-right:22%;">
             <div class="imgup">
               <mostImageUploader @onChange="mostimgChange" :maxSize="maxSize" placeholder="选择或拖放图片"></mostImageUploader>
-              <span class="descimga">点击右侧多上传图片</span>
+              <span class="descimga" v-if="imageUrlm==''">点击右侧多上传图片</span>
               <div class="materialimgwarp">
                 <ul class="materialimglist">
                   <li v-for="(item,index) in imageUrlm" :key="index">
@@ -586,19 +598,27 @@ export default {
 </style>
 
 <style scoped>
+.el-input__inner{
+height:30px;
+width:200px;
+}
 .box-card {
-  width: 100%;
+  width: 95%;
   margin: 0;
+  margin:40px;
 }
 .chose {
   display: inline-block;
-  position: absolute;
-  right: 0;
+  position: absolute;\
+  height: 40px;
+  right: 100px;
 }
 .tit {
   text-align: left;
   line-height: 80px;
   height: 80px;
+  font-size:25px;
+  text-indent:24px;
   border-bottom: 1px solid #cccccc;
   position: relative;
 }
@@ -655,16 +675,30 @@ export default {
 }
 .el-icon-plus {
 }
-/* .buju{
-  border:1px solid #000;
-  display: flex;
-  flex-wrap:nowrap;
-  justify-content: space-between; 
-} */
+.buju{
+  position: relative;
+}
+.bujus{
+  position: absolute;
+  top:-65px;
+  width:300px;
+  height: 30px;
+  right:0;
+}
+.el-tag{
+  position: absolute;
+}
+
 </style>
 <style>
 .el-textarea__inner {
   height: 200px;
+}
+.el-select__tags{
+  flex-wrap:nowrap;
+}
+.el-input__inner{
+  width:300px;
 }
 </style>
 

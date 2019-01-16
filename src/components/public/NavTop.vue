@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="bg">
-      <el-row >
+     
         <el-col :span="4">
           <div class="grid-content bg-purple"  style=" text-align: left;">
               <img src="../../assets/img/logo.png" alt="" class="logo">
@@ -17,21 +17,26 @@
           <div class="grid-content bg-purple" style=" text-align: right;">
               <span  class="tit" >你好！{{name}}</span>
            
-              <img src="../../assets/img/logo.png" alt="" class="logo "> 
+              <img src="../../assets/img/logo.png" alt="" class="logo userlogo"> 
               
           </div>
         </el-col>
-      </el-row>
+     
     </div>
   </div>
 </template>
 <style scoped>
 
 .logo{
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     display: inline;
+    margin:0 5px;
     vertical-align: middle;
+    
+}
+.userlogo{
+border-radius:30px; 
 }
 
 
