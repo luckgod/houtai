@@ -1,22 +1,24 @@
 .warp{
-   
     background: #2a334b;
-    /* border: 1px solid #000; */
-    padding: 62px 28px;
+    /* background: #3b4560; */
+    border-top: 1px solid #666666;
+    padding: 22px 28px;
+    color: #ffffff;
 }
 .el-main{
     background: #2a334b;
 }
 .map_warp{
-    width:930px;
+    min-width:930px;
     height:593px;
-    background: palegoldenrod;
+    background: #555c6f;
     float: left;
+    border: 1px solid #ffffff;
 }
 .sefirst{
     width: 100%;
     height:593px;
-    background: palegreen;
+    /* background: #555c6f; */
 }
 .sefirst_seone{
     float: left;
@@ -26,27 +28,36 @@
     /* border: 1px solid #2a334b; */
 }
 .sefirst_seone_up{
-width: 641px;
+    min-width: 641px;
 height: 198px;
 border: 1px solid #ffffff;
+background: #555c6f;
+padding: 0 20px;
+box-sizing: border-box;
 }
 .sefirst_seone_con{
-    width: 641px;
+    min-width: 641px;
     height: 106px;
     border: 1px solid #ffffff;
     margin-top: 10px;
+    background: #555c6f;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 .sefirst_seone_bot{
-    width: 641px;
+    min-width: 641px;
     height: 267px;
+    background: #555c6f;
+    padding: 0 20px;
     border: 1px solid #ffffff;
     margin-top: 10px;
+    box-sizing: border-box;
 }
 .setwo{
     width: 100%;
     height: 273px;
     margin-top:12px;
-    background: palevioletred; 
+    /* background: palevioletred;  */
 }
 .setwo_oul{
     
@@ -55,31 +66,93 @@ border: 1px solid #ffffff;
     float: left;
 }
 .setwo_one{
-width: 459px;
+    min-width: 459px;
 height:274px;
+background: #555c6f;
 border: 1px solid #ffffff;
+padding: 0 20px;
+box-sizing: border-box;
 }
 .setwo_two{
-    width: 459px;
+    min-width: 459px;
     height:274px;
+    background: #555c6f;
     border: 1px solid #ffffff;
     margin-left: 10px;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 .setwo_three{
     width: 205px;
     height:274px;
+    background: #555c6f;
     border: 1px solid #ffffff;
     margin-left: 10px;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 .setwo_four{
     width: 205px;
     height:274px;
+    background: #555c6f;
     border: 1px solid #ffffff;
     margin-left: 10px;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 .setwo_five{
     width: 205px;
     height:274px;
+    background: #555c6f;
     border: 1px solid #ffffff;
     margin-left: 10px;
+    padding: 0 20px;
+    box-sizing: border-box;
+   
+}
+.sefirst_seone_upuser{
+    display: flex;
+
+    border-bottom: 1px solid #ffffff;
+    height: 51px;
+    line-height: 50px;
+    font-size: 16px;
+    text-align: left;
+ 
+    
+}
+.sefirst_seone_upuser span{
+    width: 231px;
+   
+}
+.sefirst_seone_upuserw{
+    display: flex;
+
+   
+    height: 51px;
+    line-height: 50px;
+    font-size: 16px;
+   text-align: left;
+ 
+    
+}
+.sefirst_seone_upuserw span{
+    width: 231px;
+   
+}
+.charttit{
+    height: 50px;
+    line-height: 50px;
+    text-align: left;
+    font-size: 18px;
+    border-bottom:1px solid #ffffff;
+    margin-bottom:20px;  
+
+}
+.charttit span{
+float: right;
+line-height: 50px;
+}
+.charttit span:hover{
+    color: #67C23A;
 }

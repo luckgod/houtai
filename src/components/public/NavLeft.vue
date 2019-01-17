@@ -190,17 +190,79 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
+    
     jump12() {
-      this.$router.push("companydata");
+   
+            this.$router.push("companydata");
+       
+     
     },
     jump11() {
-      this.$router.push("audit");
+      function getCookie(name) {
+        var arr = document.cookie.split('; ');
+        for(var i = 0; i < arr.length; i++) {
+        var arrName = arr[i].split('=');
+        if(arrName[0] == name) {
+        return arrName[1];
+        }
+        }
+        return '';
+        }
+      //  console.log(JSON.parse(getCookie('user')).username)
+        if(JSON.parse(getCookie('user')).username=='hejinliang'){
+              this.$message({
+                message: '警告，无权限',
+                type: 'warning'
+              });
+       }else{
+             this.$router.push("audit");
+       }
+    
+     
     },
     jump13() {
-      this.$router.push("releasemanagement");
+      function getCookie(name) {
+        var arr = document.cookie.split('; ');
+        for(var i = 0; i < arr.length; i++) {
+        var arrName = arr[i].split('=');
+        if(arrName[0] == name) {
+        return arrName[1];
+        }
+        }
+        return '';
+        }
+      //  console.log()
+       if(JSON.parse(getCookie('user')).username=='hejinliang'){
+              this.$message({
+                message: '警告，无权限',
+                type: 'warning'
+              });
+       }else{
+            this.$router.push("releasemanagement");
+       }
+    
     },
     jump14() {
-      this.$router.push("tatal_big_data");
+      function getCookie(name) {
+        var arr = document.cookie.split('; ');
+        for(var i = 0; i < arr.length; i++) {
+        var arrName = arr[i].split('=');
+        if(arrName[0] == name) {
+        return arrName[1];
+        }
+        }
+        return '';
+        }
+         if(JSON.parse(getCookie('user')).username=='hejinliang'){
+              this.$message({
+                message: '警告，无权限',
+                type: 'warning'
+              });
+       }else{
+             this.$router.push("tatal_big_data");
+       }
+      //  console.log(JSON.parse(getCookie('user')).username)
+     
     }
   }
 };

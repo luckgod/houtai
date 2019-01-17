@@ -15,7 +15,7 @@
       <el-form class="demo-ruleForm" ref="form" :model="form" :rules="rules"  >
         <el-form-item class="aa" prop="word">
 
-          <el-input class="digweic" placeholder="请输入8位数密码" v-model="form.word"   type="password"></el-input>
+          <el-input class="digweic" placeholder="请输入密码" v-model="form.word"   type="password"></el-input>
        
         </el-form-item>
       </el-form>
@@ -23,7 +23,7 @@
         <el-form-item class="fg">
           <el-button
             type="primary"
-           @click="jumpr"
+          
             style="width: 201px; height: 70px;font-size: 24px;background: #2a334b; font-weight: 400;"
           >注 册</el-button>
            <el-button
@@ -34,8 +34,8 @@
         </el-form-item>
       </el-form>
       <div class="setwoa" key="12">
-        <span @click="jumpr">忘记密码？</span>
-        <span @click="jumpf">立即找回</span>
+        <span >忘记密码？</span>
+        <span >立即找回</span>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@ export default {
         }
       }, 1000);
     };
-    var mimareg = /^[a-zA-Z0-9]{8,8}$/;
+    var mimareg = /^[a-zA-Z0-9]{6,16}$/;
     var mimaregPhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("号码不能为空!!"));
@@ -93,15 +93,17 @@ export default {
 
   methods: {
     jumpr() {
-      this.$router.push("/register");
+      // this.$router.push('companydata')
+      // this.$router.push("/register");
     },
     jumpf() {
-      this.$router.push("/forgetpassword");
+      // this.$router.push('companydata')
+      // this.$router.push("/forgetpassword");
     },
     catchdata(){
       // console.log(this.form.phone)
       //  console.log(this.form.word)
-        var mimareg = /^[a-zA-Z0-9]{8,8}$/;
+        var mimareg = /^[a-zA-Z0-9]{6,16}$/;
          var phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
         if (!phoneReg.test(this.form.phone)) {
           this.$message.error('手机号格式有误');
@@ -126,7 +128,7 @@ export default {
                                 }
                                 setCookie('token',res.data.token)
                                 setCookie('user',JSON.stringify(res.data.user))
-                                this.$router.push('audit')
+                                this.$router.push('companydata')
                                 this.$message({
                                         message: '恭喜你,登陆成功',
                                         type: 'success'
@@ -153,9 +155,9 @@ export default {
                 }
             },
   },
-  // mounted(){
-  //    document.addEventListener('keydown', this.keyDownLogin)
-  // },
+  mounted(){
+     document.addEventListener('keydown', this.keyDownLogin)
+  },
    created() {
             document.addEventListener('keydown', this.keyDownLogin)
         },

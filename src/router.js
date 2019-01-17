@@ -18,29 +18,29 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/',
+      path: '/loginnpm ',
       name: 'login',
       component: resolve => require(['./views/login/Login.vue'], resolve),
       hidden: true,
       
       
     },
-    {
-      path: '/register',
-            component: resolve => require(['./views/login/Register.vue'], resolve),
-            name:'register',
-            hidden: true,
+    // {
+    //   path: '/register',
+    //         component: resolve => require(['./views/login/Register.vue'], resolve),
+    //         name:'register',
+    //         hidden: true,
             
     
-    },
-    {
-      path: '/forgetpassword',
-            component: resolve => require(['./views/login/ForgetPassword.vue'], resolve),
-            name:'forgetpassword',
-            hidden: true,
+    // },
+    // {
+    //   path: '/forgetpassword',
+    //         component: resolve => require(['./views/login/ForgetPassword.vue'], resolve),
+    //         name:'forgetpassword',
+    //         hidden: true,
             
     
-    },
+    // },
     {
       path: '/home',
             component: resolve => require(['./views/home/Home.vue'], resolve),
@@ -81,14 +81,14 @@ export default new Router({
                       // meta: { keepAlive: true },
               
               },
-              {
-                path: '/tatal_big_data',
-                      component: resolve => require(['./views/Big Data/Tatal_big_data.vue'], resolve),
-                      name:'Tatal_big_data',
-                      hidden: true,
-                      // meta: { keepAlive: true },
+              // {
+              //   path: '/tatal_big_data',
+              //         component: resolve => require(['./views/Big Data/Tatal_big_data.vue'], resolve),
+              //         name:'Tatal_big_data',
+              //         hidden: true,
+              //         // meta: { keepAlive: true },
               
-              },
+              // },
             ]
     
     },

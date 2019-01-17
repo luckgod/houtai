@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="twarp">
     <el-card class="box-card">
       <div class="tit">经销商信息</div>
       <div class="titcon">
@@ -589,6 +589,9 @@ export default {
   border-radius: 5px;
   position: relative;
 }
+.twarp{
+   padding: 22px 28px;
+}
 .descimg {
   position: absolute;
   top: 0;
@@ -604,6 +607,8 @@ export default {
   text-align: left;
   line-height: 80px;
   height: 80px;
+  font-size: 20px;
+  text-indent: 40px;
   border-bottom: 1px solid #cccccc;
 }
 

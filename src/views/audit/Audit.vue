@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="twarp">
     <el-card class="box-card">
       <div class="tit">筛选查询</div>
       <div class="titcon">
@@ -436,6 +436,9 @@ export default {
 .box-card {
   width: 100%;
  
+}
+.twarp{
+   padding: 22px 28px;
 }
 .tit {
   text-align: left;

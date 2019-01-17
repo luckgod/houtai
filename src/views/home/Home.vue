@@ -72,7 +72,9 @@ position: absolute;
    .el-submenu:hover{
     background: #000016;
   }
-  
+  .el-submenu.is-active .el-submenu__title {
+    border-bottom-color: #666666;
+  }
 </style>
 <style>
 .el-header{
